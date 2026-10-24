@@ -78,11 +78,12 @@ const Navbar = () => {
   const miniBagRef = useRef(null)
   const collectionsRef = useRef(null)
 
-  // Track scroll position for header glass elevation
+  // Track scroll position for header glass elevation & sticky behavior
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20)
     }
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -156,7 +157,7 @@ const Navbar = () => {
 
   const navLinks = [
     { label: 'All Pieces', path: '/products' },
-    { label: 'New In', path: '/products?category=Outerwear', badge: 'AW26' },
+    { label: 'New In', path: '/products?category=New%20In', badge: 'AW26' },
     { label: 'Outerwear', path: '/products?category=Outerwear' },
     { label: 'Tailoring', path: '/products?category=Tailoring' },
     { label: 'Footwear', path: '/products?category=Footwear' },
@@ -164,15 +165,38 @@ const Navbar = () => {
   ]
 
   const isLinkActive = (path) => {
-    if (path === '/products' && location.pathname === '/products' && !location.search) return true
-    if (location.pathname + location.search === path) return true
-    return false
+    if (location.pathname !== '/products') return false
+
+    const currentParams = new URLSearchParams(location.search)
+    const currentCategory = currentParams.get('category')
+
+    if (path === '/products') {
+      return !currentCategory || currentCategory === 'All'
+    }
+
+    try {
+      const targetParams = new URLSearchParams(path.split('?')[1] || '')
+      const targetCategory = targetParams.get('category')
+      if (targetCategory && currentCategory) {
+        return targetCategory.toLowerCase() === currentCategory.toLowerCase()
+      }
+    } catch {
+      // Fallback to strict comparison
+    }
+
+    return decodeURIComponent(location.pathname + location.search) === decodeURIComponent(path)
   }
 
   return (
-    <div className="w-full relative z-50">
+    <div className="sticky top-0 z-50 w-full">
       {/* 1. Top Announcement & Utility Bar */}
-      <div className="w-full bg-black text-white text-[11px] font-medium tracking-widest uppercase border-b border-neutral-800">
+      <div
+        className={`w-full bg-black text-white text-[11px] font-medium tracking-widest uppercase transition-all duration-300 ease-in-out ${
+          isScrolled
+            ? 'max-h-0 opacity-0 overflow-hidden border-b-0 pointer-events-none'
+            : 'max-h-12 opacity-100 overflow-visible border-b border-neutral-800'
+        }`}
+      >
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 h-8 sm:h-9 flex items-center justify-between">
           {/* Left: Region & Currency Selector */}
           <div className="relative hidden md:flex items-center gap-2">
@@ -241,8 +265,8 @@ const Navbar = () => {
 
       {/* 2. Main Navigation Header */}
       <motion.header
-        className={`sticky top-0 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b ${
-          isScrolled ? 'border-neutral-200 shadow-sm py-2 sm:py-2.5' : 'border-neutral-100 py-3 sm:py-4'
+        className={`w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b ${
+          isScrolled ? 'border-neutral-200 shadow-md py-2 sm:py-2.5' : 'border-neutral-100 py-3 sm:py-4'
         }`}
       >
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">

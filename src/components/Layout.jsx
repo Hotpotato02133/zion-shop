@@ -1,12 +1,30 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Check, ShieldCheck, Sparkles } from 'lucide-react'
+import { ArrowRight, ArrowUp, Check, ShieldCheck, Sparkles } from 'lucide-react'
 import Navbar from './Navbar'
 
 const Layout = ({ children }) => {
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterToast, setNewsletterToast] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  // Track scroll position to show floating back-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300)
+    }
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
+  }
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault()
@@ -19,7 +37,7 @@ const Layout = ({ children }) => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white text-neutral-900 font-body flex flex-col justify-between selection:bg-black selection:text-white overflow-x-hidden">
+    <div className="min-h-screen w-full bg-white text-neutral-900 font-body flex flex-col justify-between selection:bg-black selection:text-white overflow-x-clip">
       {/* Specialized E-Commerce Luxury Navbar */}
       <Navbar />
 
@@ -29,7 +47,7 @@ const Layout = ({ children }) => {
       </main>
 
       {/* Luxury Atelier Footer */}
-      <footer className="w-full bg-neutral-950 text-white mt-24 border-t border-neutral-900">
+      <footer className="w-full bg-neutral-950 text-white border-t border-neutral-900">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 lg:py-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-12">
             
@@ -151,7 +169,32 @@ const Layout = ({ children }) => {
         </div>
       </footer>
 
-      {/* Newsletter Success Toast */}
+      {/* Floating Back to Top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            key="back-to-top"
+            onClick={scrollToTop}
+            initial={{ opacity: 0, scale: 0.7, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.7, y: 16 }}
+            whileHover={{ scale: 1.08, y: -2 }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            aria-label="Scroll back to top"
+            className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 p-3 sm:p-3.5 rounded-full bg-neutral-950/90 hover:bg-black text-white shadow-2xl border border-neutral-700/60 hover:border-neutral-400 backdrop-blur-md group transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 flex items-center justify-center cursor-pointer"
+          >
+            <ArrowUp
+              size={18}
+              strokeWidth={2.5}
+              className="text-white transition-transform duration-300 group-hover:-translate-y-0.5"
+            />
+            <span className="sr-only">Scroll back to top</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Newsletter Success Toast (positioned above floating button to prevent overlap) */}
       <AnimatePresence>
         {newsletterToast && (
           <motion.aside
@@ -160,7 +203,7 @@ const Layout = ({ children }) => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-medium border border-neutral-800"
+            className="fixed bottom-20 right-6 sm:bottom-24 sm:right-8 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-medium border border-neutral-800"
           >
             <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
               <Check size={14} className="text-white" />

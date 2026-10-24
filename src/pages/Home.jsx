@@ -197,7 +197,7 @@ const Home = () => {
     : featuredProducts.filter(p => p.category === activeCategory)
 
   return (
-    <div className="min-h-screen w-full bg-white text-black font-body overflow-x-hidden">
+    <div className="min-h-screen w-full bg-white text-black font-body overflow-x-clip">
       
       {/* Toast Notification */}
       <AnimatePresence>

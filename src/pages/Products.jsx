@@ -298,7 +298,41 @@ const products = [
   }
 ]
 
-const categories = ['All', 'Electronics', 'Accessories', 'Fashion', 'Home']
+const checkCategoryMatch = (product, cat) => {
+  if (!cat || cat === 'All') return true
+  const catLower = cat.toLowerCase()
+  const prodCatLower = (product.category || '').toLowerCase()
+  if (prodCatLower === catLower) return true
+
+  if (catLower === 'new in') {
+    const tagLower = (product.tag || '').toLowerCase()
+    return tagLower.includes('new') || tagLower.includes('spotlight') || tagLower.includes('limited')
+  }
+
+  if (catLower === 'outerwear') {
+    return prodCatLower === 'outerwear' || 
+           product.name.toLowerCase().includes('overcoat') || 
+           product.name.toLowerCase().includes('coat') ||
+           product.name.toLowerCase().includes('backpack')
+  }
+
+  if (catLower === 'tailoring') {
+    return prodCatLower === 'tailoring' || 
+           product.name.toLowerCase().includes('overcoat') || 
+           product.name.toLowerCase().includes('scarf') ||
+           product.name.toLowerCase().includes('chronograph')
+  }
+
+  if (catLower === 'footwear') {
+    return prodCatLower === 'footwear' || 
+           product.name.toLowerCase().includes('leather') || 
+           prodCatLower === 'fashion'
+  }
+
+  return false
+}
+
+const categories = ['All', 'New In', 'Outerwear', 'Tailoring', 'Accessories', 'Fashion', 'Home', 'Electronics']
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -391,7 +425,7 @@ const Products = () => {
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.category.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory
+    const matchesCategory = checkCategoryMatch(product, selectedCategory)
     return matchesSearch && matchesCategory
   })
 
@@ -434,7 +468,7 @@ const Products = () => {
   }, [])
 
   return (
-    <div className="min-h-screen w-full py-10 bg-white text-black font-body overflow-x-hidden">
+    <div className="min-h-screen w-full pt-10 pb-20 bg-white text-black font-body overflow-x-clip">
       
       {/* Toast Notification */}
       <AnimatePresence>
@@ -533,7 +567,7 @@ const Products = () => {
             {categories.map((category) => {
               const count = category === 'All' 
                 ? products.length 
-                : products.filter(p => p.category === category).length
+                : products.filter(p => checkCategoryMatch(p, category)).length
 
               return (
                 <button

@@ -82,7 +82,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] w-full flex flex-col lg:flex-row items-stretch bg-white overflow-x-hidden">
+    <div className="min-h-[calc(100vh-4rem)] w-full flex flex-col lg:flex-row items-stretch bg-white overflow-x-clip">
       {/* Left Column: Editorial Auth Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center py-12 px-6 sm:px-12 lg:px-16 xl:px-24">
         <motion.div

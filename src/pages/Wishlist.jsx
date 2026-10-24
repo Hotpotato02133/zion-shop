@@ -112,7 +112,7 @@ const Wishlist = () => {
 
   if (wishlist.length === 0) {
     return (
-      <div className="min-h-screen w-full bg-white py-16 lg:py-24 overflow-x-hidden">
+      <div className="min-h-screen w-full bg-white py-16 lg:py-24 overflow-x-clip">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -188,7 +188,7 @@ const Wishlist = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white py-12 lg:py-16 overflow-x-hidden">
+    <div className="min-h-screen w-full bg-white py-12 lg:py-16 overflow-x-clip">
       <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-neutral-400 uppercase tracking-wider mb-6">

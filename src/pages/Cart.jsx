@@ -149,7 +149,7 @@ const Cart = () => {
   // Empty State
   if (cart.length === 0 && checkoutStep !== 'success') {
     return (
-      <div className="min-h-[80vh] w-full flex items-center justify-center py-16 bg-white text-black font-body overflow-x-hidden">
+      <div className="min-h-[80vh] w-full flex items-center justify-center py-16 bg-white text-black font-body overflow-x-clip">
         <div className="w-full max-w-lg mx-auto px-4 sm:px-6 text-center">
           <motion.div
             initial="hidden"
@@ -190,7 +190,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen w-full py-10 bg-white text-black font-body overflow-x-hidden">
+    <div className="min-h-screen w-full pt-10 pb-20 bg-white text-black font-body overflow-x-clip">
       <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
         {/* Header */}
