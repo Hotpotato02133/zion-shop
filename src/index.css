@@ -25,9 +25,26 @@
   color: #ffffff; 
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & global resets */
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #ffffff;
+  color: #171717;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Custom scrollbar for webkit browsers */
@@ -103,6 +120,9 @@ input:focus-visible {
 /* Responsive container utilities */
 .container-responsive {
   width: 100%;
+  max-width: 88rem; /* 1408px / 7xl */
+  margin-left: auto;
+  margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -123,27 +143,29 @@ input:focus-visible {
 
 @media (min-width: 1024px) {
   .container-responsive {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
   }
 }
 
 @media (min-width: 1280px) {
   .container-responsive {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 }
 
 @media (min-width: 1536px) {
   .container-responsive {
-    padding-left: 120px;
-    padding-right: 120px;
+    max-width: 96rem; /* 1536px */
+    padding-left: 4rem;
+    padding-right: 4rem;
   }
 }
 
-/* Ensure full-width backgrounds */
-.full-width-bg {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+/* Ensure full-bleed sections */
+.section-full {
+  width: 100%;
+  position: relative;
 }
+

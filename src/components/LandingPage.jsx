@@ -130,9 +130,9 @@ export default function LandingPage() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-100"
+        className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-100 w-full"
       >
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <motion.div 
@@ -244,7 +244,7 @@ export default function LandingPage() {
           </div>
           
           <div className="relative z-10 w-full">
-            <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+            <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh] lg:min-h-[90vh] xl:min-h-[95vh]">
                 {/* Content */}
                 <motion.div
@@ -316,8 +316,8 @@ export default function LandingPage() {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 bg-gray-50">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+      <section className="w-full py-8 bg-gray-50">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex flex-wrap justify-center gap-4">
             {categories.map((category) => (
               <motion.button
@@ -339,8 +339,8 @@ export default function LandingPage() {
       </section>
 
       {/* Featured Collections */}
-      <section id="collections" className="py-20">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+      <section id="collections" className="w-full py-20">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -455,8 +455,8 @@ export default function LandingPage() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 bg-gray-50">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+      <section id="about" className="w-full py-20 bg-gray-50">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -502,8 +502,8 @@ export default function LandingPage() {
       </section>
 
       {/* Newsletter Section */}
-      <section id="newsletter" className="py-20">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
+      <section id="newsletter" className="w-full py-20">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -545,8 +545,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black text-white">
-        <div className="w-full px-[100px] xl:px-[120px] 2xl:px-[140px] py-16 lg:py-20">
+      <footer className="w-full bg-black text-white">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16 lg:py-20">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Brand */}
             <div className="sm:col-span-2 lg:col-span-1">

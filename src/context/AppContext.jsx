@@ -10,16 +10,32 @@ import {
   initialState 
 } from './constants'
 
+// Helper to normalize product objects
+const normalizeProduct = (item) => {
+  const productId = item.productId ?? item.id
+  let price = item.price
+  if (typeof price === 'string') {
+    const parsed = parseFloat(price.replace(/[^0-9.-]+/g, ''))
+    if (!isNaN(parsed)) price = parsed
+  }
+  return {
+    ...item,
+    productId,
+    price
+  }
+}
+
 // Reducer
 const appReducer = (state, action) => {
   switch (action.type) {
     case ADD_TO_CART: {
-      const existingCartItem = state.cart.find(item => item.productId === action.payload.productId)
+      const normalized = normalizeProduct(action.payload)
+      const existingCartItem = state.cart.find(item => item.productId === normalized.productId)
       if (existingCartItem) {
         return {
           ...state,
           cart: state.cart.map(item =>
-            item.productId === action.payload.productId
+            item.productId === normalized.productId
               ? { ...item, quantity: item.quantity + 1 }
               : item
           )
@@ -27,41 +43,42 @@ const appReducer = (state, action) => {
       }
       return {
         ...state,
-        cart: [...state.cart, { ...action.payload, quantity: 1 }]
+        cart: [...state.cart, { ...normalized, quantity: 1 }]
       }
     }
 
     case REMOVE_FROM_CART:
       return {
         ...state,
-        cart: state.cart.filter(item => item.productId !== action.payload)
+        cart: state.cart.filter(item => item.productId !== action.payload && item.id !== action.payload)
       }
 
     case UPDATE_CART_QUANTITY:
       return {
         ...state,
         cart: state.cart.map(item =>
-          item.productId === action.payload.productId
+          (item.productId === action.payload.productId || item.id === action.payload.productId)
             ? { ...item, quantity: action.payload.quantity }
             : item
         ).filter(item => item.quantity > 0)
       }
 
     case ADD_TO_WISHLIST: {
-      const existingWishlistItem = state.wishlist.find(item => item.productId === action.payload.productId)
+      const normalized = normalizeProduct(action.payload)
+      const existingWishlistItem = state.wishlist.find(item => item.productId === normalized.productId)
       if (existingWishlistItem) {
         return state
       }
       return {
         ...state,
-        wishlist: [...state.wishlist, action.payload]
+        wishlist: [...state.wishlist, normalized]
       }
     }
 
     case REMOVE_FROM_WISHLIST:
       return {
         ...state,
-        wishlist: state.wishlist.filter(item => item.productId !== action.payload)
+        wishlist: state.wishlist.filter(item => item.productId !== action.payload && item.id !== action.payload)
       }
 
     case CLEAR_CART:

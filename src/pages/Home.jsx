@@ -1,56 +1,165 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { ArrowRight, Star } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  ArrowRight, 
+  Star, 
+  ShoppingBag, 
+  Heart, 
+  ShieldCheck, 
+  Truck, 
+  Sparkles, 
+  Clock, 
+  Check, 
+  ArrowUpRight,
+  ChevronRight,
+  Eye
+} from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
-// Mock featured products data
+// Curated luxury catalog data
 const featuredProducts = [
   {
     id: 1,
-    name: 'Premium Wireless Headphones',
-    price: '$299',
-    originalPrice: '$399',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    name: 'Atelier Wireless Over-Ear Headphones',
+    price: 299,
+    originalPrice: 399,
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400&auto=format&fit=crop',
     category: 'Electronics',
-    rating: 4.8,
-    reviews: 124
+    tag: 'Limited Edition',
+    rating: 4.9,
+    reviews: 142
   },
   {
     id: 2,
-    name: 'Minimalist Watch',
-    price: '$199',
+    name: 'Monochrome Minimalist Chronograph',
+    price: 420,
     originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1523170335258-f5e6a7c0c1c4?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1523170335258-f5e6a7c0c1c4?q=80&w=1400&auto=format&fit=crop',
     category: 'Accessories',
+    tag: 'Bestseller',
     rating: 4.9,
-    reviews: 89
+    reviews: 98
   },
   {
     id: 3,
-    name: 'Designer Backpack',
-    price: '$159',
-    originalPrice: '$199',
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    name: 'Full-Grain Structured Leather Backpack',
+    price: 340,
+    originalPrice: 390,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop',
     category: 'Fashion',
-    rating: 4.7,
-    reviews: 203
+    tag: 'Handcrafted',
+    rating: 4.8,
+    reviews: 215
   },
   {
     id: 4,
-    name: 'Smart Home Speaker',
-    price: '$129',
+    name: 'Acoustic Sculptural Smart Speaker',
+    price: 189,
     originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1400&auto=format&fit=crop',
     category: 'Electronics',
-    rating: 4.6,
-    reviews: 67
+    tag: 'New',
+    rating: 4.7,
+    reviews: 76
+  },
+  {
+    id: 5,
+    name: 'Japanese Acetate Luxury Sunglasses',
+    price: 240,
+    originalPrice: 280,
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
+    category: 'Accessories',
+    tag: 'Seasonal',
+    rating: 4.8,
+    reviews: 110
+  },
+  {
+    id: 6,
+    name: 'Handcrafted Scented Atelier Candle',
+    price: 68,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1400&auto=format&fit=crop',
+    category: 'Home',
+    tag: 'Atelier',
+    rating: 4.9,
+    reviews: 180
+  },
+  {
+    id: 7,
+    name: 'Ceramic Matte Minimalist Coffee Set',
+    price: 125,
+    originalPrice: 150,
+    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1400&auto=format&fit=crop',
+    category: 'Home',
+    tag: 'Artisan',
+    rating: 4.9,
+    reviews: 94
+  },
+  {
+    id: 8,
+    name: 'Vegetable-Tanned Heritage Leather Journal',
+    price: 95,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1400&auto=format&fit=crop',
+    category: 'Accessories',
+    tag: 'Refillable',
+    rating: 4.9,
+    reviews: 84
+  }
+]
+
+const categories = ['All', 'Electronics', 'Accessories', 'Fashion', 'Home']
+
+const collectionShowcases = [
+  {
+    title: 'Precision Horology',
+    description: 'Timepieces designed with mechanical restraint and surgical steel.',
+    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Accessories'
+  },
+  {
+    title: 'Atelier Living',
+    description: 'Sensory home objects, bespoke ceramics, and pure wax formulations.',
+    image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Home'
+  },
+  {
+    title: 'Tailored Leatherware',
+    description: 'Full-grain hides conditioned for decades of character and travel.',
+    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Fashion'
+  }
+]
+
+const testimonials = [
+  {
+    quote: "Zion embodies the pinnacle of quiet luxury. The tactile presence of their objects transforms everyday spaces.",
+    author: "Elena Rostova",
+    role: "Architectural Digest Reviewer",
+    city: "Milan"
+  },
+  {
+    quote: "Fast international courier, immaculate packaging, and a level of finish that outclasses brands twice the price.",
+    author: "Julian Vance",
+    role: "Verified Private Collector",
+    city: "London"
+  },
+  {
+    quote: "Uncompromising minimalism. You can sense the restraint and human hand in every stitch and edge.",
+    author: "Kaito Tanaka",
+    role: "Industrial Designer",
+    city: "Tokyo"
   }
 ]
 
 const Home = () => {
-  const { addToCart, addToWishlist } = useApp()
-  
+  const { addToCart, addToWishlist, wishlist } = useApp()
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
+  const [addedItemNotification, setAddedItemNotification] = useState(null)
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
@@ -62,225 +171,654 @@ const Home = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
+        delayChildren: 0.15
       }
     }
   }
 
-  const cardHover = { 
-    scale: 1.02, 
-    boxShadow: '0 25px 50px rgba(0,0,0,0.15)',
-    transition: { duration: 0.3, ease: "easeOut" }
+  const isItemInWishlist = (productId) => {
+    return wishlist.some(item => (item.productId ?? item.id) === productId)
   }
 
-  return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-white">
-        <div className="min-h-[80vh] lg:min-h-[90vh] xl:min-h-[95vh] w-full flex items-center">
-          <div className="absolute inset-0">
-            <img
-              src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a9b7c6d5e4f3a2b1c0d"
-              alt="Zion store showcase"
-              className="w-full h-full object-cover grayscale opacity-20"
-            />
-          </div>
-          
-          <div className="relative z-10 w-full">
-            <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[80vh] lg:min-h-[90vh] xl:min-h-[95vh]">
-                {/* Content */}
-                <motion.div
-                  initial="hidden"
-                  animate="visible"
-                  variants={staggerChildren}
-                  className="flex flex-col justify-center space-y-8"
-                >
-                  <motion.div variants={fadeInUp} className="space-y-6">
-                    <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[0.9]">
-                      Welcome to
-                      <br />
-                      <span className="text-gray-600">Zion</span>
-                    </h1>
-                    
-                    <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 max-w-2xl leading-relaxed font-light">
-                      Discover premium products that elevate your lifestyle. 
-                      Quality, style, and innovation in every purchase.
-                    </p>
-                  </motion.div>
-                  
-                  <motion.div 
-                    variants={fadeInUp}
-                    className="flex flex-col sm:flex-row gap-4 sm:gap-6"
-                  >
-                    <Link to="/products">
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="bg-black text-white px-8 py-4 lg:px-10 lg:py-5 rounded-full text-sm lg:text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group"
-                      >
-                        Shop Now
-                        <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                      </motion.button>
-                    </Link>
-                    
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="border-2 border-black text-black px-8 py-4 lg:px-10 lg:py-5 rounded-full text-sm lg:text-base font-semibold hover:bg-black hover:text-white transition-all duration-300"
-                    >
-                      Learn More
-                    </motion.button>
-                  </motion.div>
-                </motion.div>
+  const handleAddToCartWithToast = (product) => {
+    addToCart(product)
+    setAddedItemNotification(`${product.name} added to cart`)
+    setTimeout(() => setAddedItemNotification(null), 2500)
+  }
 
-                {/* Visual Element */}
-                <motion.div
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.3 }}
-                  className="hidden lg:flex items-center justify-center"
-                >
-                  <div className="relative w-full max-w-lg">
-                    <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
-                      <div className="text-center space-y-4">
-                        <div className="w-24 h-24 bg-black rounded-full mx-auto flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">Z</span>
+  const handleToggleWishlist = (product) => {
+    addToWishlist(product)
+    setAddedItemNotification(`${product.name} added to wishlist`)
+    setTimeout(() => setAddedItemNotification(null), 2500)
+  }
+
+  const filteredProducts = activeCategory === 'All'
+    ? featuredProducts
+    : featuredProducts.filter(p => p.category === activeCategory)
+
+  return (
+    <div className="min-h-screen w-full bg-white text-black font-body overflow-x-hidden">
+      
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {addedItemNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-6 right-6 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-800 text-sm font-medium"
+          >
+            <div className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center">
+              <Check size={12} strokeWidth={3} />
+            </div>
+            <span>{addedItemNotification}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 1. HERO SECTION */}
+      <section className="relative w-full min-h-[85vh] lg:min-h-[92vh] flex items-center bg-gradient-to-b from-gray-50 via-white to-white border-b border-gray-100 overflow-hidden">
+        {/* Subtle geometric background grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none" />
+
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-12 lg:py-20 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* Left Column: Typography & CTAs (7 cols) */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerChildren}
+              className="lg:col-span-7 space-y-8"
+            >
+              {/* Badge */}
+              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-gray-100/90 border border-gray-200/80 backdrop-blur-md">
+                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
+                <span className="text-xs font-semibold tracking-wider uppercase text-gray-800">
+                  Edition 2025 • Luxury Atelier
+                </span>
+              </motion.div>
+
+              {/* Main Headline */}
+              <motion.div variants={fadeInUp} className="space-y-4">
+                <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[0.92] text-black">
+                  Refined Luxury.
+                  <br />
+                  <span className="text-gray-400 font-light italic">Pure Form.</span>
+                </h1>
+                <p className="text-lg sm:text-xl text-gray-600 max-w-xl leading-relaxed font-light pt-2">
+                  Zion curates handcrafted lifestyle objects, precision electronics, and heirloom leatherware built for a lifetime of quiet distinction.
+                </p>
+              </motion.div>
+
+              {/* Action Buttons */}
+              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Link to="/products">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto bg-black text-white px-8 py-4 rounded-full text-base font-semibold shadow-xl hover:shadow-2xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-3 group"
+                  >
+                    <span>Explore Products</span>
+                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                  </motion.button>
+                </Link>
+
+                <a href="#collections">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full sm:w-auto bg-white text-black border-2 border-black/10 hover:border-black px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 flex items-center justify-center"
+                  >
+                    Curated Categories
+                  </motion.button>
+                </a>
+              </motion.div>
+
+              {/* Social Proof & Metrics */}
+              <motion.div variants={fadeInUp} className="pt-6 border-t border-gray-100 grid grid-cols-3 gap-6 max-w-lg">
+                <div>
+                  <div className="font-heading text-2xl lg:text-3xl font-bold">100%</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Artisanal Sourced</div>
+                </div>
+                <div>
+                  <div className="font-heading text-2xl lg:text-3xl font-bold">4.9★</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">TrustPilot Score</div>
+                </div>
+                <div>
+                  <div className="font-heading text-2xl lg:text-3xl font-bold">48h</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Global Dispatch</div>
+                </div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right Column: Hero Visual Feature (5 cols) */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="lg:col-span-5 relative"
+            >
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                {/* Decorative background glow */}
+                <div className="absolute -inset-4 bg-gradient-to-tr from-gray-200 to-gray-50 rounded-3xl blur-2xl opacity-60 -z-10" />
+
+                {/* Main Hero Showcase Card */}
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-100 group">
+                  <div className="aspect-[4/5] overflow-hidden bg-gray-100 relative">
+                    <img 
+                      src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop" 
+                      alt="Zion Autumn Luxury Showcase"
+                      className="w-full h-full object-cover object-top transform transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                    {/* Floating Product Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-white/90 backdrop-blur-md text-black text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">
+                        Spotlight Piece
+                      </span>
+                    </div>
+
+                    {/* Bottom Card Overlay Details */}
+                    <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs uppercase tracking-widest text-gray-300 font-medium">Haute Collection</span>
+                        <div className="flex items-center gap-1 text-yellow-400 text-xs">
+                          <Star size={12} className="fill-yellow-400" />
+                          <span>4.9 (140+ reviews)</span>
                         </div>
-                        <p className="text-gray-600 font-medium">Zion</p>
+                      </div>
+                      <h3 className="font-heading text-2xl font-bold leading-tight">
+                        The Minimalist Cashmere Overcoat
+                      </h3>
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-xl font-bold">$780</span>
+                        <Link to="/products">
+                          <button className="bg-white text-black px-4 py-2 rounded-full text-xs font-semibold hover:bg-gray-100 transition-colors flex items-center gap-1.5">
+                            <span>View Item</span>
+                            <ArrowUpRight size={14} />
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Floating Micro Testimonial Card */}
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.6 }}
+                  className="hidden sm:flex absolute -bottom-6 -left-8 bg-white/95 backdrop-blur-md border border-gray-100 p-4 rounded-2xl shadow-xl max-w-xs items-center gap-3.5 z-20"
+                >
+                  <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center shrink-0">
+                    <Sparkles size={18} />
+                  </div>
+                  <div className="text-xs">
+                    <p className="font-semibold text-black">Artisan Authenticity</p>
+                    <p className="text-gray-500">Every piece hand-inspected in Zurich & Milan.</p>
+                  </div>
                 </motion.div>
+
               </div>
-            </div>
+            </motion.div>
+
           </div>
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-20">
-        <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-[100px] 2xl:px-[120px]">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="text-center mb-16"
-          >
-            <motion.h2 
-              variants={fadeInUp}
-              className="font-heading text-4xl md:text-5xl font-bold mb-6"
-            >
-              Featured Products
-            </motion.h2>
-            <motion.p 
-              variants={fadeInUp}
-              className="text-lg text-gray-600 max-w-3xl mx-auto"
-            >
-              Discover our handpicked selection of premium products that combine 
-              quality, style, and innovation.
-            </motion.p>
-          </motion.div>
+      {/* 2. VALUE PROPOSITION RIBBON */}
+      <section className="w-full py-12 bg-black text-white">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+            
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                <Truck size={22} className="text-white" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-heading font-bold text-base">Complimentary Global Freight</h4>
+                <p className="text-sm text-gray-400">Insured express courier on all worldwide orders over $150.</p>
+              </div>
+            </div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerChildren}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
-          >
-            {featuredProducts.map((product) => (
-              <motion.article
-                key={product.id}
-                variants={fadeInUp}
-                whileHover={cardHover}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
-              >
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110" 
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300" />
-                  
-                  {/* Sale badge */}
-                  {product.originalPrice && (
-                    <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">
-                      Sale
-                    </div>
-                  )}
-                </div>
-                
-                <div className="p-4 lg:p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                      {product.category}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm text-gray-600">{product.rating}</span>
-                      <span className="text-xs text-gray-400">({product.reviews})</span>
-                    </div>
-                  </div>
-                  
-                  <h3 className="font-heading text-lg lg:text-xl font-semibold mb-3 group-hover:text-gray-600 transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
-                  
-                  <div className="flex items-center gap-2 mb-4">
-                    <span className="text-lg font-bold">{product.price}</span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-gray-400 line-through">
-                        {product.originalPrice}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => addToCart(product)}
-                      className="flex-1 bg-black text-white py-3 rounded-xl font-medium hover:bg-gray-800 transition-colors duration-300"
-                    >
-                      Add to Cart
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => addToWishlist(product)}
-                      className="px-4 py-3 border border-gray-300 rounded-xl font-medium hover:bg-gray-50 transition-colors duration-300"
-                    >
-                      ♡
-                    </motion.button>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </motion.div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                <ShieldCheck size={22} className="text-white" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-heading font-bold text-base">Artisanal Warranty</h4>
+                <p className="text-sm text-gray-400">Lifetime craftsmanship repair and certified provenance.</p>
+              </div>
+            </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mt-12"
-          >
-            <Link to="/products">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-black text-white px-8 py-4 rounded-full font-semibold hover:bg-gray-800 transition-colors duration-300"
-              >
-                View All Products
-              </motion.button>
-            </Link>
-          </motion.div>
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                <Clock size={22} className="text-white" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-heading font-bold text-base">30-Day Effortless Returns</h4>
+                <p className="text-sm text-gray-400">Complimentary home collection for exchanges and returns.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                <Sparkles size={22} className="text-white" />
+              </div>
+              <div className="space-y-1">
+                <h4 className="font-heading font-bold text-base">Private Concierge</h4>
+                <p className="text-sm text-gray-400">24/7 dedicated personal styling and gifting consultation.</p>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
+
+      {/* 3. CURATED CATEGORY SHOWCASE (Interactive Grid) */}
+      <section id="collections" className="w-full py-20 bg-gray-50/50">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="space-y-3">
+              <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
+                Architectural Universes
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+                Curated Collections
+              </h2>
+            </div>
+            <Link to="/products" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-gray-600 transition-colors group">
+              <span>Explore All Categories</span>
+              <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {collectionShowcases.map((col, idx) => (
+              <Link key={idx} to={col.link} className="group block">
+                <motion.div
+                  whileHover={{ y: -6 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-sm group-hover:shadow-2xl transition-all duration-500 bg-gray-900"
+                >
+                  <img 
+                    src={col.image} 
+                    alt={col.title}
+                    className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                  
+                  <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
+                    <h3 className="font-heading text-2xl font-bold tracking-tight">
+                      {col.title}
+                    </h3>
+                    <p className="text-sm text-gray-300 font-light line-clamp-2">
+                      {col.description}
+                    </p>
+                    <div className="pt-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white group-hover:underline">
+                      <span>Browse Gallery</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. FEATURED PRODUCTS (Dynamic Tabs + Direct Cart/Wishlist integration) */}
+      <section className="w-full py-24 bg-white">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div className="space-y-3">
+              <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
+                Atelier Handpicked
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+                Featured Catalog
+              </h2>
+            </div>
+
+            {/* Category Filter Pills */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-300 ${
+                    activeCategory === cat
+                      ? 'bg-black text-white shadow-md'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          <motion.div 
+            layout
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+          >
+            <AnimatePresence>
+              {filteredProducts.map((product) => {
+                const inWishlist = isItemInWishlist(product.id)
+
+                return (
+                  <motion.article
+                    layout
+                    key={product.id}
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col group"
+                  >
+                    {/* Image Area */}
+                    <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
+                      <img 
+                        src={product.image} 
+                        alt={product.name} 
+                        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                      
+                      {/* Tag Badge */}
+                      {product.tag && (
+                        <div className="absolute top-4 left-4">
+                          <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                            {product.tag}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Floating Quick Action Buttons */}
+                      <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          whileTap={{ scale: 0.9 }}
+                          onClick={() => handleToggleWishlist(product)}
+                          className={`p-2.5 rounded-full shadow-lg transition-colors backdrop-blur-md ${
+                            inWishlist
+                              ? 'bg-red-500 text-white'
+                              : 'bg-white/90 text-black hover:bg-white'
+                          }`}
+                          title="Save to Wishlist"
+                        >
+                          <Heart size={16} className={inWishlist ? 'fill-white' : ''} />
+                        </motion.button>
+                        
+                        <Link to={`/products?search=${encodeURIComponent(product.name)}`}>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="p-2.5 bg-white/90 backdrop-blur-md text-black hover:bg-white rounded-full shadow-lg transition-colors"
+                            title="Inspect details"
+                          >
+                            <Eye size={16} />
+                          </motion.button>
+                        </Link>
+                      </div>
+
+                      {/* Quick Add To Cart Hover Pill */}
+                      <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <motion.button
+                          whileTap={{ scale: 0.97 }}
+                          onClick={() => handleAddToCartWithToast(product)}
+                          className="w-full bg-black/90 hover:bg-black backdrop-blur-md text-white py-3 rounded-2xl text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl"
+                        >
+                          <ShoppingBag size={14} />
+                          <span>Quick Add to Bag</span>
+                        </motion.button>
+                      </div>
+                    </div>
+
+                    {/* Content Details */}
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                          <span className="uppercase tracking-widest font-medium">{product.category}</span>
+                          <div className="flex items-center gap-1 text-gray-700">
+                            <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                            <span>{product.rating}</span>
+                          </div>
+                        </div>
+
+                        <h3 className="font-heading font-bold text-base text-black group-hover:text-gray-600 transition-colors line-clamp-1">
+                          {product.name}
+                        </h3>
+                      </div>
+
+                      {/* Pricing */}
+                      <div className="pt-4 flex items-center justify-between">
+                        <div className="flex items-baseline gap-2">
+                          <span className="font-heading text-lg font-bold">${product.price}</span>
+                          {product.originalPrice && (
+                            <span className="text-xs text-gray-400 line-through">${product.originalPrice}</span>
+                          )}
+                        </div>
+                        <span className="text-xs font-medium text-gray-500 hover:text-black">
+                          In Stock
+                        </span>
+                      </div>
+                    </div>
+
+                  </motion.article>
+                )
+              })}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Catalog CTA */}
+          <div className="text-center mt-16">
+            <Link to="/products">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-black text-white px-10 py-4 rounded-full text-sm font-semibold tracking-wider uppercase shadow-xl hover:bg-gray-800 transition-all duration-300 inline-flex items-center gap-2"
+              >
+                <span>View Full Catalog</span>
+                <ArrowRight size={16} />
+              </motion.button>
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. CRAFTSMANSHIP & EDITORIAL STORY SECTION */}
+      <section className="w-full py-24 bg-gray-50/70 border-t border-b border-gray-100">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            
+            {/* Visual Mosaic (6 cols) */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1400&auto=format&fit=crop" 
+                  alt="Zion Craft Workshop"
+                  className="w-full h-[480px] object-cover"
+                />
+                <div className="absolute inset-0 bg-black/20" />
+                <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/90 backdrop-blur-md text-black">
+                  <p className="font-heading text-sm font-bold uppercase tracking-wider text-gray-500">Workshop Manifesto</p>
+                  <p className="text-sm font-medium mt-1">"We eliminate every superfluous curve until only true functional essence remains."</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Narrative Story (6 cols) */}
+            <div className="lg:col-span-6 space-y-8">
+              <div className="space-y-4">
+                <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
+                  The Zion Philosophy
+                </span>
+                <h2 className="font-heading text-4xl sm:text-5xl font-bold tracking-tight text-black leading-tight">
+                  Restraint. Material Honesty. Longevity.
+                </h2>
+                <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
+                  In an age of rapid disposability, Zion stands for permanence. We partner directly with master artisans across Scandinavia, Japan, and northern Italy to engineer everyday artifacts using untreated brass, aerospace-grade titanium, and organic full-grain leather.
+                </p>
+              </div>
+
+              <div className="space-y-4 pt-2">
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
+                    <Check size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-base">Zero Synthetic Compromises</h4>
+                    <p className="text-sm text-gray-600">Pure raw materials selected for their tactile aging qualities and patina.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
+                    <Check size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-base">Direct Heritage Workshops</h4>
+                    <p className="text-sm text-gray-600">Eliminating middlemen markups to invest directly in artisan fair wages.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
+                    <Check size={16} />
+                  </div>
+                  <div>
+                    <h4 className="font-heading font-bold text-base">Circular Longevity Guarantee</h4>
+                    <p className="text-sm text-gray-600">Every mechanical object is fully serviceable and built with modular parts.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4">
+                <Link to="/products">
+                  <button className="text-sm font-bold uppercase tracking-wider text-black border-b-2 border-black pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                    Read Our Complete Provenance Report →
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 6. TESTIMONIALS & CLIENT ACCOLADES */}
+      <section className="w-full py-24 bg-white">
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
+              Patron Testimonials
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              Words From The Circle
+            </h2>
+            <p className="text-gray-600 font-light">
+              Trusted by architects, designers, and discerning collectors in over 40 countries.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((t, idx) => (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -6 }}
+                className="p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
+              >
+                <div className="space-y-4">
+                  <div className="flex gap-1 text-yellow-400">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <p className="text-gray-700 italic text-base leading-relaxed">
+                    "{t.quote}"
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+                  <div>
+                    <p className="font-heading font-bold text-sm text-black">{t.author}</p>
+                    <p className="text-xs text-gray-400">{t.role}</p>
+                  </div>
+                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">{t.city}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 7. VIP PRIVATE CIRCLE NEWSLETTER */}
+      <section className="w-full py-20 bg-black text-white relative overflow-hidden">
+        {/* Subtle radial ambient glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10 text-center space-y-8">
+          <div className="space-y-4">
+            <span className="text-xs uppercase tracking-widest font-semibold text-gray-400">
+              Exclusive Access
+            </span>
+            <h2 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">
+              Join The Zion Private Circle
+            </h2>
+            <p className="text-gray-400 font-light text-base sm:text-lg leading-relaxed">
+              Receive private previews of limited atelier runs, architectural lookbooks, and invitations to seasonal private sales.
+            </p>
+          </div>
+
+          {newsletterSubscribed ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="p-6 rounded-2xl bg-white/10 border border-white/20 text-white max-w-md mx-auto"
+            >
+              <Check size={28} className="mx-auto text-white mb-2" />
+              <p className="font-heading text-lg font-bold">Welcome to the Private Circle</p>
+              <p className="text-xs text-gray-300 mt-1">We have sent a verification invitation to your email.</p>
+            </motion.div>
+          ) : (
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault()
+                if (newsletterEmail) setNewsletterSubscribed(true)
+              }} 
+              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+            >
+              <input
+                type="email"
+                placeholder="Enter your email address"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                required
+                className="flex-1 px-5 py-4 rounded-full bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white text-sm"
+              />
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="bg-white text-black px-8 py-4 rounded-full text-sm font-bold tracking-wider uppercase hover:bg-gray-100 transition-colors shadow-lg"
+              >
+                Join
+              </motion.button>
+            </form>
+          )}
+
+          <p className="text-xs text-gray-500">
+            Strict confidentiality. No promotional spam. Unsubscribe with one click anytime.
+          </p>
+        </div>
+      </section>
+
     </div>
   )
 }
