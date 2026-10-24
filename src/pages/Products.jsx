@@ -19,6 +19,7 @@ import {
   ArrowRight
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import { useSupabase } from '../context/SupabaseContext'
 
 // Expanded Curated Luxury Catalog
 const products = [
@@ -337,6 +338,36 @@ const categories = ['All', 'New In', 'Outerwear', 'Tailoring', 'Accessories', 'F
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   const { addToCart, addToWishlist, wishlist } = useApp()
+  const { supabase, isConfigured } = useSupabase()
+  const [catalog, setCatalog] = useState(products)
+
+  // Fetch catalog from Supabase when database is ready, otherwise fall back to curated local catalog
+  useEffect(() => {
+    if (!isConfigured) return
+    let isMounted = true
+
+    const fetchCatalog = async () => {
+      try {
+        const { data, error } = await supabase.from('products').select('*')
+        if (!error && data && data.length > 0 && isMounted) {
+          const normalized = data.map(item => ({
+            ...item,
+            productId: item.id,
+            price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
+            originalPrice: item.original_price ? parseFloat(item.original_price) : null,
+            image: item.image_url || item.image,
+            reviews: item.reviews_count ?? item.reviews ?? 0
+          }))
+          setCatalog(normalized)
+        }
+      } catch (err) {
+        console.warn('[Zion Atelier] Using fallback catalog:', err)
+      }
+    }
+
+    fetchCatalog()
+    return () => { isMounted = false }
+  }, [supabase, isConfigured])
 
   // Read URL parameters or fallback
   const initialCategory = searchParams.get('category') || 'All'
@@ -422,7 +453,7 @@ const Products = () => {
   }
 
   // Filter products
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = catalog.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.category.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesCategory = checkCategoryMatch(product, selectedCategory)

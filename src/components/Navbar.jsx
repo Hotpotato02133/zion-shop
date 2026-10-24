@@ -18,6 +18,8 @@ import {
   Clock,
   ShieldCheck
 } from 'lucide-react'
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
+import { luxuryClerkAppearance } from '../lib/clerkTheme'
 import { useApp } from '../context/AppContext'
 
 const ANNOUNCEMENTS = [
@@ -256,9 +258,17 @@ const Navbar = () => {
               {wishlistCount > 0 && <span className="text-white font-bold">({wishlistCount})</span>}
             </Link>
             <span className="text-neutral-700">|</span>
-            <Link to="/login" className="hover:text-white transition-colors">
-              Client Portal
-            </Link>
+            <SignedIn>
+              <span className="text-neutral-300 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Salon Active</span>
+              </span>
+            </SignedIn>
+            <SignedOut>
+              <Link to="/login" className="hover:text-white transition-colors">
+                Client Portal
+              </Link>
+            </SignedOut>
           </div>
         </div>
       </div>
@@ -416,75 +426,86 @@ const Navbar = () => {
                 </span>
               </button>
 
-              {/* Account Dropdown Trigger */}
-              <div ref={accountRef} className="relative">
-                <button
-                  onClick={() => setIsAccountOpen(!isAccountOpen)}
-                  className="p-2 sm:p-2.5 text-neutral-700 hover:text-black hover:bg-neutral-100 rounded-full transition-colors"
-                  aria-label="Account menu"
-                >
-                  <User size={18} strokeWidth={2} />
-                </button>
+              {/* Account Dropdown Trigger / UserButton */}
+              <SignedIn>
+                <div className="flex items-center pl-1 sm:pl-2">
+                  <UserButton 
+                    appearance={luxuryClerkAppearance} 
+                    afterSignOutUrl="/" 
+                  />
+                </div>
+              </SignedIn>
 
-                <AnimatePresence>
-                  {isAccountOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-2 w-64 bg-white border border-neutral-200 rounded-2xl shadow-xl py-3 z-50 text-neutral-800"
-                    >
-                      <div className="px-4 py-2 border-b border-neutral-100">
-                        <p className="text-xs font-bold uppercase tracking-wider text-neutral-900">
-                          Atelier Member Portal
-                        </p>
-                        <p className="text-[11px] text-neutral-400 mt-0.5">
-                          Private salon access & acquisitions
-                        </p>
-                      </div>
+              <SignedOut>
+                <div ref={accountRef} className="relative">
+                  <button
+                    onClick={() => setIsAccountOpen(!isAccountOpen)}
+                    className="p-2 sm:p-2.5 text-neutral-700 hover:text-black hover:bg-neutral-100 rounded-full transition-colors"
+                    aria-label="Account menu"
+                  >
+                    <User size={18} strokeWidth={2} />
+                  </button>
 
-                      <div className="py-2">
-                        <Link
-                          to="/login"
-                          onClick={() => setIsAccountOpen(false)}
-                          className="flex items-center justify-between px-4 py-2 text-xs font-semibold hover:bg-neutral-50 transition-colors"
-                        >
-                          <span>Sign In to Account</span>
-                          <ArrowRight size={13} className="text-neutral-400" />
-                        </Link>
-                        <Link
-                          to="/signup"
-                          onClick={() => setIsAccountOpen(false)}
-                          className="flex items-center justify-between px-4 py-2 text-xs hover:bg-neutral-50 transition-colors"
-                        >
-                          <span>Request Circle Membership</span>
-                          <Sparkles size={13} className="text-amber-500" />
-                        </Link>
-                      </div>
+                  <AnimatePresence>
+                    {isAccountOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-2 w-64 bg-white border border-neutral-200 rounded-2xl shadow-xl py-3 z-50 text-neutral-800"
+                      >
+                        <div className="px-4 py-2 border-b border-neutral-100">
+                          <p className="text-xs font-bold uppercase tracking-wider text-neutral-900">
+                            Atelier Member Portal
+                          </p>
+                          <p className="text-[11px] text-neutral-400 mt-0.5">
+                            Private salon access & acquisitions
+                          </p>
+                        </div>
 
-                      <div className="border-t border-neutral-100 py-2">
-                        <Link
-                          to="/wishlist"
-                          onClick={() => setIsAccountOpen(false)}
-                          className="flex items-center justify-between px-4 py-2 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors"
-                        >
-                          <span>Saved Pieces ({wishlistCount})</span>
-                          <Heart size={13} className="text-neutral-400" />
-                        </Link>
-                        <Link
-                          to="/cart"
-                          onClick={() => setIsAccountOpen(false)}
-                          className="flex items-center justify-between px-4 py-2 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors"
-                        >
-                          <span>Active Bag ({cartCount})</span>
-                          <ShoppingBag size={13} className="text-neutral-400" />
-                        </Link>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+                        <div className="py-2">
+                          <Link
+                            to="/login"
+                            onClick={() => setIsAccountOpen(false)}
+                            className="flex items-center justify-between px-4 py-2 text-xs font-semibold hover:bg-neutral-50 transition-colors"
+                          >
+                            <span>Sign In to Account</span>
+                            <ArrowRight size={13} className="text-neutral-400" />
+                          </Link>
+                          <Link
+                            to="/signup"
+                            onClick={() => setIsAccountOpen(false)}
+                            className="flex items-center justify-between px-4 py-2 text-xs hover:bg-neutral-50 transition-colors"
+                          >
+                            <span>Request Circle Membership</span>
+                            <Sparkles size={13} className="text-amber-500" />
+                          </Link>
+                        </div>
+
+                        <div className="border-t border-neutral-100 py-2">
+                          <Link
+                            to="/wishlist"
+                            onClick={() => setIsAccountOpen(false)}
+                            className="flex items-center justify-between px-4 py-2 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors"
+                          >
+                            <span>Saved Pieces ({wishlistCount})</span>
+                            <Heart size={13} className="text-neutral-400" />
+                          </Link>
+                          <Link
+                            to="/cart"
+                            onClick={() => setIsAccountOpen(false)}
+                            className="flex items-center justify-between px-4 py-2 text-xs text-neutral-600 hover:bg-neutral-50 transition-colors"
+                          >
+                            <span>Active Bag ({cartCount})</span>
+                            <ShoppingBag size={13} className="text-neutral-400" />
+                          </Link>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </SignedOut>
 
               {/* Wishlist Link with Live Counter Badge */}
               <Link
@@ -843,22 +864,38 @@ const Navbar = () => {
 
               {/* Drawer Footer / Account */}
               <div className="p-6 border-t border-neutral-100 bg-neutral-50 space-y-3">
-                <div className="grid grid-cols-2 gap-2">
-                  <Link
-                    to="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full py-2.5 px-3 bg-white border border-neutral-200 text-neutral-900 text-xs font-semibold rounded-xl text-center"
-                  >
-                    Sign In
-                  </Link>
-                  <Link
-                    to="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-full py-2.5 px-3 bg-black text-white text-xs font-semibold rounded-xl text-center"
-                  >
-                    Join Circle
-                  </Link>
-                </div>
+                <SignedIn>
+                  <div className="flex items-center justify-between p-3 bg-white border border-neutral-200 rounded-xl">
+                    <div className="flex items-center gap-3">
+                      <UserButton appearance={luxuryClerkAppearance} afterSignOutUrl="/" />
+                      <div>
+                        <p className="text-xs font-bold text-neutral-900">Atelier Client</p>
+                        <p className="text-[10px] text-neutral-400">Authenticated Member</p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold">
+                      Active
+                    </span>
+                  </div>
+                </SignedIn>
+                <SignedOut>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      to="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-full py-2.5 px-3 bg-white border border-neutral-200 text-neutral-900 text-xs font-semibold rounded-xl text-center"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-full py-2.5 px-3 bg-black text-white text-xs font-semibold rounded-xl text-center"
+                    >
+                      Join Circle
+                    </Link>
+                  </div>
+                </SignedOut>
 
                 <div className="flex items-center justify-between text-xs text-neutral-500 pt-2">
                   <span className="flex items-center gap-1.5">

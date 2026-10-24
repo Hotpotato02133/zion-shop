@@ -1,6 +1,6 @@
-# Integrations Roadmap: Supabase & PayMongo
+# Integrations Roadmap: Clerk Auth, Supabase & PayMongo
 
-This guide specifies the implementation plan, security architecture, and code patterns for integrating **Supabase** (Database + Auth) and **PayMongo** (Test Sandbox Checkout) into Zion E-Commerce.
+This guide specifies the implementation plan, security architecture, and code patterns for integrating **Clerk Authentication**, **Supabase** (PostgreSQL Database & Storage), and **PayMongo** (Test Sandbox Checkout) into Zion E-Commerce.
 
 ---
 
@@ -11,16 +11,17 @@ sequenceDiagram
     autonumber
     actor User
     participant Frontend as Zion React Client
-    participant SupabaseAuth as Supabase Auth (OAuth/Email)
+    participant Clerk as Clerk Auth Engine
     participant SupabaseDB as Supabase DB (PostgreSQL)
     participant BackendAPI as Backend / Edge Function (PayMongo Secret)
     participant PayMongo as PayMongo Sandbox
 
     %% Auth Flow
-    User->>Frontend: Click "Sign in with Google" or Email
-    Frontend->>SupabaseAuth: supabase.auth.signInWithOAuth({ provider: 'google' })
-    SupabaseAuth-->>Frontend: Session & Access Token
-    Frontend->>SupabaseDB: Fetch user's cart_items & profile
+    User->>Frontend: Click "Sign In" / OAuth / Passkey
+    Frontend->>Clerk: Authenticates via Clerk (<SignIn /> or <SignUp />)
+    Clerk-->>Frontend: Issues JWT Session Token (with sub: user_id)
+    Frontend->>SupabaseDB: Query with Authorization: Bearer {Clerk JWT}
+    Note over SupabaseDB: RLS verifies auth.jwt()->>'sub' = user_id.<br/>Syncs profiles, cart_items, and wishlist_items.
 
     %% Checkout Flow
     User->>Frontend: Clicks "Proceed to Checkout" (Cart.jsx)
@@ -39,40 +40,31 @@ sequenceDiagram
 
 ---
 
-## 2. Supabase Implementation Blueprint
+## 2. Clerk & Supabase Implementation Blueprint
 
-### 2.1 Client Initialization
-Create `src/lib/supabase.js`:
+### 2.1 Dynamic Client Factory ([src/lib/supabase.js](file:///c:/Users/windows11/Documents/GitHub/zion-shop/src/lib/supabase.js))
+Because Supabase validates Clerk session tokens via Third-Party Auth, the client dynamically resolves `getToken()`:
+
 ```javascript
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
-
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials missing. Ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.')
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-```
-
-### 2.2 Google OAuth Trigger in [Login.jsx](file:///c:/Users/windows11/Documents/GitHub/zion-shop/src/pages/Login.jsx) & [Signup.jsx](file:///c:/Users/windows11/Documents/GitHub/zion-shop/src/pages/Signup.jsx)
-```javascript
-import { supabase } from '../lib/supabase'
-
-export const handleGoogleLogin = async () => {
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/products`
+export const createClerkSupabaseClient = (getToken) => {
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      headers: async () => {
+        if (!getToken) return {}
+        const token = await getToken()
+        return token ? { Authorization: `Bearer ${token}` } : {}
+      }
     }
   })
-  if (error) console.error('OAuth error:', error.message)
 }
 ```
 
-### 2.3 Row Level Security (RLS) Rules
-To ensure users can only access their own data:
+### 2.2 Row Level Security (RLS) Rules for Clerk
+In Supabase Third-Party Auth, Clerk user IDs are strings matching `auth.jwt() ->> 'sub'`:
+
 ```sql
 -- Enable RLS
 alter table profiles enable row level security;
@@ -80,22 +72,23 @@ alter table cart_items enable row level security;
 alter table wishlist_items enable row level security;
 alter table orders enable row level security;
 
--- Profiles: public read, owner write
+-- Profiles: user owns profile matching Clerk ID
 create policy "Public profiles are viewable by everyone" on profiles for select using (true);
-create policy "Users can update own profile" on profiles for update using (auth.uid() = id);
+create policy "Users can update own profile" on profiles for update using (auth.jwt()->>'sub' = id);
+create policy "Users can insert own profile" on profiles for insert with check (auth.jwt()->>'sub' = id);
 
 -- Cart items: owner only
-create policy "Users can view own cart" on cart_items for select using (auth.uid() = user_id);
-create policy "Users can insert own cart" on cart_items for insert with check (auth.uid() = user_id);
-create policy "Users can update own cart" on cart_items for update using (auth.uid() = user_id);
-create policy "Users can delete own cart" on cart_items for delete using (auth.uid() = user_id);
+create policy "Users can view own cart" on cart_items for select using (auth.jwt()->>'sub' = user_id);
+create policy "Users can insert own cart" on cart_items for insert with check (auth.jwt()->>'sub' = user_id);
+create policy "Users can update own cart" on cart_items for update using (auth.jwt()->>'sub' = user_id);
+create policy "Users can delete own cart" on cart_items for delete using (auth.jwt()->>'sub' = user_id);
 
 -- Wishlist: owner only
-create policy "Users can view own wishlist" on wishlist_items for select using (auth.uid() = user_id);
-create policy "Users can manage own wishlist" on wishlist_items for all using (auth.uid() = user_id);
+create policy "Users can view own wishlist" on wishlist_items for select using (auth.jwt()->>'sub' = user_id);
+create policy "Users can manage own wishlist" on wishlist_items for all using (auth.jwt()->>'sub' = user_id);
 
--- Orders: owner read, backend insert/update
-create policy "Users can view own orders" on orders for select using (auth.uid() = user_id);
+-- Orders: owner read
+create policy "Users can view own orders" on orders for select using (auth.jwt()->>'sub' = user_id);
 ```
 
 ---

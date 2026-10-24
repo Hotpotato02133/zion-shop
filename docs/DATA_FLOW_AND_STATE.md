@@ -67,18 +67,20 @@ interface AppContextValue {
 
 ## 3. Database Schema (Supabase PostgreSQL)
 
-When transitioning from local mock state to a persistent database, the application maps to the following Supabase schema:
+When transitioning from local mock state to a persistent database, the application maps to the following Supabase schema adapted for Clerk Third-Party Auth:
 
 ```sql
 -- Enable UUID generation extension
 create extension if not exists "uuid-ossp";
 
--- 1. User Profiles (Mirrors auth.users)
+-- 1. User Profiles (Mirrors Clerk identity: id is text, e.g. user_2b...)
 create table profiles (
-  id uuid primary key references auth.users on delete cascade,
+  id text primary key,
+  email text,
   full_name text,
   avatar_url text,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
 -- 2. Products Catalog
@@ -99,7 +101,7 @@ create table products (
 -- 3. Shopping Cart Line Items
 create table cart_items (
   id uuid primary key default uuid_generate_v4(),
-  user_id uuid references profiles(id) on delete cascade,
+  user_id text references profiles(id) on delete cascade,
   product_id uuid references products(id) on delete cascade,
   quantity int default 1 check (quantity > 0),
   added_at timestamptz default now(),
@@ -109,7 +111,7 @@ create table cart_items (
 -- 4. Wishlist Items
 create table wishlist_items (
   id uuid primary key default uuid_generate_v4(),
-  user_id uuid references profiles(id) on delete cascade,
+  user_id text references profiles(id) on delete cascade,
   product_id uuid references products(id) on delete cascade,
   added_at timestamptz default now(),
   unique (user_id, product_id)
@@ -118,7 +120,7 @@ create table wishlist_items (
 -- 5. Orders & Transactions
 create table orders (
   id uuid primary key default uuid_generate_v4(),
-  user_id uuid references profiles(id) on delete cascade,
+  user_id text references profiles(id) on delete cascade,
   total numeric(10,2) not null,
   status text not null default 'pending', -- 'pending', 'paid', 'failed', 'fulfilled'
   payment_reference text,
@@ -129,8 +131,8 @@ create table orders (
 
 ---
 
-## 4. State Migration Path: Mock to Supabase
+## 4. State Migration Path: Mock to Supabase + Clerk
 
 1. **Guest Mode**: Maintain current `AppContext` in `localStorage` for unauthenticated visitors.
-2. **Authenticated Sync**: When a user logs in via Supabase Auth, merge guest `cart_items` into the user's Supabase rows.
+2. **Authenticated Sync**: When a user logs in via Clerk (`useUser()` / `useAuth()`), merge guest `cart_items` into the user's Supabase rows.
 3. **Realtime**: Subscribe to Supabase Realtime channels on `cart_items` to synchronize cart count across browser tabs.
