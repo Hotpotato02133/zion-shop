@@ -190,15 +190,9 @@ const Navbar = () => {
   }
 
   return (
-    <div className="sticky top-0 z-50 w-full">
+    <>
       {/* 1. Top Announcement & Utility Bar */}
-      <div
-        className={`w-full bg-black text-white text-[11px] font-medium tracking-widest uppercase transition-all duration-300 ease-in-out ${
-          isScrolled
-            ? 'max-h-0 opacity-0 overflow-hidden border-b-0 pointer-events-none'
-            : 'max-h-12 opacity-100 overflow-visible border-b border-neutral-800'
-        }`}
-      >
+      <div className="w-full bg-black text-white text-[11px] font-medium tracking-widest uppercase border-b border-neutral-800 relative z-40">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 h-8 sm:h-9 flex items-center justify-between">
           {/* Left: Region & Currency Selector */}
           <div className="relative hidden md:flex items-center gap-2">
@@ -274,8 +268,8 @@ const Navbar = () => {
       </div>
 
       {/* 2. Main Navigation Header */}
-      <motion.header
-        className={`w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b ${
+      <header
+        className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b ${
           isScrolled ? 'border-neutral-200 shadow-md py-2 sm:py-2.5' : 'border-neutral-100 py-3 sm:py-4'
         }`}
       >
@@ -657,7 +651,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </motion.header>
+      </header>
 
       {/* 3. Interactive Search Modal / Slide-Down Overlay */}
       <AnimatePresence>
@@ -912,7 +906,7 @@ const Navbar = () => {
           </div>
         )}
       </AnimatePresence>
-    </div>
+    </>
   )
 }
 
