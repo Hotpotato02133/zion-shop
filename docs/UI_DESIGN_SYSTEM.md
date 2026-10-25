@@ -12,7 +12,7 @@ Zion implements a strict **minimalist luxury aesthetic** inspired by high-end de
 1. **Monochrome Dominance**: High contrast pairing of pure black (`#000000`) and pure white (`#ffffff`).
 2. **Subtle Neutrals**: Grays are strictly used for hierarchy (card borders `gray-100`, secondary text `gray-600`, placeholders `gray-400`).
 3. **Elevated Motion**: Smooth, deliberate animations using `framer-motion` (springs, fades, layout transitions).
-4. **Editorial Typography**: Wide tracking, bold headings in **Urbanist**, and clean legibility with **Hauora Sans**.
+4. **Editorial Typography**: Wide tracking, bold headings and refined legibility powered universally by **Google Sans** & **Google Sans Flex**.
 
 ---
 
@@ -22,14 +22,16 @@ Font definitions are configured in [tailwind.config.cjs](file:///c:/Users/window
 
 | Token | Family | Fallbacks | Primary Usage |
 |---|---|---|---|
-| `font-heading` | **Urbanist** | `system-ui, sans-serif` | Brand logos, H1/H2 titles, price tags, modal headers |
-| `font-body` | **Hauora Sans** | `system-ui, sans-serif` | Paragraphs, navigation links, form labels, product descriptions |
+| `font-heading` | **Google Sans** / **Google Sans Flex** | `system-ui, -apple-system, sans-serif` | Brand logos, H1/H2 titles, price tags, modal headers |
+| `font-body` | **Google Sans** / **Google Sans Flex** | `system-ui, -apple-system, sans-serif` | Paragraphs, navigation menus, form labels, product descriptions |
+| `font-sans` | **Google Sans** / **Google Sans Flex** | `system-ui, -apple-system, sans-serif` | Universal default across all UI elements and components |
 
 ```css
 /* Configured in tailwind.config.cjs */
 fontFamily: {
-  heading: ['Urbanist', 'sans-serif'],
-  body: ['Hauora Sans', 'system-ui', 'sans-serif'],
+  sans: ['"Google Sans"', '"Google Sans Flex"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+  heading: ['"Google Sans"', '"Google Sans Flex"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+  body: ['"Google Sans"', '"Google Sans Flex"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
 }
 ```
 

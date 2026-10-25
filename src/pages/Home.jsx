@@ -1,21 +1,23 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { 
-  ArrowRight, 
-  Star, 
-  ShoppingBag, 
-  Heart, 
-  ShieldCheck, 
-  Truck, 
-  Sparkles, 
-  Clock, 
-  Check, 
-  ArrowUpRight,
+import {
+  ArrowRight,
+  Star,
+  ShoppingBag,
+  Heart,
+  ShieldCheck,
+  Truck,
+  Sparkles,
+  Clock,
+  Check,
   ChevronRight,
-  Eye
+  Eye,
+  Calendar,
+  Gift
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import HeroCarousel from '../components/HeroCarousel'
 
 // Curated luxury catalog data
 const featuredProducts = [
@@ -160,22 +162,6 @@ const Home = () => {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
   const [addedItemNotification, setAddedItemNotification] = useState(null)
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-  }
-
-  const staggerChildren = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.15
-      }
-    }
-  }
-
   const isItemInWishlist = (productId) => {
     return wishlist.some(item => (item.productId ?? item.id) === productId)
   }
@@ -217,156 +203,7 @@ const Home = () => {
       </AnimatePresence>
 
       {/* 1. HERO SECTION */}
-      <section className="relative w-full min-h-[85vh] lg:min-h-[92vh] flex items-center bg-gradient-to-b from-gray-50 via-white to-white border-b border-gray-100 overflow-hidden">
-        {/* Subtle geometric background grid pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-60 pointer-events-none" />
-
-        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-12 lg:py-20 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-            
-            {/* Left Column: Typography & CTAs (7 cols) */}
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerChildren}
-              className="lg:col-span-7 space-y-8"
-            >
-              {/* Badge */}
-              <motion.div variants={fadeInUp} className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-gray-100/90 border border-gray-200/80 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-black animate-pulse" />
-                <span className="text-xs font-semibold tracking-wider uppercase text-gray-800">
-                  Edition 2025 • Luxury Atelier
-                </span>
-              </motion.div>
-
-              {/* Main Headline */}
-              <motion.div variants={fadeInUp} className="space-y-4">
-                <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[0.92] text-black">
-                  Refined Luxury.
-                  <br />
-                  <span className="text-gray-400 font-light italic">Pure Form.</span>
-                </h1>
-                <p className="text-lg sm:text-xl text-gray-600 max-w-xl leading-relaxed font-light pt-2">
-                  Zion curates handcrafted lifestyle objects, precision electronics, and heirloom leatherware built for a lifetime of quiet distinction.
-                </p>
-              </motion.div>
-
-              {/* Action Buttons */}
-              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 pt-2">
-                <Link to="/products">
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto bg-black text-white px-8 py-4 rounded-full text-base font-semibold shadow-xl hover:shadow-2xl hover:bg-gray-900 transition-all duration-300 flex items-center justify-center gap-3 group"
-                  >
-                    <span>Explore Products</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                  </motion.button>
-                </Link>
-
-                <a href="#collections">
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto bg-white text-black border-2 border-black/10 hover:border-black px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 flex items-center justify-center"
-                  >
-                    Curated Categories
-                  </motion.button>
-                </a>
-              </motion.div>
-
-              {/* Social Proof & Metrics */}
-              <motion.div variants={fadeInUp} className="pt-6 border-t border-gray-100 grid grid-cols-3 gap-6 max-w-lg">
-                <div>
-                  <div className="font-heading text-2xl lg:text-3xl font-bold">100%</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Artisanal Sourced</div>
-                </div>
-                <div>
-                  <div className="font-heading text-2xl lg:text-3xl font-bold">4.9★</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">TrustPilot Score</div>
-                </div>
-                <div>
-                  <div className="font-heading text-2xl lg:text-3xl font-bold">48h</div>
-                  <div className="text-xs text-gray-500 uppercase tracking-wider mt-0.5">Global Dispatch</div>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Right Column: Hero Visual Feature (5 cols) */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-5 relative"
-            >
-              <div className="relative mx-auto max-w-md lg:max-w-none">
-                {/* Decorative background glow */}
-                <div className="absolute -inset-4 bg-gradient-to-tr from-gray-200 to-gray-50 rounded-3xl blur-2xl opacity-60 -z-10" />
-
-                {/* Main Hero Showcase Card */}
-                <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white border border-gray-100 group">
-                  <div className="aspect-[4/5] overflow-hidden bg-gray-100 relative">
-                    <img 
-                      src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop" 
-                      alt="Zion Autumn Luxury Showcase"
-                      className="w-full h-full object-cover object-top transform transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                    {/* Floating Product Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-white/90 backdrop-blur-md text-black text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md">
-                        Spotlight Piece
-                      </span>
-                    </div>
-
-                    {/* Bottom Card Overlay Details */}
-                    <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs uppercase tracking-widest text-gray-300 font-medium">Haute Collection</span>
-                        <div className="flex items-center gap-1 text-yellow-400 text-xs">
-                          <Star size={12} className="fill-yellow-400" />
-                          <span>4.9 (140+ reviews)</span>
-                        </div>
-                      </div>
-                      <h3 className="font-heading text-2xl font-bold leading-tight">
-                        The Minimalist Cashmere Overcoat
-                      </h3>
-                      <div className="flex items-center justify-between pt-2">
-                        <span className="text-xl font-bold">$780</span>
-                        <Link to="/products">
-                          <button className="bg-white text-black px-4 py-2 rounded-full text-xs font-semibold hover:bg-gray-100 transition-colors flex items-center gap-1.5">
-                            <span>View Item</span>
-                            <ArrowUpRight size={14} />
-                          </button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Micro Testimonial Card */}
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6, duration: 0.6 }}
-                  className="hidden sm:flex absolute -bottom-6 -left-8 bg-white/95 backdrop-blur-md border border-gray-100 p-4 rounded-2xl shadow-xl max-w-xs items-center gap-3.5 z-20"
-                >
-                  <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center shrink-0">
-                    <Sparkles size={18} />
-                  </div>
-                  <div className="text-xs">
-                    <p className="font-semibold text-black">Artisan Authenticity</p>
-                    <p className="text-gray-500">Every piece hand-inspected in Zurich & Milan.</p>
-                  </div>
-                </motion.div>
-
-              </div>
-            </motion.div>
-
-          </div>
-        </div>
-      </section>
+      <HeroCarousel />
 
       {/* 2. VALUE PROPOSITION RIBBON */}
       <section className="w-full py-12 bg-black text-white">
@@ -759,63 +596,124 @@ const Home = () => {
       </section>
 
       {/* 7. VIP PRIVATE CIRCLE NEWSLETTER */}
-      <section className="w-full py-20 bg-black text-white relative overflow-hidden">
-        {/* Subtle radial ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
+      <section className="w-full py-20 lg:py-28 bg-black text-white relative overflow-hidden">
+        {/* Decorative ambient glows */}
+        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-white/[0.06] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-24 w-[480px] h-[480px] bg-white/[0.05] rounded-full blur-3xl pointer-events-none" />
+        {/* Brand texture, consistent with hero */}
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.05] pointer-events-none" />
 
-        <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10 text-center space-y-8">
-          <div className="space-y-4">
-            <span className="text-xs uppercase tracking-widest font-semibold text-gray-400">
-              Exclusive Access
-            </span>
-            <h2 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">
-              Join The Zion Private Circle
-            </h2>
-            <p className="text-gray-400 font-light text-base sm:text-lg leading-relaxed">
-              Receive private previews of limited atelier runs, architectural lookbooks, and invitations to seasonal private sales.
-            </p>
-          </div>
+        <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-          {newsletterSubscribed ? (
+            {/* Left: Copy & Benefits */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="p-6 rounded-2xl bg-white/10 border border-white/20 text-white max-w-md mx-auto"
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              className="space-y-7 text-center lg:text-left"
             >
-              <Check size={28} className="mx-auto text-white mb-2" />
-              <p className="font-heading text-lg font-bold">Welcome to the Private Circle</p>
-              <p className="text-xs text-gray-300 mt-1">We have sent a verification invitation to your email.</p>
-            </motion.div>
-          ) : (
-            <form 
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (newsletterEmail) setNewsletterSubscribed(true)
-              }} 
-              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-            >
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                required
-                className="flex-1 px-5 py-4 rounded-full bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white text-sm"
-              />
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                className="bg-white text-black px-8 py-4 rounded-full text-sm font-bold tracking-wider uppercase hover:bg-gray-100 transition-colors shadow-lg"
-              >
-                Join
-              </motion.button>
-            </form>
-          )}
+              <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-gray-400">
+                <Sparkles size={14} className="text-white" />
+                Exclusive Access
+              </span>
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.02]">
+                Join The Zion
+                <br className="hidden lg:block" /> Private Circle
+              </h2>
+              <p className="text-gray-400 font-light text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Receive private previews of limited atelier runs, architectural lookbooks, and invitations to seasonal private sales.
+              </p>
 
-          <p className="text-xs text-gray-500">
-            Strict confidentiality. No promotional spam. Unsubscribe with one click anytime.
-          </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 max-w-xl mx-auto lg:mx-0">
+                {[
+                  { icon: Gift, label: 'Limited Atelier Previews' },
+                  { icon: Calendar, label: 'Seasonal Private Sales' },
+                  { icon: Sparkles, label: 'Architectural Lookbooks' }
+                ].map(({ icon: Icon, label }) => (
+                  <div
+                    key={label}
+                    className="flex flex-col items-center lg:items-start gap-2.5 text-center lg:text-left"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
+                      <Icon size={16} className="text-white" />
+                    </div>
+                    <span className="text-xs font-medium text-gray-300 leading-snug">{label}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right: Signup Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+              className="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-10 shadow-2xl"
+            >
+              <AnimatePresence mode="wait">
+                {newsletterSubscribed ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="text-center py-6 space-y-3"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center mx-auto">
+                      <Check size={26} strokeWidth={2.5} />
+                    </div>
+                    <p className="font-heading text-xl font-bold">Welcome to the Private Circle</p>
+                    <p className="text-sm text-gray-400">We have sent a verification invitation to your email.</p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      if (newsletterEmail) setNewsletterSubscribed(true)
+                    }}
+                    className="space-y-5"
+                  >
+                    <div className="space-y-1.5">
+                      <h3 className="font-heading text-xl font-bold">Request Your Invitation</h3>
+                      <p className="text-xs text-gray-400">Strict confidentiality. No promotional spam.</p>
+                    </div>
+
+                    <div className="space-y-3">
+                      <input
+                        type="email"
+                        placeholder="Enter your email address"
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        required
+                        className="w-full px-5 py-4 rounded-2xl bg-white/5 text-white placeholder-gray-500 border border-white/15 focus:outline-none focus:ring-2 focus:ring-white/60 focus:border-transparent text-sm transition-all"
+                      />
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        type="submit"
+                        className="w-full bg-white text-black py-4 rounded-2xl text-sm font-bold tracking-wider uppercase hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2"
+                      >
+                        <span>Join the Circle</span>
+                        <ArrowRight size={16} />
+                      </motion.button>
+                    </div>
+
+                    <p className="text-[11px] text-gray-500 text-center">
+                      Unsubscribe with one click anytime.
+                    </p>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 

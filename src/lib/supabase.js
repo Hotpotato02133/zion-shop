@@ -24,21 +24,20 @@ if (!isSupabaseConfigured) {
  */
 export const createClerkSupabaseClient = (getToken) => {
   return createClient(supabaseUrl, supabaseAnonKey, {
+    accessToken: async () => {
+      if (!getToken) return null
+      try {
+        // Uses Clerk's native Supabase third-party auth integration (no JWT template needed):
+        // https://supabase.com/docs/guides/auth/third-party/clerk
+        return (await getToken()) || null
+      } catch (err) {
+        console.warn('[Zion Supabase] Error retrieving Clerk auth token:', err)
+        return null
+      }
+    },
     auth: {
       persistSession: false,
       autoRefreshToken: false,
-    },
-    global: {
-      headers: async () => {
-        if (!getToken) return {}
-        try {
-          const token = await getToken()
-          return token ? { Authorization: `Bearer ${token}` } : {}
-        } catch (err) {
-          console.warn('[Zion Supabase] Error retrieving Clerk auth token:', err)
-          return {}
-        }
-      }
     }
   })
 }

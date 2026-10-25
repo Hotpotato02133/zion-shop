@@ -58,9 +58,10 @@ src/
 - **Error**: Red for warnings/sales
 
 ### Typography
-- **Headings**: Urbanist font family
-- **Body**: Hauora Sans font family
-- **Responsive**: Scales from mobile to desktop
+- **Primary Typeface**: Google Sans & Google Sans Flex (Variable font)
+- **Headings & Headers**: Google Sans font family
+- **Body, Menus & Paragraphs**: Google Sans font family
+- **Responsive**: Scales with fluid clamp and optical size axes from mobile to desktop
 
 ### Layout
 - **Margins**: 100px on desktop, responsive scaling

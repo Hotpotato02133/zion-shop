@@ -170,13 +170,29 @@ export const AppProvider = ({ children }) => {
         dispatch({ type: SET_SYNC_LOADING, payload: true })
 
         // 1. Sync or create user profile
-        await supabase.from('profiles').upsert({
+        const { error: profileError, status: profileStatus } = await supabase.from('profiles').upsert({
           id: user.id,
           email: user.primaryEmailAddress?.emailAddress,
           full_name: user.fullName || user.firstName || 'Atelier Client',
           avatar_url: user.imageUrl,
           updated_at: new Date().toISOString()
         })
+
+        if (profileError) {
+          if (
+            profileStatus === 401 ||
+            profileError.code === '42501' ||
+            profileError.code === 'PGRST301' ||
+            profileError.message?.includes('violates row-level security policy')
+          ) {
+            console.warn(
+              '[Zion Atelier] Supabase authentication notice: JWT unauthorized or RLS check failed. ' +
+              'Ensure Clerk Third-Party Auth or "supabase" JWT template is configured in dashboard. Falling back to local storage.'
+            )
+            return
+          }
+          console.warn('[Zion Atelier] Profile sync warning:', profileError.message)
+        }
 
         // 2. Fetch existing cloud cart items
         const { data: cloudCart, error: cartError } = await supabase
@@ -230,41 +246,53 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: ADD_TO_CART, payload: product })
     if (isSignedIn && user && isConfigured) {
       const pid = product.productId ?? product.id
-      supabase.from('cart_items').upsert({
-        user_id: user.id,
-        product_id: pid,
-        quantity: 1
-      }).catch(err => console.warn('Supabase cart sync error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('cart_items').upsert({
+            user_id: user.id,
+            product_id: pid,
+            quantity: 1
+          })
+          if (error) console.warn('[Zion Atelier] Supabase cart sync warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected cart sync error:', err)
+        }
+      })()
     }
   }
 
   const removeFromCart = (productId) => {
     dispatch({ type: REMOVE_FROM_CART, payload: productId })
     if (isSignedIn && user && isConfigured) {
-      supabase.from('cart_items')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('product_id', productId)
-        .catch(err => console.warn('Supabase cart remove error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('cart_items')
+            .delete()
+            .eq('user_id', user.id)
+            .eq('product_id', productId)
+          if (error) console.warn('[Zion Atelier] Supabase cart remove warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected cart remove error:', err)
+        }
+      })()
     }
   }
 
   const updateCartQuantity = (productId, quantity) => {
     dispatch({ type: UPDATE_CART_QUANTITY, payload: { productId, quantity } })
     if (isSignedIn && user && isConfigured) {
-      if (quantity <= 0) {
-        supabase.from('cart_items')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('product_id', productId)
-          .catch(err => console.warn('Supabase cart update error:', err))
-      } else {
-        supabase.from('cart_items')
-          .update({ quantity })
-          .eq('user_id', user.id)
-          .eq('product_id', productId)
-          .catch(err => console.warn('Supabase cart update error:', err))
-      }
+      ;(async () => {
+        try {
+          const query = quantity <= 0
+            ? supabase.from('cart_items').delete().eq('user_id', user.id).eq('product_id', productId)
+            : supabase.from('cart_items').update({ quantity }).eq('user_id', user.id).eq('product_id', productId)
+
+          const { error } = await query
+          if (error) console.warn('[Zion Atelier] Supabase cart update warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected cart update error:', err)
+        }
+      })()
     }
   }
 
@@ -272,41 +300,66 @@ export const AppProvider = ({ children }) => {
     dispatch({ type: ADD_TO_WISHLIST, payload: product })
     if (isSignedIn && user && isConfigured) {
       const pid = product.productId ?? product.id
-      supabase.from('wishlist_items').upsert({
-        user_id: user.id,
-        product_id: pid
-      }).catch(err => console.warn('Supabase wishlist sync error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('wishlist_items').upsert({
+            user_id: user.id,
+            product_id: pid
+          })
+          if (error) console.warn('[Zion Atelier] Supabase wishlist sync warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected wishlist sync error:', err)
+        }
+      })()
     }
   }
 
   const removeFromWishlist = (productId) => {
     dispatch({ type: REMOVE_FROM_WISHLIST, payload: productId })
     if (isSignedIn && user && isConfigured) {
-      supabase.from('wishlist_items')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('product_id', productId)
-        .catch(err => console.warn('Supabase wishlist remove error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('wishlist_items')
+            .delete()
+            .eq('user_id', user.id)
+            .eq('product_id', productId)
+          if (error) console.warn('[Zion Atelier] Supabase wishlist remove warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected wishlist remove error:', err)
+        }
+      })()
     }
   }
 
   const clearCart = () => {
     dispatch({ type: CLEAR_CART })
     if (isSignedIn && user && isConfigured) {
-      supabase.from('cart_items')
-        .delete()
-        .eq('user_id', user.id)
-        .catch(err => console.warn('Supabase clear cart error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('cart_items')
+            .delete()
+            .eq('user_id', user.id)
+          if (error) console.warn('[Zion Atelier] Supabase clear cart warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected clear cart error:', err)
+        }
+      })()
     }
   }
 
   const clearWishlist = () => {
     dispatch({ type: CLEAR_WISHLIST })
     if (isSignedIn && user && isConfigured) {
-      supabase.from('wishlist_items')
-        .delete()
-        .eq('user_id', user.id)
-        .catch(err => console.warn('Supabase clear wishlist error:', err))
+      ;(async () => {
+        try {
+          const { error } = await supabase.from('wishlist_items')
+            .delete()
+            .eq('user_id', user.id)
+          if (error) console.warn('[Zion Atelier] Supabase clear wishlist warning:', error.message)
+        } catch (err) {
+          console.warn('[Zion Atelier] Unexpected clear wishlist error:', err)
+        }
+      })()
     }
   }
 

@@ -2,10 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* App fonts (import in index.html is preferred for Google Fonts) */
+/* App fonts: Google Sans & Google Sans Flex (Variable Font) */
 :root {
-  --font-heading: "Urbanist", system-ui, sans-serif;
-  --font-body: "Hauora Sans", system-ui, sans-serif;
+  --font-sans: "Google Sans", "Google Sans Flex", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Google Sans", "Google Sans Flex", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Google Sans", "Google Sans Flex", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .font-heading { 
@@ -25,7 +26,7 @@
   color: #ffffff; 
 }
 
-/* Smooth scrolling & global resets */
+/* Smooth scrolling & global resets with universal Google Sans */
 html {
   scroll-behavior: smooth;
   width: 100%;
@@ -33,6 +34,16 @@ html {
   margin: 0;
   padding: 0;
   overflow-x: clip;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-body);
+  font-size-adjust: from-font;
 }
 
 body {
@@ -43,8 +54,19 @@ body {
   overflow-x: clip;
   background-color: #ffffff;
   color: #171717;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Base typography elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+p {
+  font-family: var(--font-body);
 }
 
 /* Custom scrollbar for webkit browsers */

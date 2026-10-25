@@ -7,7 +7,7 @@ The app demonstrates real-world architecture using:
 - **Frontend:** React (Vite) + Tailwind CSS + Shadcn UI components  
 - **Backend / Database:** Supabase (PostgreSQL + Auth + Realtime + Row-Level Security)  
 - **Payments:** PayMongo (Test Mode API Integration) — sandbox checkout, no real transactions  
-- **Fonts:** Urbanist (Headings) + Hauora Sans (Body)  
+- **Fonts:** Google Sans & Google Sans Flex (Headings, Body, Menus, UI)  
 - **Design Theme:** Strictly **black & white** minimalist layout for a luxury-brand aesthetic
 
 The app is intended for **portfolio/demo purposes only** — showing complete checkout, authentication, and CRUD flows, but without actual payment charges.
@@ -22,7 +22,7 @@ The app is intended for **portfolio/demo purposes only** — showing complete ch
 | Styling | **Tailwind CSS + Shadcn UI** | Prebuilt and custom reusable UI components |
 | Backend | **Supabase** | Handles Auth, PostgreSQL DB, Realtime updates |
 | Payments | **PayMongo (Test Mode)** | Simulated checkout flow via sandbox keys |
-| Fonts | **Urbanist & Hauora Sans** | Imported via Google Fonts |
+| Fonts | **Google Sans & Google Sans Flex** | Imported via Google Fonts (SIL OFL-1.1) |
 | Language | **JavaScript / ESNext** | Clean, modular functional components |
 | Server | **Node + Express** (or Supabase Edge Function) | For PayMongo secret-key operations |
 | Auth | **Supabase Auth + Google OAuth** | Session persistence and route protection |

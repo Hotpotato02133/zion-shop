@@ -1,6 +1,6 @@
 /**
  * Custom luxury monochrome theme for Clerk Authentication components
- * Aligns with Zion UI Design System (Urbanist, Hauora Sans, High-Contrast B&W)
+ * Aligns with Zion UI Design System (Google Sans & Google Sans Flex, High-Contrast B&W)
  */
 export const luxuryClerkAppearance = {
   layout: {
@@ -16,7 +16,7 @@ export const luxuryClerkAppearance = {
     colorInputBackground: '#ffffff',
     colorInputText: '#0a0a0a',
     colorDanger: '#ef4444',
-    fontFamily: 'Hauora Sans, system-ui, sans-serif',
+    fontFamily: '"Google Sans", "Google Sans Flex", system-ui, sans-serif',
     borderRadius: '0.75rem'
   },
   elements: {

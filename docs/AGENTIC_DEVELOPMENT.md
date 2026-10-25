@@ -70,7 +70,7 @@ When adding a new state property or action (e.g., user authentication state, ord
 ### 3.1 Styling Standards
 - Always use utility classes from Tailwind CSS.
 - For luxury styling, prefer monochrome elements: `bg-black`, `text-white`, `border-gray-100`, `text-gray-600`.
-- Apply `font-heading` (Urbanist) for titles and `font-body` (Hauora Sans) for text.
+- Apply `font-heading` (Google Sans) for titles and `font-body` / `font-sans` (Google Sans) for text.
 
 ### 3.2 Motion Patterns
 - Animate entrances using `<motion.div variants={fadeInUp}>`.
