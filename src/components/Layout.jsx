@@ -88,20 +88,23 @@ const Layout = ({ children }) => {
                 The Collections
               </h5>
               <div className="space-y-3 text-xs font-medium">
-                <Link to="/products?category=Outerwear" className="block text-neutral-400 hover:text-white transition-colors">
-                  Outerwear & Coats
+                <Link to="/products?category=Tops" className="block text-neutral-400 hover:text-white transition-colors">
+                  Tops & Dresses
                 </Link>
-                <Link to="/products?category=Tailoring" className="block text-neutral-400 hover:text-white transition-colors">
-                  Structured Tailoring
+                <Link to="/products?category=Bottoms" className="block text-neutral-400 hover:text-white transition-colors">
+                  Bottoms & Denim
+                </Link>
+                <Link to="/products?category=Outerwear" className="block text-neutral-400 hover:text-white transition-colors">
+                  Outerwear & Jackets
                 </Link>
                 <Link to="/products?category=Footwear" className="block text-neutral-400 hover:text-white transition-colors">
-                  Monolith Footwear
+                  Footwear
                 </Link>
                 <Link to="/products?category=Accessories" className="block text-neutral-400 hover:text-white transition-colors">
-                  Fine Accessories
+                  Accessories
                 </Link>
                 <Link to="/products" className="block text-neutral-400 hover:text-white transition-colors">
-                  View Full Catalog (12)
+                  View Full Catalog (19)
                 </Link>
               </div>
             </div>

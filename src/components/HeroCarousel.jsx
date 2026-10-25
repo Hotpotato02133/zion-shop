@@ -8,82 +8,82 @@ const AUTOPLAY_MS = 6500
 const heroSlides = [
   {
     id: 1,
-    badge: 'Edition 2025 • Luxury Atelier',
-    title: 'Refined Luxury.',
-    titleAccent: 'Pure Form.',
+    badge: 'Edition 2025 • Zion Apparel',
+    title: 'Refined Basics.',
+    titleAccent: 'Everyday Wear.',
     description:
-      'Zion curates handcrafted lifestyle objects, precision electronics, and heirloom leatherware built for a lifetime of quiet distinction.',
+      'Zion curates considered apparel, footwear, and accessories built from honest materials for a lifetime of everyday wear.',
     image:
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1800&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1800&auto=format&fit=crop',
     ctaPrimary: { label: 'Explore Products', to: '/products' },
     ctaSecondary: { label: 'Curated Categories', href: '#collections' },
     spotlight: {
       tag: 'Spotlight Piece',
-      collection: 'Haute Collection',
-      name: 'The Minimalist Cashmere Overcoat',
-      price: 780,
-      rating: 4.9,
-      reviews: 140
+      collection: 'Core Collection',
+      name: 'Classic Crewneck T-Shirt',
+      price: 28,
+      rating: 4.8,
+      reviews: 326
     }
   },
   {
     id: 2,
-    badge: 'Precision Horology',
-    title: 'Mechanical',
-    titleAccent: 'Restraint.',
+    badge: 'Denim & Bottoms',
+    title: 'Cut For',
+    titleAccent: 'Movement.',
     description:
-      'Timepieces engineered from surgical steel with uncompromising tolerances — built to outlive every trend cycle.',
+      'Five-pocket denim and tailored bottoms engineered with a hint of stretch — built to move with you, not against you.',
     image:
-      'https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=1800&auto=format&fit=crop',
-    ctaPrimary: { label: 'Shop Timepieces', to: '/products?category=Accessories' },
+      'https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1800&auto=format&fit=crop',
+    ctaPrimary: { label: 'Shop Bottoms', to: '/products?category=Bottoms' },
     ctaSecondary: { label: 'Curated Categories', href: '#collections' },
     spotlight: {
       tag: 'Bestseller',
-      collection: 'Haute Collection',
-      name: 'Monochrome Minimalist Chronograph',
-      price: 420,
-      rating: 4.9,
-      reviews: 98
+      collection: 'Denim Edit',
+      name: 'Classic Skinny Fit Jeans',
+      price: 68,
+      rating: 4.8,
+      reviews: 241
     }
   },
   {
     id: 3,
-    badge: 'Tailored Leatherware',
-    title: 'Full-Grain',
-    titleAccent: 'Heritage.',
+    badge: 'Outerwear Edit',
+    title: 'Layer',
+    titleAccent: 'With Character.',
     description:
-      'Hides conditioned for decades of character and travel, cut and stitched by hand across northern Italy.',
+      'Jackets built to fade, wear in, and layer cleanly over every tee and knit — from denim trucker to faux leather biker.',
     image:
-      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1800&auto=format&fit=crop',
-    ctaPrimary: { label: 'Shop Leatherware', to: '/products?category=Fashion' },
+      'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1800&auto=format&fit=crop',
+    ctaPrimary: { label: 'Shop Outerwear', to: '/products?category=Outerwear' },
     ctaSecondary: { label: 'Curated Categories', href: '#collections' },
     spotlight: {
       tag: 'Handcrafted',
-      collection: 'Atelier Edit',
-      name: 'Full-Grain Structured Leather Backpack',
-      price: 340,
+      collection: 'Outerwear Edit',
+      name: 'Faux Leather Biker Jacket',
+      price: 148,
       rating: 4.8,
-      reviews: 215
+      reviews: 97
     }
   },
   {
     id: 4,
-    badge: 'Atelier Living',
-    title: 'Sensory',
-    titleAccent: 'Objects.',
+    badge: 'Footwear & Accessories',
+    title: 'Finish The',
+    titleAccent: 'Fit.',
     description:
-      'Bespoke ceramics and pure wax formulations designed to slow a room down — quiet luxury for daily rituals.',
+      'Leather boots, everyday sneakers, and finishing accessories designed to complete every look, season after season.',
     image:
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1800&auto=format&fit=crop',
-    ctaPrimary: { label: 'Shop Atelier Living', to: '/products?category=Home' },
+      'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=1800&auto=format&fit=crop',
+    ctaPrimary: { label: 'Shop Footwear', to: '/products?category=Footwear' },
     ctaSecondary: { label: 'Curated Categories', href: '#collections' },
     spotlight: {
-      tag: 'Artisan',
-      collection: 'Atelier Edit',
-      name: 'Ceramic Matte Minimalist Coffee Set',
-      price: 125,
-      rating: 4.9,
-      reviews: 94
+      tag: 'Bestseller',
+      collection: 'Footwear Edit',
+      name: 'Leather Lace-Up Combat Boots',
+      price: 132,
+      rating: 4.8,
+      reviews: 164
     }
   }
 ]

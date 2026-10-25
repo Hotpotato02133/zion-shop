@@ -25,37 +25,37 @@ import { useApp } from '../context/AppContext'
 const ANNOUNCEMENTS = [
   'COMPLIMENTARY WORLDWIDE INSURED COURIER ON ALL ORDERS OVER $300',
   'AUTUMN / WINTER 2026 RUNWAY CAPSULE NOW AVAILABLE IN LIMITED QUANTITIES',
-  'ATELIER CONCIERGE: BESPOKE TAILORING & SIZING CONSULTATIONS OPEN'
+  'ATELIER CONCIERGE: COMPLIMENTARY SIZING & STYLING CONSULTATIONS OPEN'
 ]
 
 const FEATURED_COLLECTIONS = [
   {
-    title: 'Architectural Outerwear',
-    subtitle: 'Double-faced cashmere & Italian wool',
+    title: 'Everyday Tops',
+    subtitle: 'Crewneck tees, knits & shirt dresses',
+    category: 'Tops',
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=600&auto=format&fit=crop'
+  },
+  {
+    title: 'Layered Outerwear',
+    subtitle: 'Denim trucker & faux leather biker jackets',
     category: 'Outerwear',
-    image: 'https://images.unsplash.com/photo-1544441893-675973e31985?q=80&w=600&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=600&auto=format&fit=crop'
   },
   {
-    title: 'Monolith Footwear',
-    subtitle: 'Hand-welted Tuscan calfskin leather',
+    title: 'Footwear Edit',
+    subtitle: 'Leather boots, sneakers & statement heels',
     category: 'Footwear',
-    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop'
-  },
-  {
-    title: 'Bespoke Tailoring',
-    subtitle: 'Unstructured blazers & wide-leg trousers',
-    category: 'Tailoring',
-    image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=600&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=600&auto=format&fit=crop'
   }
 ]
 
 const POPULAR_SEARCHES = [
-  'Cashmere Overcoat',
+  'Crewneck T-Shirt',
   'Leather Boots',
-  'Double-Breasted Blazer',
-  'Silk Trousers',
-  'Minimalist Tote',
-  'Wool Scarf'
+  'Denim Jacket',
+  'Skinny Jeans',
+  'Canvas Tote',
+  'Sneakers'
 ]
 
 const Navbar = () => {
@@ -160,8 +160,9 @@ const Navbar = () => {
   const navLinks = [
     { label: 'All Pieces', path: '/products' },
     { label: 'New In', path: '/products?category=New%20In', badge: 'AW26' },
+    { label: 'Tops', path: '/products?category=Tops' },
+    { label: 'Bottoms', path: '/products?category=Bottoms' },
     { label: 'Outerwear', path: '/products?category=Outerwear' },
-    { label: 'Tailoring', path: '/products?category=Tailoring' },
     { label: 'Footwear', path: '/products?category=Footwear' },
     { label: 'Accessories', path: '/products?category=Accessories' }
   ]
@@ -727,10 +728,10 @@ const Navbar = () => {
               {/* Quick Category Jump */}
               <div className="mt-6 pt-5 border-t border-neutral-100 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { name: 'Outerwear', count: '4 Pieces' },
-                  { name: 'Tailoring', count: '3 Pieces' },
-                  { name: 'Footwear', count: '2 Pieces' },
-                  { name: 'Accessories', count: '3 Pieces' }
+                  { name: 'Tops', count: '5 Pieces' },
+                  { name: 'Bottoms', count: '4 Pieces' },
+                  { name: 'Outerwear', count: '3 Pieces' },
+                  { name: 'Footwear', count: '4 Pieces' }
                 ].map((c) => (
                   <button
                     key={c.name}

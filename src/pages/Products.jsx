@@ -12,289 +12,436 @@ import {
   Check, 
   Plus, 
   Minus, 
-  Truck, 
-  ShieldCheck, 
+  Truck,
+  ShieldCheck,
   RotateCcw,
   SlidersHorizontal,
-  ArrowRight
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { useSupabase } from '../context/SupabaseContext'
 
-// Expanded Curated Luxury Catalog
+// Zion Apparel Catalog (local fallback, mirrored from Supabase `products` table)
 const products = [
   {
     id: 1,
-    name: 'Atelier Wireless Over-Ear Headphones',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400&auto=format&fit=crop',
+    name: 'Classic Crewneck T-Shirt',
+    price: 28,
+    originalPrice: 35,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1484704849700-f032a568e944?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Electronics',
-    tag: 'Limited Edition',
-    rating: 4.9,
-    reviews: 142,
-    stock: 7,
-    description: 'Precision acoustic engineering featuring 40mm custom beryllium drivers, memory foam ear cushions wrapped in full-grain lambskin, and 45-hour active noise cancellation.',
+    category: 'Tops',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 326,
+    stock: 48,
+    description: 'A wardrobe essential cut from heavyweight combed cotton jersey for a clean drape that holds its shape wash after wash. Reinforced collar seam and double-stitched hem.',
     specs: {
-      'Material': 'Anodized Aluminum & Lambskin',
-      'Battery': '45h Active ANC Playback',
-      'Origin': 'Designed in Copenhagen',
-      'Warranty': '3-Year Global Warranty'
+      'Material': '100% Combed Cotton Jersey',
+      'Fit': 'Regular Fit',
+      'Sizes': 'XS, S, M, L, XL, XXL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 2,
-    name: 'Monochrome Minimalist Chronograph',
-    price: 420,
-    originalPrice: 480,
-    image: 'https://images.unsplash.com/photo-1523170335258-f5e6a7c0c1c4?q=80&w=1400&auto=format&fit=crop',
+    name: 'Essential Tee 3-Pack',
+    price: 45,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1523170335258-f5e6a7c0c1c4?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1562157873-818bc0726f68?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Accessories',
-    tag: 'Bestseller',
-    rating: 4.9,
-    reviews: 98,
-    stock: 5,
-    description: 'Surgical-grade 316L matte black case paired with double-domed anti-reflective sapphire crystal and a Swiss automatic self-winding caliber.',
+    category: 'Tops',
+    tag: 'New In',
+    rating: 4.6,
+    reviews: 154,
+    stock: 60,
+    description: 'Three go-to crewneck tees in rotating core colors. Pre-shrunk cotton blend keeps its fit through everyday wear and frequent washing.',
     specs: {
-      'Movement': 'Automatic Caliber 2824-2',
-      'Case': '316L Sandblasted Steel (40mm)',
-      'Glass': 'Anti-Reflective Sapphire',
-      'Water Resistance': '5 ATM / 50 Meters'
+      'Material': '95% Cotton, 5% Elastane',
+      'Fit': 'Regular Fit',
+      'Pack Size': '3 Tees',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 3,
-    name: 'Full-Grain Structured Leather Backpack',
-    price: 340,
-    originalPrice: 390,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop',
+    name: 'Fringed Knit Poncho Sweater',
+    price: 58,
+    originalPrice: 72,
+    image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Fashion',
+    category: 'Tops',
     tag: 'Handcrafted',
-    rating: 4.8,
-    reviews: 215,
-    stock: 12,
-    description: 'Vegetable-tanned Tuscan leather conditioned with natural beeswax. Includes a padded 16-inch laptop pocket and water-resistant YKK Excella zippers.',
+    rating: 4.7,
+    reviews: 61,
+    stock: 22,
+    description: 'Hand-finished open-knit poncho sweater with a relaxed V-neck and fringe hem. Lightweight enough to layer, textured enough to wear alone.',
     specs: {
-      'Material': 'Tuscan Full-Grain Vachetta',
-      'Hardware': 'Brushed Solid Brass',
-      'Capacity': '22 Liters',
-      'Dimensions': '44cm x 30cm x 15cm'
+      'Material': 'Cotton-Acrylic Knit Blend',
+      'Fit': 'Relaxed / One Size',
+      'Length': 'Hip Length',
+      'Care': 'Hand Wash Cold'
     }
   },
   {
     id: 4,
-    name: 'Acoustic Sculptural Smart Speaker',
-    price: 189,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1400&auto=format&fit=crop',
+    name: 'Corduroy Long-Sleeve Shirt Dress',
+    price: 89,
+    originalPrice: 110,
+    image: 'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Electronics',
+    category: 'Tops',
     tag: 'New Arrival',
-    rating: 4.7,
-    reviews: 76,
-    stock: 15,
-    description: 'Monolithic acoustic sphere wrapped in acoustically transparent Nordic wool fabric. Features custom DSP room-tuning and lossless multi-room streaming.',
+    rating: 4.9,
+    reviews: 47,
+    stock: 16,
+    description: 'A fitted-waist shirt dress in brushed corduroy with a button placket and three-quarter sleeves. Transitions easily from desk to dinner.',
     specs: {
-      'Audio': '90W Class-D Amplification',
-      'Connectivity': 'WiFi 6, AirPlay 2, Bluetooth 5.3',
-      'Enclosure': 'Resonance-Free Mineral Composite',
-      'Weight': '3.2 kg'
+      'Material': '100% Cotton Corduroy',
+      'Fit': 'Fitted Waist, A-Line Skirt',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 5,
-    name: 'Japanese Acetate Luxury Sunglasses',
-    price: 240,
-    originalPrice: 280,
-    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
+    name: 'Off-Shoulder Ruffle Mini Dress',
+    price: 42,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Accessories',
+    category: 'Tops',
     tag: 'Seasonal',
-    rating: 4.8,
-    reviews: 110,
-    stock: 9,
-    description: 'Hand-cut 8mm Japanese Takiron cellulose acetate with seven-barrel hinges and scratch-resistant polarized Carl Zeiss lenses offering 100% UV protection.',
+    rating: 4.5,
+    reviews: 88,
+    stock: 30,
+    description: 'Breathable cotton-poplin off-shoulder mini dress with an elasticated ruffle neckline and tiered hem. Warm-weather staple with a flattering silhouette.',
     specs: {
-      'Frame': 'Japanese Cured Acetate',
-      'Lenses': 'Carl Zeiss CR-39 Polarized',
-      'Hinges': '7-Barrel Custom German Steel',
-      'UV Protection': 'UV400 Cat. 3'
+      'Material': '100% Cotton Poplin',
+      'Fit': 'Relaxed, Off-Shoulder',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 6,
-    name: 'Handcrafted Scented Atelier Candle',
-    price: 68,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1400&auto=format&fit=crop',
+    name: 'Pleated Mini Skirt',
+    price: 48,
+    originalPrice: 58,
+    image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Home',
-    tag: 'Atelier',
-    rating: 4.9,
-    reviews: 180,
-    stock: 25,
-    description: 'Hand-poured coconut and soy wax blend infused with wild cypress, smoke, and black amber. Encased in a reusable mouth-blown smoked obsidian tumbler.',
+    category: 'Bottoms',
+    tag: 'Bestseller',
+    rating: 4.7,
+    reviews: 133,
+    stock: 34,
+    description: 'A box-pleated mini skirt in structured stretch twill with a concealed side zip. Pairs cleanly with tees, knits, or tucked-in shirts.',
     specs: {
-      'Burn Time': 'Approx. 65 Hours',
-      'Wax': '100% Organic Soy & Coconut',
-      'Vessel': 'Mouth-Blown Smoked Glass',
-      'Scent Profile': 'Cypress, Black Amber, Cedar'
+      'Material': 'Stretch Twill (Poly-Viscose Blend)',
+      'Fit': 'A-Line, Box Pleat',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Dry Clean Recommended'
     }
   },
   {
     id: 7,
-    name: 'Ceramic Matte Minimalist Coffee Set',
-    price: 125,
-    originalPrice: 150,
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1400&auto=format&fit=crop',
+    name: 'High-Waist Jogger Pants',
+    price: 52,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1400&auto=format&fit=crop',
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Home',
-    tag: 'Artisan',
-    rating: 4.9,
-    reviews: 94,
-    stock: 14,
-    description: 'Wheel-thrown high-fire stoneware glazed with an unrefined basalt matte finish. Includes precision pour-over dripper, carafe, and two matching espresso cups.',
+    category: 'Bottoms',
+    tag: 'New In',
+    rating: 4.6,
+    reviews: 72,
+    stock: 40,
+    description: 'Soft satin-twill joggers with a high elastic waistband, side pockets, and tapered elastic cuffs. Structured enough to dress up, soft enough for travel.',
     specs: {
-      'Material': 'High-Fire Stoneware Ceramic',
-      'Glaze': 'Food-Safe Basalt Matte',
-      'Dishwasher Safe': 'Yes',
-      'Carafe Capacity': '600 ml'
+      'Material': 'Satin Twill (Poly Blend)',
+      'Fit': 'Tapered, High-Rise',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 8,
-    name: 'Vegetable-Tanned Heritage Leather Journal',
-    price: 95,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1400&auto=format&fit=crop',
+    name: 'Classic Skinny Fit Jeans',
+    price: 68,
+    originalPrice: 82,
+    image: 'https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Accessories',
-    tag: 'Refillable',
-    rating: 4.9,
-    reviews: 84,
-    stock: 18,
-    description: 'Heirloom journal with a solid brass binder mechanism, holding 192 pages of bleed-resistant 120gsm Japanese fountain-pen friendly cotton paper.',
+    category: 'Bottoms',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 241,
+    stock: 45,
+    description: 'Five-pocket skinny jeans in rigid mid-wash denim with a hint of stretch for all-day movement. A clean, everyday staple.',
     specs: {
-      'Paper': '120gsm Japanese Cotton Archive',
-      'Cover': 'Full-Grain English Bridle Leather',
-      'Binding': 'Refillable Solid Brass Screwpost',
-      'Page Count': '192 Lined / Plain Leaves'
+      'Material': '98% Cotton, 2% Elastane Denim',
+      'Fit': 'Skinny, Mid-Rise',
+      'Sizes': '24-32 (Waist)',
+      'Care': 'Machine Wash Cold, Inside Out'
     }
   },
   {
     id: 9,
-    name: 'Double-Faced Cashmere Minimalist Overcoat',
-    price: 780,
-    originalPrice: 920,
-    image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1400&auto=format&fit=crop',
+    name: 'Relaxed Fit Sweatpants',
+    price: 46,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Fashion',
-    tag: 'Atelier Spotlight',
-    rating: 5.0,
-    reviews: 62,
-    stock: 4,
-    description: 'Unlined double-faced cashmere constructed using hand-split and hand-stitched invisible seam techniques by master tailors in Florence.',
+    category: 'Bottoms',
+    tag: 'New Arrival',
+    rating: 4.5,
+    reviews: 58,
+    stock: 38,
+    description: 'Brushed-back fleece sweatpants with a drawstring waist and tapered leg. Everyday comfort with a clean, minimal silhouette.',
     specs: {
-      'Composition': '90% Mongolian Cashmere, 10% Silk',
-      'Buttons': 'Natural Buffalo Horn',
-      'Origin': 'Handmade in Florence, Italy',
-      'Care': 'Specialist Dry Clean Only'
+      'Material': '80% Cotton, 20% Polyester Fleece',
+      'Fit': 'Relaxed, Tapered Leg',
+      'Sizes': 'XS, S, M, L, XL, XXL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 10,
-    name: 'Aircraft-Grade Titanium Fast Wireless Valet',
-    price: 115,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1400&auto=format&fit=crop',
+    name: 'Faux Leather Biker Jacket',
+    price: 148,
+    originalPrice: 178,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Electronics',
-    tag: 'New',
-    rating: 4.7,
-    reviews: 58,
-    stock: 20,
-    description: 'CNC-milled from a solid billet of Grade 5 titanium, inlaid with Italian Alcantara and capable of dual 15W Qi2 MagSafe fast charging.',
+    category: 'Outerwear',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 97,
+    stock: 18,
+    description: 'A moto-inspired jacket in supple faux leather with an asymmetric zip front, snap lapels, and quilted shoulder panels. Fully lined for structure.',
     specs: {
-      'Material': 'Grade 5 Titanium & Alcantara',
-      'Charging Standard': 'Qi2 Certified 15W MagSafe',
-      'Ports': 'USB-C Braided Cable Included',
-      'Compatibility': 'iPhone, AirPods, Android'
+      'Material': 'Faux Leather, Polyester Lining',
+      'Fit': 'Fitted, Cropped',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Wipe Clean / Spot Clean Only'
     }
   },
   {
     id: 11,
-    name: 'Hand-Forged 67-Layer Damascus Santoku',
-    price: 210,
-    originalPrice: 250,
-    image: 'https://images.unsplash.com/photo-1593618998160-e34014e67546?q=80&w=1400&auto=format&fit=crop',
+    name: 'Classic Denim Trucker Jacket',
+    price: 96,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1593618998160-e34014e67546?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Home',
-    tag: 'Limited Craft',
-    rating: 4.9,
-    reviews: 43,
-    stock: 6,
-    description: 'Folded VG-10 core wrapped in 66 layers of nickel steel. Finished with an octagonal bog-oak handle and buffalo horn ferrule for surgical balance.',
+    category: 'Outerwear',
+    tag: 'New In',
+    rating: 4.7,
+    reviews: 112,
+    stock: 24,
+    description: 'A timeless button-front trucker jacket in rigid cotton denim with twin chest pockets and adjustable waist tabs. Built to fade and wear in beautifully.',
     specs: {
-      'Core Steel': 'Japanese VG-10 (61 HRC)',
-      'Blade Length': '180mm / 7 Inches',
-      'Handle': 'Stabilized Bog Oak & Horn',
-      'Sharpening Angle': '15° Double Bevel'
+      'Material': '100% Cotton Denim',
+      'Fit': 'Classic, Button Front',
+      'Sizes': 'XS, S, M, L, XL',
+      'Care': 'Machine Wash Cold'
     }
   },
   {
     id: 12,
-    name: 'Pure Mulberry Silk Twill Modular Scarf',
-    price: 165,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1400&auto=format&fit=crop',
+    name: 'Oversized Utility Jacket',
+    price: 118,
+    originalPrice: 140,
+    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1400&auto=format&fit=crop',
     gallery: [
-      'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=1400&auto=format&fit=crop'
+      'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=1400&auto=format&fit=crop'
     ],
-    category: 'Fashion',
-    tag: 'Silk Archive',
-    rating: 4.8,
-    reviews: 77,
-    stock: 16,
-    description: '18 momme heavy silk twill featuring subtle monochrome geometric engravings. Finished with French hand-rolled edges in Lake Como, Italy.',
+    category: 'Outerwear',
+    tag: 'New Arrival',
+    rating: 4.6,
+    reviews: 39,
+    stock: 15,
+    description: 'An oversized shirt-jacket in brushed twill with chest flap pockets and a dropped shoulder seam. Layers easily over knits and tees.',
     specs: {
-      'Material': '100% Grade 6A Mulberry Silk (18mm)',
-      'Dimensions': '90cm x 90cm',
-      'Finishing': 'Hand-Rolled & Stitched Edges',
-      'Origin': 'Como, Italy'
+      'Material': 'Cotton Twill',
+      'Fit': 'Oversized',
+      'Sizes': 'S, M, L, XL',
+      'Care': 'Machine Wash Cold'
+    }
+  },
+  {
+    id: 13,
+    name: 'Leather Lace-Up Combat Boots',
+    price: 132,
+    originalPrice: 155,
+    image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Footwear',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 164,
+    stock: 26,
+    description: 'Full-grain leather combat boots with a cap toe, reinforced eyelets, and a durable lugged outsole built for daily wear.',
+    specs: {
+      'Material': 'Full-Grain Leather',
+      'Outsole': 'Rubber Lug Sole',
+      'Sizes': 'US 6 - US 12',
+      'Care': 'Leather Conditioner Recommended'
+    }
+  },
+  {
+    id: 14,
+    name: 'Tan Leather Work Boots',
+    price: 145,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1520639888713-7851133b1ed0?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Footwear',
+    tag: 'New In',
+    rating: 4.7,
+    reviews: 85,
+    stock: 20,
+    description: 'Rugged oiled-leather work boots with a cushioned footbed and shock-absorbing sole. Durable enough for daily wear, refined enough for everyday fits.',
+    specs: {
+      'Material': 'Oiled Full-Grain Leather',
+      'Outsole': 'Shock-Absorbing Rubber',
+      'Sizes': 'US 7 - US 13',
+      'Care': 'Leather Conditioner Recommended'
+    }
+  },
+  {
+    id: 15,
+    name: 'Chunky Colorblock Sneakers',
+    price: 110,
+    originalPrice: 130,
+    image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Footwear',
+    tag: 'New Arrival',
+    rating: 4.6,
+    reviews: 72,
+    stock: 32,
+    description: 'Statement low-top sneakers in a colorblocked suede-and-mesh upper with a chunky lugged midsole for all-day comfort.',
+    specs: {
+      'Material': 'Suede & Mesh Upper',
+      'Outsole': 'Chunky EVA Midsole',
+      'Sizes': 'US 6 - US 12',
+      'Care': 'Wipe Clean'
+    }
+  },
+  {
+    id: 16,
+    name: 'Floral Print Statement Heels',
+    price: 95,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Footwear',
+    tag: 'Seasonal',
+    rating: 4.5,
+    reviews: 54,
+    stock: 18,
+    description: 'Pointed-toe pumps in a hand-finished floral jacquard with a comfort-padded insole and a stable 90mm heel.',
+    specs: {
+      'Material': 'Jacquard Textile Upper',
+      'Heel Height': '90mm',
+      'Sizes': 'US 5 - US 10',
+      'Care': 'Spot Clean Only'
+    }
+  },
+  {
+    id: 17,
+    name: 'Round Metal-Frame Sunglasses',
+    price: 38,
+    originalPrice: 48,
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Accessories',
+    tag: 'Bestseller',
+    rating: 4.7,
+    reviews: 198,
+    stock: 50,
+    description: 'Vintage-inspired round sunglasses in a lightweight gold-tone metal frame with polarized UV400 lenses.',
+    specs: {
+      'Frame': 'Gold-Tone Metal',
+      'Lenses': 'Polarized UV400',
+      'Fit': 'One Size',
+      'Care': 'Microfiber Cloth Only'
+    }
+  },
+  {
+    id: 18,
+    name: 'Everyday Canvas Backpack',
+    price: 78,
+    originalPrice: 95,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Accessories',
+    tag: 'New In',
+    rating: 4.8,
+    reviews: 143,
+    stock: 28,
+    description: 'A durable canvas backpack with a padded 15-inch laptop sleeve, water-resistant coating, and adjustable ergonomic straps.',
+    specs: {
+      'Material': 'Water-Resistant Canvas',
+      'Capacity': '20 Liters',
+      'Laptop Sleeve': 'Up to 15 Inches',
+      'Care': 'Spot Clean'
+    }
+  },
+  {
+    id: 19,
+    name: 'Structured Canvas Tote Bag',
+    price: 42,
+    originalPrice: null,
+    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1400&auto=format&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1400&auto=format&fit=crop'
+    ],
+    category: 'Accessories',
+    tag: 'New Arrival',
+    rating: 4.6,
+    reviews: 76,
+    stock: 35,
+    description: 'A roomy structured tote in heavyweight cotton canvas with reinforced handles and an interior zip pocket. Everyday carry, built to last.',
+    specs: {
+      'Material': 'Heavyweight Cotton Canvas',
+      'Capacity': '18 Liters',
+      'Dimensions': '38cm x 34cm x 14cm',
+      'Care': 'Spot Clean'
     }
   }
 ]
@@ -303,37 +450,26 @@ const checkCategoryMatch = (product, cat) => {
   if (!cat || cat === 'All') return true
   const catLower = cat.toLowerCase()
   const prodCatLower = (product.category || '').toLowerCase()
-  if (prodCatLower === catLower) return true
 
   if (catLower === 'new in') {
     const tagLower = (product.tag || '').toLowerCase()
-    return tagLower.includes('new') || tagLower.includes('spotlight') || tagLower.includes('limited')
+    return tagLower.includes('new')
   }
 
-  if (catLower === 'outerwear') {
-    return prodCatLower === 'outerwear' || 
-           product.name.toLowerCase().includes('overcoat') || 
-           product.name.toLowerCase().includes('coat') ||
-           product.name.toLowerCase().includes('backpack')
-  }
-
-  if (catLower === 'tailoring') {
-    return prodCatLower === 'tailoring' || 
-           product.name.toLowerCase().includes('overcoat') || 
-           product.name.toLowerCase().includes('scarf') ||
-           product.name.toLowerCase().includes('chronograph')
-  }
-
-  if (catLower === 'footwear') {
-    return prodCatLower === 'footwear' || 
-           product.name.toLowerCase().includes('leather') || 
-           prodCatLower === 'fashion'
-  }
-
-  return false
+  return prodCatLower === catLower
 }
 
-const categories = ['All', 'New In', 'Outerwear', 'Tailoring', 'Accessories', 'Fashion', 'Home', 'Electronics']
+const categories = ['All', 'New In', 'Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Accessories']
+
+// Extracts a short, chip-friendly list of discrete sizes from a product's spec string.
+// Ranges like "US 6 - US 12" or single labels like "One Size" are left as plain text instead.
+const getSizeOptions = (product) => {
+  const sizesStr = product?.specs?.Sizes
+  if (!sizesStr) return null
+  const parts = sizesStr.split(',').map(s => s.trim()).filter(Boolean)
+  const looksSelectable = parts.length > 1 && parts.every(p => p.length <= 6)
+  return looksSelectable ? parts : null
+}
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -379,7 +515,14 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [quickViewQuantity, setQuickViewQuantity] = useState(1)
   const [quickViewImageIndex, setQuickViewImageIndex] = useState(0)
+  const [quickViewSelectedSize, setQuickViewSelectedSize] = useState(null)
   const [toastMessage, setToastMessage] = useState(null)
+
+  // Derived quick-view helpers
+  const quickViewGallery = selectedProduct?.gallery?.length
+    ? selectedProduct.gallery
+    : (selectedProduct?.image ? [selectedProduct.image] : [])
+  const quickViewSizeOptions = getSizeOptions(selectedProduct)
 
   // Keep state synced if URL search params change
   useEffect(() => {
@@ -481,6 +624,7 @@ const Products = () => {
     setSelectedProduct(product)
     setQuickViewQuantity(1)
     setQuickViewImageIndex(0)
+    setQuickViewSelectedSize(null)
     document.body.style.overflow = 'hidden'
   }
 
@@ -805,207 +949,263 @@ const Products = () => {
       {/* QUICK VIEW / PRODUCT DETAILS MODAL */}
       <AnimatePresence>
         {selectedProduct && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10">
-            
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 lg:p-8">
+
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeQuickView}
-              className="fixed inset-0 bg-black/60 backdrop-blur-md"
+              className="fixed inset-0 bg-neutral-950/70 backdrop-blur-xl"
             />
 
             {/* Modal Dialog Content */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.94, y: 20 }}
+              initial={{ opacity: 0, scale: 0.96, y: 24 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.94, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl shadow-2xl z-10 border border-gray-100"
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-5xl lg:max-w-6xl max-h-[92vh] bg-white rounded-[28px] sm:rounded-[32px] shadow-[0_30px_90px_-20px_rgba(0,0,0,0.4)] z-10 overflow-hidden flex flex-col md:flex-row"
             >
-              {/* Close Button */}
+              {/* Close Button — floating frosted glass */}
               <button
                 onClick={closeQuickView}
-                className="absolute top-5 right-5 p-2.5 rounded-full bg-gray-100 hover:bg-black hover:text-white transition-colors z-20"
+                className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 p-2.5 rounded-full bg-white/90 backdrop-blur-md text-neutral-900 shadow-lg hover:bg-black hover:text-white transition-all duration-200"
               >
-                <X size={18} />
+                <X size={18} strokeWidth={2.25} />
               </button>
 
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                
-                {/* Left: Product Imagery Gallery */}
-                <div className="p-6 lg:p-8 bg-gray-50 flex flex-col justify-between">
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-white shadow-sm mb-4">
-                    <img 
-                      src={selectedProduct.gallery ? selectedProduct.gallery[quickViewImageIndex] : selectedProduct.image} 
+              {/* Left: Imagery Gallery */}
+              <div className="relative w-full md:w-[46%] lg:w-[48%] shrink-0 bg-neutral-100 flex flex-col">
+                <div className="relative aspect-[4/5] md:aspect-auto md:flex-1 overflow-hidden group/image">
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={quickViewImageIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      src={quickViewGallery[quickViewImageIndex]}
                       alt={selectedProduct.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105"
                     />
-                    {selectedProduct.tag && (
-                      <span className="absolute top-3 left-3 bg-black text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
-                        {selectedProduct.tag}
-                      </span>
+                  </AnimatePresence>
+
+                  {selectedProduct.tag && (
+                    <span className="absolute top-4 left-4 bg-black/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                      {selectedProduct.tag}
+                    </span>
+                  )}
+
+                  {/* Gallery nav arrows */}
+                  {quickViewGallery.length > 1 && (
+                    <>
+                      <button
+                        onClick={() => setQuickViewImageIndex(i => (i - 1 + quickViewGallery.length) % quickViewGallery.length)}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 backdrop-blur-md text-black opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-white shadow-md"
+                      >
+                        <ChevronLeft size={18} />
+                      </button>
+                      <button
+                        onClick={() => setQuickViewImageIndex(i => (i + 1) % quickViewGallery.length)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 backdrop-blur-md text-black opacity-0 group-hover/image:opacity-100 transition-opacity hover:bg-white shadow-md"
+                      >
+                        <ChevronRight size={18} />
+                      </button>
+
+                      {/* Dot indicators */}
+                      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+                        {quickViewGallery.map((_, i) => (
+                          <button
+                            key={i}
+                            onClick={() => setQuickViewImageIndex(i)}
+                            className={`h-1.5 rounded-full transition-all ${
+                              quickViewImageIndex === i ? 'w-6 bg-white' : 'w-1.5 bg-white/50'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Thumbnail rail (desktop) */}
+                {quickViewGallery.length > 1 && (
+                  <div className="hidden md:flex gap-2 p-4 bg-neutral-100">
+                    {quickViewGallery.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setQuickViewImageIndex(i)}
+                        className={`relative w-14 h-14 rounded-xl overflow-hidden ring-2 transition-all shrink-0 ${
+                          quickViewImageIndex === i ? 'ring-black' : 'ring-transparent opacity-60 hover:opacity-100'
+                        }`}
+                      >
+                        <img src={img} alt={`${selectedProduct.name} thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Right: Info panel — scrolls independently, CTA stays pinned */}
+              <div className="relative flex-1 flex flex-col min-h-0">
+                <div className="flex-1 overflow-y-auto px-6 sm:px-8 lg:px-10 pt-7 sm:pt-9 pb-4">
+
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[11px] uppercase tracking-[0.2em] font-semibold text-neutral-400">
+                      {selectedProduct.category}
+                    </span>
+                    <div className="flex items-center gap-1.5 text-xs">
+                      <Star size={13} className="fill-amber-400 text-amber-400" />
+                      <span className="font-semibold text-neutral-900">{selectedProduct.rating}</span>
+                      <span className="text-neutral-400">({selectedProduct.reviews})</span>
+                    </div>
+                  </div>
+
+                  <h2 className="font-heading text-[26px] sm:text-3xl lg:text-[34px] leading-[1.1] font-bold tracking-tight text-neutral-950 mb-3">
+                    {selectedProduct.name}
+                  </h2>
+
+                  <div className="flex items-baseline gap-3 mb-5">
+                    <span className="font-heading text-2xl sm:text-[28px] font-extrabold text-neutral-950">
+                      ${selectedProduct.price}
+                    </span>
+                    {selectedProduct.originalPrice && (
+                      <>
+                        <span className="text-sm text-neutral-400 line-through">
+                          ${selectedProduct.originalPrice}
+                        </span>
+                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">
+                          Save ${(selectedProduct.originalPrice - selectedProduct.price).toFixed(0)}
+                        </span>
+                      </>
                     )}
                   </div>
 
-                  {/* Thumbnail Row */}
-                  {selectedProduct.gallery && selectedProduct.gallery.length > 1 && (
-                    <div className="flex gap-2.5">
-                      {selectedProduct.gallery.map((img, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setQuickViewImageIndex(i)}
-                          className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all ${
-                            quickViewImageIndex === i ? 'border-black shadow-md' : 'border-transparent opacity-60 hover:opacity-100'
-                          }`}
-                        >
-                          <img src={img} alt={`thumbnail-${i}`} className="w-full h-full object-cover" />
-                        </button>
-                      ))}
+                  <p className="text-sm text-neutral-600 leading-relaxed mb-6">
+                    {selectedProduct.description}
+                  </p>
+
+                  {/* Size selector */}
+                  {quickViewSizeOptions && (
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between mb-2.5">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-neutral-900">Select Size</span>
+                        {quickViewSelectedSize && (
+                          <span className="text-xs text-neutral-400">Size {quickViewSelectedSize}</span>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {quickViewSizeOptions.map(size => (
+                          <button
+                            key={size}
+                            onClick={() => setQuickViewSelectedSize(size)}
+                            className={`min-w-[44px] h-11 px-3 rounded-xl text-xs font-semibold border transition-all ${
+                              quickViewSelectedSize === size
+                                ? 'bg-black text-white border-black shadow-sm'
+                                : 'bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400'
+                            }`}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Stock status with urgency bar */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="flex items-center gap-1.5 text-neutral-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        In Stock
+                      </span>
+                      <span className="text-neutral-400">{selectedProduct.stock} left</span>
+                    </div>
+                    <div className="h-1 bg-neutral-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-neutral-900 rounded-full transition-all duration-500"
+                        style={{ width: `${Math.min(100, (selectedProduct.stock / 60) * 100)}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Details & Care */}
+                  {selectedProduct.specs && (
+                    <div className="border-t border-neutral-100 pt-5">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-neutral-900 mb-3">Details &amp; Care</p>
+                      <dl className="space-y-2.5">
+                        {Object.entries(selectedProduct.specs).map(([label, val]) => (
+                          <div key={label} className="flex items-start justify-between gap-4 text-xs">
+                            <dt className="text-neutral-400 shrink-0">{label}</dt>
+                            <dd className="text-neutral-900 font-medium text-right">{val}</dd>
+                          </div>
+                        ))}
+                      </dl>
                     </div>
                   )}
                 </div>
 
-                {/* Right: Specifications & Purchasing Controls */}
-                <div className="p-6 sm:p-8 lg:p-10 flex flex-col justify-between space-y-6">
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
-                        {selectedProduct.category}
+                {/* Sticky Purchase Footer */}
+                <div className="shrink-0 border-t border-neutral-100 bg-white/95 backdrop-blur-sm px-6 sm:px-8 lg:px-10 py-5 space-y-4">
+                  <div className="flex gap-3">
+                    {/* Quantity Stepper */}
+                    <div className="flex items-center border border-neutral-200 rounded-2xl">
+                      <button
+                        onClick={() => setQuickViewQuantity(q => Math.max(1, q - 1))}
+                        className="p-3 text-neutral-500 hover:text-black transition-colors"
+                      >
+                        <Minus size={14} />
+                      </button>
+                      <span className="w-7 text-center text-sm font-semibold">
+                        {quickViewQuantity}
                       </span>
-                      <div className="flex items-center gap-1.5 text-xs text-gray-700">
-                        <Star size={13} className="fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold">{selectedProduct.rating}</span>
-                        <span className="text-gray-400">({selectedProduct.reviews} reviews)</span>
-                      </div>
+                      <button
+                        onClick={() => setQuickViewQuantity(q => Math.min(selectedProduct.stock, q + 1))}
+                        className="p-3 text-neutral-500 hover:text-black transition-colors"
+                      >
+                        <Plus size={14} />
+                      </button>
                     </div>
 
-                    <h2 className="font-heading text-2xl lg:text-3xl font-bold tracking-tight">
-                      {selectedProduct.name}
-                    </h2>
+                    {/* Add to Bag CTA */}
+                    <motion.button
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        handleAddToCart(selectedProduct, quickViewQuantity)
+                        closeQuickView()
+                      }}
+                      className="flex-1 bg-neutral-950 text-white py-3.5 px-5 rounded-2xl text-xs font-semibold uppercase tracking-wider hover:bg-black transition-colors flex items-center justify-center gap-2 shadow-lg shadow-black/10"
+                    >
+                      <ShoppingBag size={16} />
+                      <span>Add to Bag · ${(selectedProduct.price * quickViewQuantity).toFixed(0)}</span>
+                    </motion.button>
 
-                    {/* Pricing */}
-                    <div className="flex items-baseline gap-3">
-                      <span className="font-heading text-2xl lg:text-3xl font-extrabold">
-                        ${selectedProduct.price}
-                      </span>
-                      {selectedProduct.originalPrice && (
-                        <>
-                          <span className="text-sm text-gray-400 line-through">
-                            ${selectedProduct.originalPrice}
-                          </span>
-                          <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">
-                            Save ${(selectedProduct.originalPrice - selectedProduct.price)}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Description */}
-                    <p className="text-sm text-gray-600 leading-relaxed font-light">
-                      {selectedProduct.description}
-                    </p>
-
-                    {/* Specifications Accordion / Grid */}
-                    {selectedProduct.specs && (
-                      <div className="pt-2 border-t border-gray-100 space-y-2">
-                        <p className="text-xs uppercase tracking-wider font-semibold text-gray-900">Craft Details</p>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          {Object.entries(selectedProduct.specs).map(([label, val]) => (
-                            <div key={label} className="bg-gray-50 p-2.5 rounded-xl">
-                              <span className="text-gray-400 block text-[10px] uppercase font-medium">{label}</span>
-                              <span className="font-medium text-gray-900">{val}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                    {/* Wishlist Button */}
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleToggleWishlist(selectedProduct)}
+                      className={`p-3.5 rounded-2xl border transition-colors ${
+                        isItemInWishlist(selectedProduct.id)
+                          ? 'bg-red-500 text-white border-red-500'
+                          : 'border-neutral-200 text-neutral-900 hover:bg-neutral-50'
+                      }`}
+                      title="Save to Wishlist"
+                    >
+                      <Heart size={18} className={isItemInWishlist(selectedProduct.id) ? 'fill-white' : ''} />
+                    </motion.button>
                   </div>
 
-                  {/* Purchase & Action Controls */}
-                  <div className="space-y-4 pt-4 border-t border-gray-100">
-                    
-                    {/* Stock status */}
-                    <div className="flex items-center gap-2 text-xs">
-                      <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                      <span className="text-gray-600">
-                        In stock • Only <strong className="text-black">{selectedProduct.stock} pieces</strong> crafted for this drop.
-                      </span>
-                    </div>
-
-                    {/* Quantity + Add to Cart buttons */}
-                    <div className="flex gap-3">
-                      {/* Quantity Stepper */}
-                      <div className="flex items-center border border-gray-200 rounded-2xl px-2">
-                        <button
-                          onClick={() => setQuickViewQuantity(q => Math.max(1, q - 1))}
-                          className="p-2 text-gray-500 hover:text-black transition-colors"
-                        >
-                          <Minus size={14} />
-                        </button>
-                        <span className="w-8 text-center text-sm font-semibold">
-                          {quickViewQuantity}
-                        </span>
-                        <button
-                          onClick={() => setQuickViewQuantity(q => Math.min(selectedProduct.stock, q + 1))}
-                          className="p-2 text-gray-500 hover:text-black transition-colors"
-                        >
-                          <Plus size={14} />
-                        </button>
-                      </div>
-
-                      {/* Add to Bag CTA */}
-                      <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                          handleAddToCart(selectedProduct, quickViewQuantity)
-                          closeQuickView()
-                        }}
-                        className="flex-1 bg-black text-white py-3.5 px-6 rounded-2xl text-xs font-semibold uppercase tracking-wider hover:bg-gray-900 transition-colors flex items-center justify-center gap-2 shadow-xl"
-                      >
-                        <ShoppingBag size={16} />
-                        <span>Add to Bag • ${(selectedProduct.price * quickViewQuantity)}</span>
-                      </motion.button>
-
-                      {/* Wishlist Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => handleToggleWishlist(selectedProduct)}
-                        className={`p-3.5 rounded-2xl border transition-colors ${
-                          isItemInWishlist(selectedProduct.id)
-                            ? 'bg-red-500 text-white border-red-500'
-                            : 'border-gray-200 text-black hover:bg-gray-50'
-                        }`}
-                        title="Save to Wishlist"
-                      >
-                        <Heart size={18} className={isItemInWishlist(selectedProduct.id) ? 'fill-white' : ''} />
-                      </motion.button>
-                    </div>
-
-                    {/* Guarantees micro-bar */}
-                    <div className="grid grid-cols-3 gap-2 text-center text-[11px] text-gray-500 pt-2">
-                      <div className="flex items-center justify-center gap-1">
-                        <Truck size={12} />
-                        <span>Insured Courier</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-1">
-                        <ShieldCheck size={12} />
-                        <span>Certified Authentic</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-1">
-                        <RotateCcw size={12} />
-                        <span>30-Day Returns</span>
-                      </div>
-                    </div>
-
+                  {/* Guarantees micro-bar */}
+                  <div className="flex items-center justify-center gap-5 text-[11px] text-neutral-400">
+                    <span className="flex items-center gap-1"><Truck size={12} /> Insured Courier</span>
+                    <span className="flex items-center gap-1"><ShieldCheck size={12} /> Certified Authentic</span>
+                    <span className="flex items-center gap-1"><RotateCcw size={12} /> 30-Day Returns</span>
                   </div>
-
                 </div>
-
               </div>
 
             </motion.div>

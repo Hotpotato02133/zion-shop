@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -17,120 +17,121 @@ import {
   Gift
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import { useSupabase } from '../context/SupabaseContext'
 import HeroCarousel from '../components/HeroCarousel'
 
-// Curated luxury catalog data
-const featuredProducts = [
+// Zion apparel catalog (local fallback, mirrored from Supabase `products` table)
+const defaultFeaturedProducts = [
   {
     id: 1,
-    name: 'Atelier Wireless Over-Ear Headphones',
-    price: 299,
-    originalPrice: 399,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1400&auto=format&fit=crop',
-    category: 'Electronics',
-    tag: 'Limited Edition',
-    rating: 4.9,
-    reviews: 142
-  },
-  {
-    id: 2,
-    name: 'Monochrome Minimalist Chronograph',
-    price: 420,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1523170335258-f5e6a7c0c1c4?q=80&w=1400&auto=format&fit=crop',
-    category: 'Accessories',
+    name: 'Classic Crewneck T-Shirt',
+    price: 28,
+    originalPrice: 35,
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400&auto=format&fit=crop',
+    category: 'Tops',
     tag: 'Bestseller',
-    rating: 4.9,
-    reviews: 98
-  },
-  {
-    id: 3,
-    name: 'Full-Grain Structured Leather Backpack',
-    price: 340,
-    originalPrice: 390,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=format&fit=crop',
-    category: 'Fashion',
-    tag: 'Handcrafted',
     rating: 4.8,
-    reviews: 215
-  },
-  {
-    id: 4,
-    name: 'Acoustic Sculptural Smart Speaker',
-    price: 189,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1543512214-318c7553f230?q=80&w=1400&auto=format&fit=crop',
-    category: 'Electronics',
-    tag: 'New',
-    rating: 4.7,
-    reviews: 76
-  },
-  {
-    id: 5,
-    name: 'Japanese Acetate Luxury Sunglasses',
-    price: 240,
-    originalPrice: 280,
-    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
-    category: 'Accessories',
-    tag: 'Seasonal',
-    rating: 4.8,
-    reviews: 110
+    reviews: 326
   },
   {
     id: 6,
-    name: 'Handcrafted Scented Atelier Candle',
-    price: 68,
-    originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1400&auto=format&fit=crop',
-    category: 'Home',
-    tag: 'Atelier',
-    rating: 4.9,
-    reviews: 180
-  },
-  {
-    id: 7,
-    name: 'Ceramic Matte Minimalist Coffee Set',
-    price: 125,
-    originalPrice: 150,
-    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1400&auto=format&fit=crop',
-    category: 'Home',
-    tag: 'Artisan',
-    rating: 4.9,
-    reviews: 94
+    name: 'Pleated Mini Skirt',
+    price: 48,
+    originalPrice: 58,
+    image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=1400&auto=format&fit=crop',
+    category: 'Bottoms',
+    tag: 'Bestseller',
+    rating: 4.7,
+    reviews: 133
   },
   {
     id: 8,
-    name: 'Vegetable-Tanned Heritage Leather Journal',
-    price: 95,
+    name: 'Classic Skinny Fit Jeans',
+    price: 68,
+    originalPrice: 82,
+    image: 'https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1400&auto=format&fit=crop',
+    category: 'Bottoms',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 241
+  },
+  {
+    id: 10,
+    name: 'Faux Leather Biker Jacket',
+    price: 148,
+    originalPrice: 178,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1400&auto=format&fit=crop',
+    category: 'Outerwear',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 97
+  },
+  {
+    id: 11,
+    name: 'Classic Denim Trucker Jacket',
+    price: 96,
     originalPrice: null,
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1400&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=1400&auto=format&fit=crop',
+    category: 'Outerwear',
+    tag: 'New In',
+    rating: 4.7,
+    reviews: 112
+  },
+  {
+    id: 13,
+    name: 'Leather Lace-Up Combat Boots',
+    price: 132,
+    originalPrice: 155,
+    image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=1400&auto=format&fit=crop',
+    category: 'Footwear',
+    tag: 'Bestseller',
+    rating: 4.8,
+    reviews: 164
+  },
+  {
+    id: 15,
+    name: 'Chunky Colorblock Sneakers',
+    price: 110,
+    originalPrice: 130,
+    image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1400&auto=format&fit=crop',
+    category: 'Footwear',
+    tag: 'New Arrival',
+    rating: 4.6,
+    reviews: 72
+  },
+  {
+    id: 17,
+    name: 'Round Metal-Frame Sunglasses',
+    price: 38,
+    originalPrice: 48,
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
     category: 'Accessories',
-    tag: 'Refillable',
-    rating: 4.9,
-    reviews: 84
+    tag: 'Bestseller',
+    rating: 4.7,
+    reviews: 198
   }
 ]
 
-const categories = ['All', 'Electronics', 'Accessories', 'Fashion', 'Home']
+const categories = ['All', 'Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Accessories']
 
 const collectionShowcases = [
   {
-    title: 'Precision Horology',
-    description: 'Timepieces designed with mechanical restraint and surgical steel.',
-    image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=900&auto=format&fit=crop',
-    link: '/products?category=Accessories'
+    title: 'Everyday Apparel',
+    description: 'Tees, knits, and dresses cut from honest, breathable fabrics.',
+    image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Tops'
   },
   {
-    title: 'Atelier Living',
-    description: 'Sensory home objects, bespoke ceramics, and pure wax formulations.',
-    image: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=900&auto=format&fit=crop',
-    link: '/products?category=Home'
+    title: 'Outerwear Edit',
+    description: 'Jackets built to layer, weather, and wear in with character.',
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Outerwear'
   },
   {
-    title: 'Tailored Leatherware',
-    description: 'Full-grain hides conditioned for decades of character and travel.',
-    image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=900&auto=format&fit=crop',
-    link: '/products?category=Fashion'
+    title: 'Footwear & Accessories',
+    description: 'Boots, sneakers, bags, and finishing pieces for every fit.',
+    image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=900&auto=format&fit=crop',
+    link: '/products?category=Footwear'
   }
 ]
 
@@ -157,10 +158,44 @@ const testimonials = [
 
 const Home = () => {
   const { addToCart, addToWishlist, wishlist } = useApp()
+  const { supabase, isConfigured } = useSupabase()
   const [activeCategory, setActiveCategory] = useState('All')
   const [newsletterEmail, setNewsletterEmail] = useState('')
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(false)
   const [addedItemNotification, setAddedItemNotification] = useState(null)
+  const [featuredProducts, setFeaturedProducts] = useState(defaultFeaturedProducts)
+
+  // Fetch featured catalog from Supabase when database is ready, otherwise fall back to local catalog
+  useEffect(() => {
+    if (!isConfigured) return
+    let isMounted = true
+
+    const fetchFeatured = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('reviews_count', { ascending: false })
+          .limit(8)
+        if (!error && data && data.length > 0 && isMounted) {
+          const normalized = data.map(item => ({
+            ...item,
+            productId: item.id,
+            price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
+            originalPrice: item.original_price ? parseFloat(item.original_price) : null,
+            image: item.image_url || item.image,
+            reviews: item.reviews_count ?? item.reviews ?? 0
+          }))
+          setFeaturedProducts(normalized)
+        }
+      } catch (err) {
+        console.warn('[Zion Atelier] Using fallback featured catalog:', err)
+      }
+    }
+
+    fetchFeatured()
+    return () => { isMounted = false }
+  }, [supabase, isConfigured])
 
   const isItemInWishlist = (productId) => {
     return wishlist.some(item => (item.productId ?? item.id) === productId)
@@ -500,7 +535,7 @@ const Home = () => {
                   Restraint. Material Honesty. Longevity.
                 </h2>
                 <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
-                  In an age of rapid disposability, Zion stands for permanence. We partner directly with master artisans across Scandinavia, Japan, and northern Italy to engineer everyday artifacts using untreated brass, aerospace-grade titanium, and organic full-grain leather.
+                  In an age of rapid disposability, Zion stands for permanence. We partner directly with mills and workshops across Portugal, Japan, and northern Italy to cut and finish everyday apparel using honest cotton, full-grain leather, and durable denim.
                 </p>
               </div>
 
@@ -531,7 +566,7 @@ const Home = () => {
                   </div>
                   <div>
                     <h4 className="font-heading font-bold text-base">Circular Longevity Guarantee</h4>
-                    <p className="text-sm text-gray-600">Every mechanical object is fully serviceable and built with modular parts.</p>
+                    <p className="text-sm text-gray-600">Every garment is cut to be repaired, re-hemmed, and worn for years.</p>
                   </div>
                 </div>
               </div>
