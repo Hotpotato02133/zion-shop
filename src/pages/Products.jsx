@@ -484,7 +484,7 @@ const Products = () => {
 
     const fetchCatalog = async () => {
       try {
-        const { data, error } = await supabase.from('products').select('*')
+        const { data, error } = await supabase.from('products').select('*').eq('is_active', true)
         if (!error && data && data.length > 0 && isMounted) {
           const normalized = data.map(item => ({
             ...item,
@@ -584,9 +584,7 @@ const Products = () => {
   }
 
   const handleAddToCart = (product, quantity = 1) => {
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product)
-    }
+    addToCart(product, quantity)
     triggerToast(`Added ${quantity > 1 ? `${quantity}x ` : ''}"${product.name}" to cart`)
   }
 

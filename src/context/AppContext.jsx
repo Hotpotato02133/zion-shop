@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
+import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react'
 import { useUser } from '@clerk/clerk-react'
 import { useSupabase } from './SupabaseContext'
 import { 
@@ -32,6 +32,19 @@ const normalizeProduct = (item) => {
     price
   }
 }
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+const isUuid = (value) => UUID_RE.test(String(value))
+
+// Map a `products` row from Supabase onto the shape the UI uses
+const mapDbProduct = (row) => ({
+  ...row,
+  productId: row.id,
+  price: typeof row.price === 'string' ? parseFloat(row.price) : row.price,
+  originalPrice: row.original_price ? parseFloat(row.original_price) : null,
+  image: row.image_url || row.image,
+  reviews: row.reviews_count ?? row.reviews ?? 0
+})
 
 // Initial state with local storage fallback
 const getInitialState = () => {
@@ -72,20 +85,21 @@ const appReducer = (state, action) => {
 
     case ADD_TO_CART: {
       const normalized = normalizeProduct(action.payload)
+      const amount = action.quantity || 1
       const existingCartItem = state.cart.find(item => item.productId === normalized.productId)
       if (existingCartItem) {
         return {
           ...state,
           cart: state.cart.map(item =>
             item.productId === normalized.productId
-              ? { ...item, quantity: item.quantity + 1 }
+              ? { ...item, quantity: item.quantity + amount }
               : item
           )
         }
       }
       return {
         ...state,
-        cart: [...state.cart, { ...normalized, quantity: 1 }]
+        cart: [...state.cart, { ...normalized, quantity: amount }]
       }
     }
 
@@ -159,7 +173,22 @@ export const AppProvider = ({ children }) => {
     }
   }, [state.cart, state.wishlist])
 
-  // Synchronize with Supabase database when user authenticates via Clerk
+  // Latest state for async handlers (avoids stale closures when computing upsert quantities)
+  const stateRef = useRef(state)
+  stateRef.current = state
+  const wasSignedIn = useRef(false)
+
+  // Shared devices: do not leave a member's bag visible after they sign out
+  useEffect(() => {
+    if (wasSignedIn.current && !isSignedIn) {
+      dispatch({ type: CLEAR_CART })
+      dispatch({ type: CLEAR_WISHLIST })
+    }
+    wasSignedIn.current = Boolean(isSignedIn)
+  }, [isSignedIn])
+
+  // Synchronize with Supabase when the user authenticates via Clerk.
+  // The guest bag is MERGED into the account so nothing is lost at the login step of checkout.
   useEffect(() => {
     if (!isSignedIn || !user || !isConfigured) return
 
@@ -173,7 +202,7 @@ export const AppProvider = ({ children }) => {
         const { error: profileError, status: profileStatus } = await supabase.from('profiles').upsert({
           id: user.id,
           email: user.primaryEmailAddress?.emailAddress,
-          full_name: user.fullName || user.firstName || 'Atelier Client',
+          full_name: user.fullName || user.firstName || 'Zion Client',
           avatar_url: user.imageUrl,
           updated_at: new Date().toISOString()
         })
@@ -187,44 +216,81 @@ export const AppProvider = ({ children }) => {
           ) {
             console.warn(
               '[Zion Atelier] Supabase authentication notice: JWT unauthorized or RLS check failed. ' +
-              'Ensure Clerk Third-Party Auth or "supabase" JWT template is configured in dashboard. Falling back to local storage.'
+              'Ensure Clerk Third-Party Auth is configured in the Supabase dashboard. Falling back to local storage.'
             )
             return
           }
           console.warn('[Zion Atelier] Profile sync warning:', profileError.message)
         }
 
-        // 2. Fetch existing cloud cart items
+        // 2. Merge guest bag with the cloud bag (higher quantity wins, so repeated logins never double up)
+        const guestCart = stateRef.current.cart
         const { data: cloudCart, error: cartError } = await supabase
           .from('cart_items')
-          .select('quantity, added_at, products (*)')
+          .select('quantity, products (*)')
           .eq('user_id', user.id)
 
         if (!cartError && cloudCart && isMounted) {
-          if (cloudCart.length > 0) {
-            const mappedCart = cloudCart.map(item => ({
-              ...item.products,
-              productId: item.products.id,
-              quantity: item.quantity
-            }))
-            dispatch({ type: SET_CART, payload: mappedCart })
+          const merged = new Map()
+          cloudCart.forEach(row => {
+            if (row.products) merged.set(row.products.id, { product: mapDbProduct(row.products), quantity: row.quantity })
+          })
+
+          // Only products that really exist in the database can be ordered
+          const guestIds = guestCart.map(i => i.productId).filter(isUuid)
+          if (guestIds.length > 0) {
+            const { data: liveProducts } = await supabase.from('products').select('*').in('id', guestIds)
+            const live = new Map((liveProducts || []).map(p => [p.id, p]))
+            const toUpsert = []
+            guestCart.forEach(item => {
+              const row = live.get(item.productId)
+              if (!row) return
+              const current = merged.get(row.id)
+              const quantity = Math.max(current?.quantity ?? 0, item.quantity)
+              merged.set(row.id, { product: mapDbProduct(row), quantity })
+              if (quantity !== current?.quantity) {
+                toUpsert.push({ user_id: user.id, product_id: row.id, quantity })
+              }
+            })
+            if (toUpsert.length > 0) {
+              const { error } = await supabase.from('cart_items').upsert(toUpsert, { onConflict: 'user_id,product_id' })
+              if (error) console.warn('[Zion Atelier] Guest bag merge warning:', error.message)
+            }
+          }
+
+          if (isMounted) {
+            dispatch({
+              type: SET_CART,
+              payload: [...merged.values()].map(({ product, quantity }) => ({ ...product, quantity }))
+            })
           }
         }
 
-        // 3. Fetch existing cloud wishlist items
+        // 3. Merge wishlist (union)
+        const guestWishlist = stateRef.current.wishlist
         const { data: cloudWishlist, error: wishlistError } = await supabase
           .from('wishlist_items')
-          .select('added_at, products (*)')
+          .select('products (*)')
           .eq('user_id', user.id)
 
         if (!wishlistError && cloudWishlist && isMounted) {
-          if (cloudWishlist.length > 0) {
-            const mappedWishlist = cloudWishlist.map(item => ({
-              ...item.products,
-              productId: item.products.id
-            }))
-            dispatch({ type: SET_WISHLIST, payload: mappedWishlist })
+          const merged = new Map()
+          cloudWishlist.forEach(row => {
+            if (row.products) merged.set(row.products.id, mapDbProduct(row.products))
+          })
+          const guestIds = guestWishlist.map(i => i.productId).filter(id => isUuid(id) && !merged.has(id))
+          if (guestIds.length > 0) {
+            const { data: liveProducts } = await supabase.from('products').select('*').in('id', guestIds)
+            const rows = liveProducts || []
+            rows.forEach(row => merged.set(row.id, mapDbProduct(row)))
+            if (rows.length > 0) {
+              await supabase.from('wishlist_items').upsert(
+                rows.map(row => ({ user_id: user.id, product_id: row.id })),
+                { onConflict: 'user_id,product_id' }
+              )
+            }
           }
+          if (isMounted) dispatch({ type: SET_WISHLIST, payload: [...merged.values()] })
         }
       } catch (err) {
         console.warn('[Zion Atelier] Cloud sync warning:', err)
@@ -242,17 +308,18 @@ export const AppProvider = ({ children }) => {
     }
   }, [isSignedIn, user, isConfigured, supabase])
 
-  const addToCart = (product) => {
-    dispatch({ type: ADD_TO_CART, payload: product })
-    if (isSignedIn && user && isConfigured) {
-      const pid = product.productId ?? product.id
+  const addToCart = (product, quantity = 1) => {
+    const pid = product.productId ?? product.id
+    const existing = stateRef.current.cart.find(item => item.productId === pid)
+    const nextQuantity = (existing?.quantity ?? 0) + quantity
+    dispatch({ type: ADD_TO_CART, payload: product, quantity })
+    if (isSignedIn && user && isConfigured && isUuid(pid)) {
       ;(async () => {
         try {
-          const { error } = await supabase.from('cart_items').upsert({
-            user_id: user.id,
-            product_id: pid,
-            quantity: 1
-          })
+          const { error } = await supabase.from('cart_items').upsert(
+            { user_id: user.id, product_id: pid, quantity: nextQuantity },
+            { onConflict: 'user_id,product_id' }
+          )
           if (error) console.warn('[Zion Atelier] Supabase cart sync warning:', error.message)
         } catch (err) {
           console.warn('[Zion Atelier] Unexpected cart sync error:', err)
@@ -298,14 +365,14 @@ export const AppProvider = ({ children }) => {
 
   const addToWishlist = (product) => {
     dispatch({ type: ADD_TO_WISHLIST, payload: product })
-    if (isSignedIn && user && isConfigured) {
-      const pid = product.productId ?? product.id
+    const pid = product.productId ?? product.id
+    if (isSignedIn && user && isConfigured && isUuid(pid)) {
       ;(async () => {
         try {
           const { error } = await supabase.from('wishlist_items').upsert({
             user_id: user.id,
             product_id: pid
-          })
+          }, { onConflict: 'user_id,product_id' })
           if (error) console.warn('[Zion Atelier] Supabase wishlist sync warning:', error.message)
         } catch (err) {
           console.warn('[Zion Atelier] Unexpected wishlist sync error:', err)
@@ -330,6 +397,9 @@ export const AppProvider = ({ children }) => {
       })()
     }
   }
+
+  // Local-only reset, used after place_order() has already emptied the cloud bag
+  const resetLocalCart = () => dispatch({ type: CLEAR_CART })
 
   const clearCart = () => {
     dispatch({ type: CLEAR_CART })
@@ -380,6 +450,7 @@ export const AppProvider = ({ children }) => {
     addToWishlist,
     removeFromWishlist,
     clearCart,
+    resetLocalCart,
     clearWishlist,
     moveToCart
   }

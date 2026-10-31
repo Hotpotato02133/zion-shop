@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { SignIn, useAuth } from '@clerk/clerk-react'
 import { 
   Mail, 
@@ -15,6 +15,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { luxuryClerkAppearance } from '../lib/clerkTheme'
+import { captureRedirect, clearRedirect } from '../lib/redirect'
 
 const isClerkConfigured = Boolean(
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY &&
@@ -23,13 +24,17 @@ const isClerkConfigured = Boolean(
 
 const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  // Where to send the user after auth (e.g. back to /checkout)
+  const redirectTo = captureRedirect(location.search)
   const { isSignedIn } = useAuth()
 
   useEffect(() => {
     if (isSignedIn) {
-      navigate('/products')
+      clearRedirect()
+      navigate(redirectTo, { replace: true })
     }
-  }, [isSignedIn, navigate])
+  }, [isSignedIn, navigate, redirectTo])
   
   const [formData, setFormData] = useState({
     email: '',
@@ -71,7 +76,7 @@ const Login = () => {
       setIsLoading(false)
       showToast(`Welcome back, ${formData.email.split('@')[0]}! Accessing Atelier...`)
       setTimeout(() => {
-        navigate('/products')
+        navigate(redirectTo)
       }, 1200)
     }, 800)
   }
@@ -82,7 +87,7 @@ const Login = () => {
       setIsLoading(false)
       showToast('Authenticated via Google. Welcome to Zion!')
       setTimeout(() => {
-        navigate('/products')
+        navigate(redirectTo)
       }, 1000)
     }, 700)
   }
@@ -124,7 +129,7 @@ const Login = () => {
                 routing="path" 
                 path="/login" 
                 signUpUrl="/signup" 
-                fallbackRedirectUrl="/products"
+                forceRedirectUrl={redirectTo}
                 appearance={luxuryClerkAppearance} 
               />
             </div>

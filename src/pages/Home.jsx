@@ -175,6 +175,7 @@ const Home = () => {
         const { data, error } = await supabase
           .from('products')
           .select('*')
+          .eq('is_active', true)
           .order('reviews_count', { ascending: false })
           .limit(8)
         if (!error && data && data.length > 0 && isMounted) {

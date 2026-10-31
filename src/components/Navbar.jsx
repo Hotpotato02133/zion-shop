@@ -18,8 +18,8 @@ import {
   Clock,
   ShieldCheck
 } from 'lucide-react'
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react'
-import { luxuryClerkAppearance } from '../lib/clerkTheme'
+import { SignedIn, SignedOut } from '@clerk/clerk-react'
+import AccountMenu from './AccountMenu'
 import { useApp } from '../context/AppContext'
 
 const ANNOUNCEMENTS = [
@@ -254,10 +254,9 @@ const Navbar = () => {
             </Link>
             <span className="text-neutral-700">|</span>
             <SignedIn>
-              <span className="text-neutral-300 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-                <span>Salon Active</span>
-              </span>
+              <Link to="/orders" className="hover:text-white transition-colors">
+                My Orders
+              </Link>
             </SignedIn>
             <SignedOut>
               <Link to="/login" className="hover:text-white transition-colors">
@@ -424,10 +423,7 @@ const Navbar = () => {
               {/* Account Dropdown Trigger / UserButton */}
               <SignedIn>
                 <div className="flex items-center pl-1 sm:pl-2">
-                  <UserButton 
-                    appearance={luxuryClerkAppearance} 
-                    afterSignOutUrl="/" 
-                  />
+                  <AccountMenu />
                 </div>
               </SignedIn>
 
@@ -862,7 +858,7 @@ const Navbar = () => {
                 <SignedIn>
                   <div className="flex items-center justify-between p-3 bg-white border border-neutral-200 rounded-xl">
                     <div className="flex items-center gap-3">
-                      <UserButton appearance={luxuryClerkAppearance} afterSignOutUrl="/" />
+                      <AccountMenu />
                       <div>
                         <p className="text-xs font-bold text-neutral-900">Atelier Client</p>
                         <p className="text-[10px] text-neutral-400">Authenticated Member</p>

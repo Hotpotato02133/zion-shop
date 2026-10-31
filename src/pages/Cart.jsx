@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '@clerk/clerk-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Minus, 
@@ -11,26 +12,22 @@ import {
   Truck, 
   RotateCcw, 
   Tag, 
-  Check, 
   X, 
   CreditCard, 
-  Smartphone, 
   Lock, 
-  Sparkles,
-  Receipt,
-  Gift
+  Gift,
+  UserPlus
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import CheckoutSteps from '../components/CheckoutSteps'
+import { PROMOS, computeTotals, saveCheckoutExtras, toPrice } from '../lib/pricing'
+import { loginUrlFor, rememberRedirect } from '../lib/redirect'
 
 const Cart = () => {
-  const { cart, updateCartQuantity, removeFromCart, clearCart } = useApp()
+  const { cart, updateCartQuantity, removeFromCart } = useApp()
+  const { isLoaded, isSignedIn } = useAuth()
+  const navigate = useNavigate()
 
-  // Checkout modal & state
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false)
-  const [checkoutStep, setCheckoutStep] = useState('form') // 'form', 'processing', 'success'
-  const [paymentMethod, setPaymentMethod] = useState('card') // 'card', 'gcash', 'maya'
-  const [completedOrder, setCompletedOrder] = useState(null)
-  
   // Promo code state
   const [promoCode, setPromoCode] = useState('')
   const [appliedPromo, setAppliedPromo] = useState(null)
@@ -39,20 +36,6 @@ const Cart = () => {
   // Gift option
   const [isGiftWrapped, setIsGiftWrapped] = useState(false)
   const [giftNote, setGiftNote] = useState('')
-
-  // Checkout form data
-  const [customerInfo, setCustomerInfo] = useState({
-    fullName: 'Alexander Vance',
-    email: 'a.vance@atelier-private.com',
-    address: '450 Via Montenapoleone',
-    city: 'Milan',
-    postalCode: '20121',
-    country: 'Italy',
-    cardNumber: '4242 •••• •••• 4242',
-    cardExp: '12/28',
-    cardCvc: '888',
-    gcashNumber: '0917 888 2390'
-  })
 
   // Animation variants
   const fadeInUp = {
@@ -71,32 +54,7 @@ const Cart = () => {
     }
   }
 
-  // Helper calculations
-  const calculateSubtotal = () => {
-    return cart.reduce((total, item) => {
-      const price = typeof item.price === 'number' 
-        ? item.price 
-        : parseFloat(String(item.price).replace(/[^0-9.-]+/g, '')) || 0
-      return total + (price * item.quantity)
-    }, 0)
-  }
-
-  const subtotal = calculateSubtotal()
-  
-  // Discount calculation
-  let discountAmount = 0
-  if (appliedPromo) {
-    if (appliedPromo.type === 'percent') {
-      discountAmount = subtotal * appliedPromo.value
-    } else if (appliedPromo.type === 'fixed') {
-      discountAmount = Math.min(subtotal, appliedPromo.value)
-    }
-  }
-
-  const discountedSubtotal = Math.max(0, subtotal - discountAmount)
-  const tax = discountedSubtotal * 0.08 // 8% luxury sales tax
-  const shipping = subtotal > 150 ? 0 : 25
-  const total = discountedSubtotal + tax + shipping
+  const { subtotal, discount: discountAmount, tax, shipping, total } = computeTotals(cart, appliedPromo)
 
   // Promo Code Handler
   const handleApplyPromo = (e) => {
@@ -104,11 +62,8 @@ const Cart = () => {
     setPromoError('')
     const code = promoCode.trim().toUpperCase()
 
-    if (code === 'ZION10') {
-      setAppliedPromo({ code: 'ZION10', type: 'percent', value: 0.1, label: '10% Private Atelier Privilege' })
-      setPromoCode('')
-    } else if (code === 'ATELIER') {
-      setAppliedPromo({ code: 'ATELIER', type: 'fixed', value: 50, label: '$50 Off Welcome Benefit' })
+    if (PROMOS[code]) {
+      setAppliedPromo(PROMOS[code])
       setPromoCode('')
     } else {
       setPromoError('Invalid privilege code. Try "ZION10" or "ATELIER"')
@@ -120,34 +75,25 @@ const Cart = () => {
     setPromoError('')
   }
 
-  // Simulated Checkout Execution (PayMongo Sandbox)
-  const handleExecuteCheckout = (e) => {
-    e.preventDefault()
-    setCheckoutStep('processing')
+  // Checkout requires an account: guests are sent to login and brought straight back to /checkout
+  const handleCheckout = () => {
+    saveCheckoutExtras({ promo: appliedPromo?.code, giftNote: isGiftWrapped ? giftNote : '' })
+    if (isSignedIn) {
+      navigate('/checkout')
+      return
+    }
+    rememberRedirect('/checkout')
+    navigate(loginUrlFor('/checkout'))
+  }
 
-    // Simulate PayMongo test payment round-trip
-    setTimeout(() => {
-      const orderRef = `ZION-${Math.floor(100000 + Math.random() * 900000)}`
-      const paymongoRef = `pay_sbox_${Math.random().toString(36).substring(2, 14)}`
-
-      setCompletedOrder({
-        orderId: orderRef,
-        paymentReference: paymongoRef,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-        items: [...cart],
-        total: total.toFixed(2),
-        paymentMethod: paymentMethod === 'card' ? 'Visa (Test Sandbox)' : paymentMethod === 'gcash' ? 'GCash Sandbox' : 'Maya Sandbox',
-        shippingAddress: `${customerInfo.address}, ${customerInfo.city}, ${customerInfo.postalCode}`,
-        recipient: customerInfo.fullName
-      })
-
-      setCheckoutStep('success')
-      clearCart()
-    }, 2000)
+  const handleCreateAccount = () => {
+    saveCheckoutExtras({ promo: appliedPromo?.code, giftNote: isGiftWrapped ? giftNote : '' })
+    rememberRedirect('/checkout')
+    navigate('/signup?redirect=' + encodeURIComponent('/checkout'))
   }
 
   // Empty State
-  if (cart.length === 0 && checkoutStep !== 'success') {
+  if (cart.length === 0) {
     return (
       <div className="min-h-[80vh] w-full flex items-center justify-center py-16 bg-white text-neutral-950 font-body overflow-x-clip">
         <div className="w-full max-w-lg mx-auto px-4 sm:px-6 text-center">
@@ -201,6 +147,9 @@ const Cart = () => {
           className="mb-10 border-b border-neutral-100 pb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4"
         >
           <div>
+            <motion.div variants={fadeInUp} className="mb-5">
+              <CheckoutSteps current={0} />
+            </motion.div>
             <motion.span variants={fadeInUp} className="text-xs uppercase tracking-widest font-semibold text-neutral-400 block mb-2">
               Private Order
             </motion.span>
@@ -225,9 +174,7 @@ const Cart = () => {
             
             <AnimatePresence>
               {cart.map((item) => {
-                const itemPrice = typeof item.price === 'number' 
-                  ? item.price 
-                  : parseFloat(String(item.price).replace(/[^0-9.-]+/g, '')) || 0
+                const itemPrice = toPrice(item.price)
                 const itemLineTotal = (itemPrice * item.quantity).toFixed(2)
 
                 return (
@@ -436,20 +383,32 @@ const Cart = () => {
                 )}
               </div>
 
-              {/* Proceed to Checkout CTA */}
+              {/* Checkout CTA: members go straight to checkout, guests are asked to sign in first */}
               <motion.button
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => {
-                  setCheckoutStep('form')
-                  setIsCheckoutOpen(true)
-                }}
-                className="w-full bg-neutral-950 text-white py-4 rounded-2xl text-xs font-semibold tracking-wider uppercase hover:bg-black transition-colors shadow-lg shadow-black/10 flex items-center justify-center gap-2 group"
+                onClick={handleCheckout}
+                disabled={!isLoaded}
+                className="w-full bg-neutral-950 text-white py-4 rounded-2xl text-xs font-semibold tracking-wider uppercase hover:bg-black transition-colors shadow-lg shadow-black/10 flex items-center justify-center gap-2 group disabled:opacity-60"
               >
                 <Lock size={15} />
-                <span>Proceed to Checkout</span>
+                <span>{isSignedIn ? 'Proceed to Checkout' : 'Sign in to Checkout'}</span>
                 <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
               </motion.button>
+
+              {isLoaded && !isSignedIn && (
+                <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 space-y-2.5">
+                  <p className="text-xs text-neutral-600 leading-relaxed">
+                    Your bag is saved. Sign in to enter delivery details, pay securely and track your order.
+                  </p>
+                  <button
+                    onClick={handleCreateAccount}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-950 hover:underline"
+                  >
+                    <UserPlus size={13} /> New here? Create an account
+                  </button>
+                </div>
+              )}
 
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-2 text-center text-[10px] text-neutral-400 pt-2 border-t border-neutral-50">
@@ -459,7 +418,7 @@ const Cart = () => {
                 </div>
                 <div className="flex flex-col items-center gap-1">
                   <CreditCard size={16} className="text-neutral-600" />
-                  <span>PayMongo Sandbox</span>
+                  <span>Secure Payments</span>
                 </div>
                 <div className="flex flex-col items-center gap-1">
                   <RotateCcw size={16} className="text-neutral-600" />
@@ -473,319 +432,6 @@ const Cart = () => {
         </div>
 
       </div>
-
-      {/* PAYMONGO SANDBOX CHECKOUT MODAL */}
-      <AnimatePresence>
-        {isCheckoutOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-10">
-            
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => { if (checkoutStep !== 'processing') setIsCheckoutOpen(false); }}
-              className="fixed inset-0 bg-neutral-950/70 backdrop-blur-xl"
-            />
-
-            {/* Modal Container */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 24 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, y: 16 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white rounded-[28px] shadow-[0_30px_90px_-20px_rgba(0,0,0,0.4)] z-10 p-6 sm:p-8"
-            >
-              {checkoutStep !== 'processing' && (
-                <button
-                  onClick={() => setIsCheckoutOpen(false)}
-                  className="absolute top-5 right-5 p-2.5 rounded-full bg-white/90 backdrop-blur-md text-neutral-900 shadow-lg hover:bg-black hover:text-white transition-all duration-200 z-20"
-                >
-                  <X size={16} strokeWidth={2.25} />
-                </button>
-              )}
-
-              {/* STEP 1: CHECKOUT FORM */}
-              {checkoutStep === 'form' && (
-                <div className="space-y-6">
-                  
-                  {/* Sandbox Banner */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs">
-                    <Sparkles size={18} className="shrink-0 text-amber-600" />
-                    <div>
-                      <strong className="font-semibold">PayMongo Sandbox Environment Active</strong>
-                      <p className="text-[11px] text-amber-700">Simulated test checkout. No real money will be charged.</p>
-                    </div>
-                  </div>
-
-                  <div className="border-b border-neutral-100 pb-4">
-                    <h2 className="font-heading text-2xl font-bold tracking-tight text-neutral-950">Express Checkout</h2>
-                    <p className="text-xs text-neutral-500 mt-1">Order total: <strong className="text-neutral-950 font-semibold">${total.toFixed(2)}</strong> ({cart.length} line items)</p>
-                  </div>
-
-                  <form onSubmit={handleExecuteCheckout} className="space-y-5">
-
-                    {/* Shipping Address Details */}
-                    <div className="space-y-3">
-                      <p className="text-xs uppercase tracking-wider font-semibold text-neutral-900">1. Dispatch Address</p>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <input
-                          type="text"
-                          required
-                          placeholder="Full Name"
-                          value={customerInfo.fullName}
-                          onChange={(e) => setCustomerInfo({ ...customerInfo, fullName: e.target.value })}
-                          className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                        <input
-                          type="email"
-                          required
-                          placeholder="Email Address"
-                          value={customerInfo.email}
-                          onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                          className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                      </div>
-
-                      <input
-                        type="text"
-                        required
-                        placeholder="Street Address"
-                        value={customerInfo.address}
-                        onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
-                        className="w-full p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                      />
-
-                      <div className="grid grid-cols-3 gap-3">
-                        <input
-                          type="text"
-                          required
-                          placeholder="City"
-                          value={customerInfo.city}
-                          onChange={(e) => setCustomerInfo({ ...customerInfo, city: e.target.value })}
-                          className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                        <input
-                          type="text"
-                          required
-                          placeholder="Postal Code"
-                          value={customerInfo.postalCode}
-                          onChange={(e) => setCustomerInfo({ ...customerInfo, postalCode: e.target.value })}
-                          className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                        <input
-                          type="text"
-                          required
-                          placeholder="Country"
-                          value={customerInfo.country}
-                          onChange={(e) => setCustomerInfo({ ...customerInfo, country: e.target.value })}
-                          className="p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-xs focus:outline-none focus:ring-2 focus:ring-black"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Payment Method Selector */}
-                    <div className="space-y-3 pt-3 border-t border-neutral-100">
-                      <p className="text-xs uppercase tracking-wider font-semibold text-neutral-900">2. Payment Method (PayMongo)</p>
-
-                      <div className="grid grid-cols-3 gap-2.5">
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethod('card')}
-                          className={`p-3 rounded-2xl border text-center transition-all ${
-                            paymentMethod === 'card'
-                              ? 'border-black bg-neutral-950 text-white shadow-sm'
-                              : 'border-neutral-200 hover:bg-neutral-50 text-neutral-700'
-                          }`}
-                        >
-                          <CreditCard size={18} className="mx-auto mb-1" />
-                          <span className="text-[11px] font-bold block">Credit Card</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethod('gcash')}
-                          className={`p-3 rounded-2xl border text-center transition-all ${
-                            paymentMethod === 'gcash'
-                              ? 'border-blue-600 bg-blue-600 text-white shadow-sm'
-                              : 'border-neutral-200 hover:bg-neutral-50 text-neutral-700'
-                          }`}
-                        >
-                          <Smartphone size={18} className="mx-auto mb-1" />
-                          <span className="text-[11px] font-bold block">GCash Pay</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => setPaymentMethod('maya')}
-                          className={`p-3 rounded-2xl border text-center transition-all ${
-                            paymentMethod === 'maya'
-                              ? 'border-emerald-600 bg-emerald-600 text-white shadow-sm'
-                              : 'border-neutral-200 hover:bg-neutral-50 text-neutral-700'
-                          }`}
-                        >
-                          <Smartphone size={18} className="mx-auto mb-1" />
-                          <span className="text-[11px] font-bold block">Maya Wallet</span>
-                        </button>
-                      </div>
-
-                      {/* Card Details View */}
-                      {paymentMethod === 'card' && (
-                        <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-3">
-                          <div className="flex items-center justify-between text-[11px] text-neutral-500">
-                            <span>Test Card Number</span>
-                            <span className="text-emerald-700 font-semibold">Ready for authorization</span>
-                          </div>
-
-                          <input
-                            type="text"
-                            required
-                            placeholder="Card Number"
-                            value={customerInfo.cardNumber}
-                            onChange={(e) => setCustomerInfo({ ...customerInfo, cardNumber: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-white border border-neutral-200 text-xs font-mono"
-                          />
-
-                          <div className="grid grid-cols-2 gap-2.5">
-                            <input
-                              type="text"
-                              required
-                              placeholder="MM/YY"
-                              value={customerInfo.cardExp}
-                              onChange={(e) => setCustomerInfo({ ...customerInfo, cardExp: e.target.value })}
-                              className="p-2.5 rounded-xl bg-white border border-neutral-200 text-xs font-mono"
-                            />
-                            <input
-                              type="text"
-                              required
-                              placeholder="CVC"
-                              value={customerInfo.cardCvc}
-                              onChange={(e) => setCustomerInfo({ ...customerInfo, cardCvc: e.target.value })}
-                              className="p-2.5 rounded-xl bg-white border border-neutral-200 text-xs font-mono"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Mobile Wallet View */}
-                      {(paymentMethod === 'gcash' || paymentMethod === 'maya') && (
-                        <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-2">
-                          <p className="text-xs text-neutral-600">
-                            Simulated test wallet number:
-                          </p>
-                          <input
-                            type="text"
-                            required
-                            value={customerInfo.gcashNumber}
-                            onChange={(e) => setCustomerInfo({ ...customerInfo, gcashNumber: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-white border border-neutral-200 text-xs font-mono"
-                          />
-                        </div>
-                      )}
-
-                    </div>
-
-                    {/* Authorize & Pay CTA */}
-                    <motion.button
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      type="submit"
-                      className="w-full bg-neutral-950 text-white py-4 rounded-2xl text-xs font-semibold tracking-wider uppercase hover:bg-black transition-colors shadow-lg shadow-black/10 flex items-center justify-center gap-2 mt-4"
-                    >
-                      <Lock size={14} />
-                      <span>Authorize Payment (${total.toFixed(2)})</span>
-                    </motion.button>
-
-                  </form>
-
-                </div>
-              )}
-
-              {/* STEP 2: PROCESSING ANIMATION */}
-              {checkoutStep === 'processing' && (
-                <div className="py-16 text-center space-y-6">
-                  <div className="w-16 h-16 rounded-full border-4 border-neutral-100 border-t-black animate-spin mx-auto" />
-                  <div className="space-y-2">
-                    <h3 className="font-heading text-2xl font-bold text-neutral-950">Connecting to PayMongo...</h3>
-                    <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Simulating encrypted TLS handshake and sandbox payment authorization.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* STEP 3: ORDER SUCCESS SCREEN */}
-              {checkoutStep === 'success' && completedOrder && (
-                <div className="py-6 space-y-6">
-                  <div className="text-center space-y-3">
-                    <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-md">
-                      <Check size={32} strokeWidth={2.5} />
-                    </div>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
-                      Payment Approved • Sandbox Test Mode
-                    </span>
-                    <h2 className="font-heading text-3xl font-extrabold tracking-tight text-neutral-950">Order Confirmed</h2>
-                    <p className="text-xs text-neutral-500 max-w-sm mx-auto">
-                      Thank you for your patronage. Your atelier order has been logged into the fulfillment queue.
-                    </p>
-                  </div>
-
-                  {/* Receipt Breakdown Card */}
-                  <div className="p-6 rounded-2xl bg-neutral-50 border border-neutral-200 text-xs space-y-3">
-                    <div className="flex justify-between border-b border-neutral-200 pb-2.5">
-                      <span className="text-neutral-500">Order Reference</span>
-                      <span className="font-mono font-bold text-neutral-950">{completedOrder.orderId}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-2.5">
-                      <span className="text-neutral-500">Payment Reference</span>
-                      <span className="font-mono text-neutral-700">{completedOrder.paymentReference}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-2.5">
-                      <span className="text-neutral-500">Payment Method</span>
-                      <span className="font-medium text-neutral-900">{completedOrder.paymentMethod}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-2.5">
-                      <span className="text-neutral-500">Dispatch Recipient</span>
-                      <span className="font-medium text-neutral-900">{completedOrder.recipient}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-neutral-200 pb-2.5">
-                      <span className="text-neutral-500">Destination</span>
-                      <span className="font-medium text-neutral-900 text-right max-w-xs truncate">{completedOrder.shippingAddress}</span>
-                    </div>
-                    <div className="flex justify-between pt-1 text-sm font-bold text-neutral-950">
-                      <span>Total Paid</span>
-                      <span>${completedOrder.total}</span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                    <button
-                      onClick={() => {
-                        window.print()
-                      }}
-                      className="flex-1 py-3.5 px-4 rounded-xl border border-neutral-200 hover:bg-neutral-50 text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 text-neutral-900"
-                    >
-                      <Receipt size={14} />
-                      <span>Print Receipt</span>
-                    </button>
-
-                    <Link to="/products" className="flex-1" onClick={() => setIsCheckoutOpen(false)}>
-                      <button className="w-full py-3.5 px-4 rounded-xl bg-neutral-950 text-white hover:bg-black text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-black/10">
-                        <span>Continue Shopping</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    </Link>
-                  </div>
-
-                </div>
-              )}
-
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
 
     </div>
   )
