@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Eye, EyeOff, Pencil, Plus, Trash2, Upload, X } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { AlertTriangle, Eye, EyeOff, Pencil, Plus, Trash2, Upload, X } from 'lucide-react'
+import { useAdminAlerts } from './AdminAlerts'
 import { useSupabase } from '../../context/SupabaseContext'
 import { friendlyError, money } from '../../lib/orders'
 
 const DEFAULT_CATEGORIES = ['Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Accessories']
 const EMPTY = {
   name: '', description: '', price: '', original_price: '', category: 'Tops', tag: '',
-  stock: 10, image_url: '', gallery: '', specs: '', is_active: true
+  stock: 10, low_stock_threshold: 5, image_url: '', gallery: '', specs: '', is_active: true
 }
 
 const inputClass = 'w-full p-3 rounded-xl border border-neutral-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black'
@@ -70,6 +72,7 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
       category: form.category.trim(),
       tag: form.tag.trim() || null,
       stock: Math.max(0, parseInt(form.stock, 10) || 0),
+      low_stock_threshold: Math.max(0, parseInt(form.low_stock_threshold, 10) || 0),
       image_url: form.image_url.trim() || null,
       gallery: form.gallery.split('\n').map(s => s.trim()).filter(Boolean),
       specs: parseSpecs(form.specs),
@@ -102,7 +105,7 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
           <textarea rows={3} className={inputClass} value={form.description} onChange={update('description')} />
         </Field>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
           <Field label="Price ($)">
             <input required type="number" min="0" step="0.01" className={inputClass} value={form.price} onChange={update('price')} />
           </Field>
@@ -111,6 +114,9 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
           </Field>
           <Field label="Stock">
             <input required type="number" min="0" step="1" className={inputClass} value={form.stock} onChange={update('stock')} />
+          </Field>
+          <Field label="Alert at">
+            <input required type="number" min="0" step="1" title="Notify me when stock falls to this number" className={inputClass} value={form.low_stock_threshold} onChange={update('low_stock_threshold')} />
           </Field>
           <Field label="Tag">
             <input placeholder="New In" className={inputClass} value={form.tag} onChange={update('tag')} />
@@ -168,6 +174,11 @@ const AdminProducts = () => {
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
   const [editing, setEditing] = useState(null) // null | 'new' | product
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { refresh: refreshAlerts, lastUpdated } = useAdminAlerts()
+  const lowOnly = searchParams.get('filter') === 'low'
+  const [restockId, setRestockId] = useState(null)
+  const [restockQty, setRestockQty] = useState(10)
 
   const load = useCallback(async () => {
     const { data, error: fetchError } = await supabase.from('products').select('*').order('created_at', { ascending: false })
@@ -176,14 +187,32 @@ const AdminProducts = () => {
     setLoading(false)
   }, [supabase])
 
-  useEffect(() => { load() }, [load])
+  useEffect(() => { load() }, [load, lastUpdated])
 
   const categories = useMemo(
     () => [...new Set([...DEFAULT_CATEGORIES, ...products.map(p => p.category).filter(Boolean)])],
     [products]
   )
 
-  const visible = products.filter(p => p.name.toLowerCase().includes(query.trim().toLowerCase()))
+  const isLow = (p) => p.stock <= (p.low_stock_threshold ?? 5)
+  const lowCount = products.filter(p => p.is_active && isLow(p)).length
+  const visible = products
+    .filter(p => p.name.toLowerCase().includes(query.trim().toLowerCase()))
+    .filter(p => !lowOnly || (p.is_active && isLow(p)))
+    .sort((a, b) => (lowOnly ? a.stock - b.stock : 0))
+
+  const restock = async (product) => {
+    const qty = parseInt(restockQty, 10)
+    if (!qty || qty < 1) return
+    const { error: updateError } = await supabase.from('products').update({ stock: product.stock + qty }).eq('id', product.id)
+    if (updateError) {
+      setError(friendlyError(updateError))
+      return
+    }
+    setRestockId(null)
+    load()
+    refreshAlerts()
+  }
 
   const toggleActive = async (product) => {
     const { error: updateError } = await supabase.from('products').update({ is_active: !product.is_active }).eq('id', product.id)
@@ -201,7 +230,16 @@ const AdminProducts = () => {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products…" className="w-full sm:w-80 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
+        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products…" className="flex-1 sm:w-72 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
+          <button
+            onClick={() => setSearchParams(lowOnly ? {} : { filter: 'low' })}
+            aria-pressed={lowOnly}
+            className={`inline-flex items-center gap-2 px-4 rounded-xl border text-xs font-semibold ${lowOnly ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50'}`}
+          >
+            <AlertTriangle size={14} /> Low stock {lowCount > 0 && `(${lowCount})`}
+          </button>
+        </div>
         <button onClick={() => setEditing('new')} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-950 text-white text-xs font-semibold uppercase tracking-wider">
           <Plus size={14} /> Add product
         </button>
@@ -221,7 +259,7 @@ const AdminProducts = () => {
             {loading ? (
               <tr><td colSpan={6} className="p-8 text-center text-neutral-400">Loading…</td></tr>
             ) : visible.length === 0 ? (
-              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">No products yet. Add your first one.</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">{lowOnly ? 'Nothing needs restocking. 🎉' : 'No products yet. Add your first one.'}</td></tr>
             ) : visible.map(p => (
               <tr key={p.id} className={p.is_active ? '' : 'opacity-60'}>
                 <td className="p-4">
@@ -232,7 +270,31 @@ const AdminProducts = () => {
                 </td>
                 <td className="p-4 text-neutral-500">{p.category}</td>
                 <td className="p-4 text-right">{money(p.price)}</td>
-                <td className={`p-4 text-right font-semibold ${p.stock <= 5 ? 'text-amber-700' : ''}`}>{p.stock}</td>
+                <td className="p-4 text-right">
+                  {restockId === p.id ? (
+                    <form onSubmit={e => { e.preventDefault(); restock(p) }} className="inline-flex items-center gap-1">
+                      <span className="text-xs text-neutral-400">+</span>
+                      <input
+                        autoFocus type="number" min="1" value={restockQty} onChange={e => setRestockQty(e.target.value)}
+                        className="w-16 p-1.5 rounded-lg border border-neutral-300 text-sm text-right" aria-label={`Units to add to ${p.name}`}
+                      />
+                      <button type="submit" className="px-2 py-1.5 rounded-lg bg-neutral-950 text-white text-xs font-semibold">Add</button>
+                      <button type="button" onClick={() => setRestockId(null)} className="p-1.5 text-neutral-400" aria-label="Cancel restock"><X size={13} /></button>
+                    </form>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 justify-end">
+                      <span className={`font-semibold ${p.stock === 0 ? 'text-red-600' : isLow(p) ? 'text-amber-700' : ''}`}>
+                        {p.stock === 0 ? 'Sold out' : p.stock}
+                      </span>
+                      <button
+                        onClick={() => { setRestockId(p.id); setRestockQty(10) }}
+                        className={`px-2 py-1 rounded-lg border text-[11px] font-semibold ${isLow(p) ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-neutral-200 text-neutral-500 hover:bg-neutral-50'}`}
+                      >
+                        + Restock
+                      </button>
+                    </div>
+                  )}
+                </td>
                 <td className="p-4 text-xs">{p.is_active ? 'Visible' : 'Hidden'}</td>
                 <td className="p-4">
                   <div className="flex justify-end gap-1">
@@ -254,7 +316,7 @@ const AdminProducts = () => {
           product={editing === 'new' ? null : editing}
           categories={categories}
           onClose={() => setEditing(null)}
-          onSaved={() => { setEditing(null); load() }}
+          onSaved={() => { setEditing(null); load(); refreshAlerts() }}
         />
       )}
     </div>

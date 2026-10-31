@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AlertTriangle, DollarSign, PackageCheck, RotateCcw, ShoppingBag } from 'lucide-react'
 import { useSupabase } from '../../context/SupabaseContext'
+import { useAdminAlerts } from './AdminAlerts'
 import StatusBadge from '../../components/orders/StatusBadge'
 import { ORDER_TABS, formatDate, money } from '../../lib/orders'
-
-const LOW_STOCK = 5
 
 const Stat = ({ icon, label, value, to }) => (
   <Link to={to} className="p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm hover:shadow-md transition-shadow">
@@ -19,8 +18,8 @@ const Stat = ({ icon, label, value, to }) => (
 
 const AdminDashboard = () => {
   const { supabase } = useSupabase()
+  const { lowStock, lastUpdated } = useAdminAlerts()
   const [orders, setOrders] = useState([])
-  const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -28,16 +27,15 @@ const AdminDashboard = () => {
     let cancelled = false
     Promise.all([
       supabase.from('orders').select('id, order_number, status, payment_status, total, customer_name, created_at').order('created_at', { ascending: false }),
-      supabase.from('products').select('id, name, stock, is_active')
+      supabase.from('products').select('id')
     ]).then(([o, p]) => {
       if (cancelled) return
       if (o.error || p.error) setError((o.error || p.error).message)
       setOrders(o.data || [])
-      setProducts(p.data || [])
       setLoading(false)
     })
     return () => { cancelled = true }
-  }, [supabase])
+  }, [supabase, lastUpdated])
 
   const stats = useMemo(() => {
     const byStatus = {}
@@ -47,8 +45,6 @@ const AdminDashboard = () => {
       .reduce((sum, o) => sum + Number(o.total), 0)
     return { byStatus, revenue }
   }, [orders])
-
-  const lowStock = products.filter(p => p.is_active && p.stock <= LOW_STOCK).sort((a, b) => a.stock - b.stock)
 
   if (loading) return <div className="py-20 flex justify-center"><div className="w-8 h-8 rounded-full border-4 border-neutral-200 border-t-black animate-spin" /></div>
 
@@ -101,9 +97,12 @@ const AdminDashboard = () => {
           </section>
 
           <section className="p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm">
-            <h2 className="font-heading text-lg font-bold mb-3 flex items-center gap-2">
-              <AlertTriangle size={16} className="text-amber-600" /> Low stock
-            </h2>
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-heading text-lg font-bold flex items-center gap-2">
+                <AlertTriangle size={16} className="text-amber-600" /> Needs restocking
+              </h2>
+              {lowStock.length > 0 && <Link to="/admin/products?filter=low" className="text-xs font-semibold underline">Restock</Link>}
+            </div>
             {lowStock.length === 0 ? (
               <p className="text-sm text-neutral-500">All products are well stocked.</p>
             ) : (
@@ -111,7 +110,7 @@ const AdminDashboard = () => {
                 {lowStock.slice(0, 6).map(p => (
                   <li key={p.id} className="flex justify-between gap-3">
                     <span className="truncate">{p.name}</span>
-                    <span className={`font-semibold ${p.stock === 0 ? 'text-red-600' : 'text-amber-700'}`}>{p.stock} left</span>
+                    <span className={`font-semibold shrink-0 ${p.stock === 0 ? 'text-red-600' : 'text-amber-700'}`}>{p.stock === 0 ? 'Sold out' : `${p.stock} left`}</span>
                   </li>
                 ))}
               </ul>

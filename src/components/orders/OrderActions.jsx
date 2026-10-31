@@ -139,7 +139,7 @@ const OrderActions = ({ order, onUpdated }) => {
 
       {dialog === 'return' && (
         <Dialog title="Request a return or refund" onClose={closeDialog}>
-          <p className="text-xs text-neutral-500">Returns are accepted within 7 days of delivery.</p>
+          <p className="text-xs text-neutral-500">Returns are accepted within 30 days of delivery.</p>
           <select value={reason} onChange={e => setReason(e.target.value)} className="w-full p-3 rounded-xl border border-neutral-200 text-sm">
             <option value="">Select a reason…</option>
             {RETURN_REASONS.map(r => <option key={r}>{r}</option>)}

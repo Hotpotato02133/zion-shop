@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import CheckoutSteps from '../components/CheckoutSteps'
-import { PROMOS, computeTotals, saveCheckoutExtras, toPrice } from '../lib/pricing'
+import { FREE_SHIPPING_OVER, PROMOS, computeTotals, saveCheckoutExtras, toPrice } from '../lib/pricing'
 import { loginUrlFor, rememberRedirect } from '../lib/redirect'
 
 const Cart = () => {
@@ -301,9 +301,18 @@ const Cart = () => {
             </div>
 
             {/* Delivery Guarantee Pill */}
-            <div className="flex items-center gap-3 p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-xs text-neutral-600">
-              <Truck size={18} className="text-neutral-900 shrink-0" />
-              <span>Complimentary insured air courier. Orders dispatch within 24 hours from Milan.</span>
+            <div className="p-4 rounded-2xl bg-neutral-50 border border-neutral-100 text-xs text-neutral-600 space-y-2.5">
+              <div className="flex items-center gap-3">
+                <Truck size={18} className="text-neutral-900 shrink-0" />
+                <span>
+                  {subtotal > FREE_SHIPPING_OVER
+                    ? 'You have unlocked free shipping.'
+                    : `Add $${(FREE_SHIPPING_OVER - subtotal + 0.01).toFixed(2)} more to unlock free shipping.`}
+                </span>
+              </div>
+              <div className="h-1.5 rounded-full bg-neutral-200 overflow-hidden" role="progressbar" aria-valuenow={Math.min(100, Math.round((subtotal / FREE_SHIPPING_OVER) * 100))} aria-valuemin={0} aria-valuemax={100} aria-label="Progress to free shipping">
+                <div className="h-full bg-neutral-950 transition-all duration-500" style={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_OVER) * 100)}%` }} />
+              </div>
             </div>
 
           </div>
@@ -317,7 +326,7 @@ const Cart = () => {
               {/* Price Rows */}
               <div className="space-y-3.5 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Atelier Subtotal</span>
+                  <span className="text-neutral-500">Subtotal</span>
                   <span className="font-medium text-neutral-900">${subtotal.toFixed(2)}</span>
                 </div>
 
@@ -332,21 +341,21 @@ const Cart = () => {
                 )}
 
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Estimated Sales Tax (8%)</span>
+                  <span className="text-neutral-500">Tax (8%)</span>
                   <span className="font-medium text-neutral-900">${tax.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-neutral-500">Global Insured Freight</span>
+                  <span className="text-neutral-500">Shipping</span>
                   <span className="font-semibold text-emerald-700">
-                    {shipping === 0 ? 'Complimentary' : `$${shipping.toFixed(2)}`}
+                    {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
                   </span>
                 </div>
 
                 <div className="border-t border-neutral-100 pt-4 flex justify-between items-baseline">
                   <div>
                     <span className="font-heading text-lg font-bold block text-neutral-950">Total Amount</span>
-                    <span className="text-[11px] text-neutral-400">All import duties and freight included</span>
+                    <span className="text-[11px] text-neutral-400">Final total is confirmed when you place the order</span>
                   </div>
                   <span className="font-heading text-2xl font-extrabold text-neutral-950">
                     ${total.toFixed(2)}

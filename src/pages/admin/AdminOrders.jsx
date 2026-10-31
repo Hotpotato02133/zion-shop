@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { X } from 'lucide-react'
+import { Download, Printer, RefreshCw, X } from 'lucide-react'
+import { useAdminAlerts } from './AdminAlerts'
+import { downloadCsv, printPackingSlip } from '../../lib/adminExport'
 import { useSupabase } from '../../context/SupabaseContext'
 import StatusBadge from '../../components/orders/StatusBadge'
 import {
@@ -70,7 +72,12 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
         ) : (
           <>
             <header className="space-y-2 pr-8">
-              <h2 className="font-heading text-2xl font-extrabold font-mono">{order.order_number}</h2>
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-heading text-2xl font-extrabold font-mono">{order.order_number}</h2>
+                <button onClick={() => printPackingSlip(order)} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-neutral-200 text-xs font-semibold hover:bg-neutral-50">
+                  <Printer size={13} /> Packing slip
+                </button>
+              </div>
               <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
                 <StatusBadge status={order.status} />
                 <span>{PAYMENT_LABELS[order.payment_status]}</span>
@@ -174,7 +181,8 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
-  const [openId, setOpenId] = useState(null)
+  const [openId, setOpenId] = useState(searchParams.get('order'))
+  const { lastUpdated, refresh } = useAdminAlerts()
 
   const tab = searchParams.get('status') || 'all'
 
@@ -185,7 +193,8 @@ const AdminOrders = () => {
     setLoading(false)
   }, [supabase])
 
-  useEffect(() => { load() }, [load])
+  // Reload whenever the shared poller ticks, so new orders appear without a manual refresh
+  useEffect(() => { load() }, [load, lastUpdated])
 
   const counts = useMemo(() => {
     const result = { all: orders.length }
@@ -215,7 +224,21 @@ const AdminOrders = () => {
             </button>
           ))}
         </div>
-        <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search order, name, email…" className="w-full sm:w-72 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
+        <div className="flex gap-2 w-full sm:w-auto">
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search order, name, email…" className="flex-1 sm:w-64 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
+          <button onClick={refresh} className="p-3 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50" aria-label="Refresh orders" title="Refresh"><RefreshCw size={16} /></button>
+          <button
+            onClick={() => downloadCsv('zion-orders.csv', visible.map(o => ({
+              order: o.order_number, date: o.created_at, customer: o.customer_name, email: o.customer_email,
+              status: o.status, payment: o.payment_status, method: o.payment_method, total: o.total,
+              courier: o.courier || '', tracking: o.tracking_number || ''
+            })))}
+            disabled={visible.length === 0}
+            className="inline-flex items-center gap-2 px-4 rounded-xl border border-neutral-200 bg-white text-xs font-semibold hover:bg-neutral-50 disabled:opacity-50"
+          >
+            <Download size={14} /> CSV
+          </button>
+        </div>
       </div>
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
 
@@ -243,7 +266,7 @@ const AdminOrders = () => {
         </table>
       </div>
 
-      {openId && <OrderPanel orderId={openId} onClose={() => setOpenId(null)} onChanged={load} />}
+      {openId && <OrderPanel orderId={openId} onClose={() => setOpenId(null)} onChanged={() => { load(); refresh() }} />}
     </div>
   )
 }
