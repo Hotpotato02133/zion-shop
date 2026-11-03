@@ -4,7 +4,7 @@ import { Package } from 'lucide-react'
 import { useSupabase } from '../context/SupabaseContext'
 import OrderActions from '../components/orders/OrderActions'
 import StatusBadge from '../components/orders/StatusBadge'
-import { ORDER_TABS, STATUS_META, formatDate, money } from '../lib/orders'
+import { ORDER_TABS, STATUS_META, formatDate, getOrderStatusHint, money } from '../lib/orders'
 
 const Orders = () => {
   const { supabase, isConfigured } = useSupabase()
@@ -20,7 +20,7 @@ const Orders = () => {
     }
     const { data, error: fetchError } = await supabase
       .from('orders')
-      .select('*, order_items (id, name, image_url, price, quantity)')
+      .select('*, order_items (id, name, image_url, price, quantity), order_events (*)')
       .order('created_at', { ascending: false })
     if (fetchError) setError(fetchError.message)
     else setOrders(data || [])
@@ -28,6 +28,24 @@ const Orders = () => {
   }, [supabase, isConfigured])
 
   useEffect(() => { load() }, [load])
+
+  // Real-time synchronization: listen for admin approvals and status changes
+  useEffect(() => {
+    if (!isConfigured) return
+    const channel = supabase
+      .channel('customer-orders-realtime')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+        load()
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'order_events' }, () => {
+        load()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [supabase, isConfigured, load])
 
   const counts = useMemo(() => {
     const result = { all: orders.length }
@@ -92,7 +110,7 @@ const Orders = () => {
                   <Link to={`/orders/${order.id}`} className="font-mono text-sm font-medium hover:underline">{order.order_number}</Link>
                   <p className="text-xs text-neutral-400">Placed {formatDate(order.created_at)}</p>
                 </div>
-                <StatusBadge status={order.status} />
+                <StatusBadge status={order.status} order={order} />
               </header>
 
               <ul className="divide-y divide-neutral-50">
@@ -110,7 +128,7 @@ const Orders = () => {
 
               <footer className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-neutral-100">
                 <div>
-                  <p className="text-xs text-neutral-400">{STATUS_META[order.status]?.hint}</p>
+                  <p className="text-xs text-neutral-400">{getOrderStatusHint(order)}</p>
                   <p className="text-sm">Total <span className="font-heading text-base font-medium tabular-nums text-neutral-950 ml-1">{money(order.total)}</span></p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">

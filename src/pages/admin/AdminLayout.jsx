@@ -19,6 +19,7 @@ import {
   ShoppingBag,
   Store,
   Sun,
+  Truck,
   Users,
   X
 } from 'lucide-react'
@@ -34,6 +35,13 @@ const NAV_ITEMS = [
     label: 'Orders',
     icon: ShoppingBag,
     badge: (a) => a.counts.toShip + a.counts.returns,
+    tone: 'black'
+  },
+  {
+    to: '/admin/orders?status=to_ship',
+    label: 'Shipping',
+    icon: Truck,
+    badge: (a) => a.counts.toShip,
     tone: 'black'
   },
   {
@@ -205,6 +213,20 @@ const SidebarContent = ({ onNavigate, onCollapse }) => {
   const alerts = useAdminAlerts()
   const { user } = useUser()
   const { isDark, setTheme } = useAdminTheme()
+  const location = useLocation()
+
+  const isNavActive = (to, end) => {
+    if (to.includes('status=to_ship')) {
+      return location.pathname === '/admin/orders' && location.search.includes('status=to_ship')
+    }
+    if (to === '/admin/orders') {
+      return location.pathname === '/admin/orders' && !location.search.includes('status=to_ship')
+    }
+    if (end) {
+      return location.pathname === to
+    }
+    return location.pathname.startsWith(to)
+  }
 
   return (
     <div className="flex flex-col h-full justify-between">
@@ -248,25 +270,25 @@ const SidebarContent = ({ onNavigate, onCollapse }) => {
               Main Menu
             </p>
             <nav className="space-y-1">
-              {NAV_ITEMS.map(({ to, label, icon: Icon, end, badge, tone }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  end={end}
-                  onClick={onNavigate}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 ${
+              {NAV_ITEMS.map(({ to, label, icon: Icon, end, badge, tone }) => {
+                const isActive = isNavActive(to, end)
+                return (
+                  <Link
+                    key={to}
+                    to={to}
+                    onClick={onNavigate}
+                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-150 ${
                       isActive
                         ? 'bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 font-medium shadow-sm'
                         : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:bg-neutral-100/80 dark:hover:bg-neutral-800/60 font-normal'
-                    }`
-                  }
-                >
-                  <Icon size={17} />
-                  <span>{label}</span>
-                  {badge && <Badge value={badge(alerts)} tone={tone} />}
-                </NavLink>
-              ))}
+                    }`}
+                  >
+                    <Icon size={17} />
+                    <span>{label}</span>
+                    {badge && <Badge value={badge(alerts)} tone={tone} />}
+                  </Link>
+                )
+              })}
             </nav>
           </div>
 

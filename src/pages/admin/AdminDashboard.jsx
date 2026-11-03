@@ -11,13 +11,14 @@ import {
   Search,
   ShoppingBag,
   TrendingDown,
-  TrendingUp
+  TrendingUp,
+  Truck
 } from 'lucide-react'
 import { useSupabase } from '../../context/SupabaseContext'
 import { useAdminAlerts } from './AdminAlerts'
 import { useAdminTheme } from '../../context/AdminThemeContext'
 import StatusBadge from '../../components/orders/StatusBadge'
-import { formatDate, money } from '../../lib/orders'
+import { formatDate, isCodOrder, isCodOrderApproved, money } from '../../lib/orders'
 
 // Smooth cubic Bezier path calculation for interactive SVG chart
 function getCubicBezierPath(points) {
@@ -263,11 +264,16 @@ const AdminDashboard = () => {
       .filter((o) => o.payment_status === 'paid' || o.payment_status === 'cod')
       .reduce((sum, o) => sum + (Number(o.total) || 0), 0)
 
+    const codPending = orders.filter(
+      (o) => o.status === 'to_ship' && isCodOrder(o) && !isCodOrderApproved(o)
+    ).length
+
     return {
       byStatus,
       revenue,
       completed: byStatus.completed || 0,
       toShip: byStatus.to_ship || 0,
+      codPending,
       totalOrders: orders.length,
       totalProducts: products.length
     }
@@ -454,21 +460,29 @@ const AdminDashboard = () => {
           </p>
         </Link>
 
-        {/* Metric 3: Orders to ship */}
+        {/* Metric 3: Orders to ship & fulfillment */}
         <Link
           to="/admin/orders?status=to_ship"
           className="p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200/70 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 shadow-xs hover:shadow-sm transition-all group"
         >
           <div className="flex items-center justify-between text-neutral-500 mb-2">
             <div className="w-9 h-9 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-800 dark:text-neutral-200 group-hover:bg-neutral-950 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-neutral-950 transition-colors">
-              <ShoppingBag size={17} />
+              <Truck size={17} />
             </div>
             <span
               className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                stats.toShip > 0 ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300' : 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300'
+                stats.codPending > 0
+                  ? 'bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300'
+                  : stats.toShip > 0
+                  ? 'bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300'
+                  : 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300'
               }`}
             >
-              {stats.toShip > 0 ? `${stats.toShip} pending` : 'All clear'}
+              {stats.codPending > 0
+                ? `${stats.codPending} COD to approve`
+                : stats.toShip > 0
+                ? `${stats.toShip} to dispatch`
+                : 'All clear'}
             </span>
           </div>
           <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Orders to ship</p>
@@ -763,16 +777,23 @@ const AdminDashboard = () => {
                       return (
                         <tr
                           key={o.id}
-                          onClick={() => navigate(`/admin/orders`)}
+                          onClick={() => navigate(`/admin/orders?order=${o.id}`)}
                           className="hover:bg-neutral-50/80 dark:hover:bg-neutral-800/60 transition-colors cursor-pointer group"
                         >
                           <td className="py-3.5 pl-2 font-mono text-xs font-medium text-neutral-900 dark:text-neutral-200">
                             {o.order_number || `#ORD-${o.id.slice(0, 6)}`}
                           </td>
                           <td className="py-3.5">
-                            <p className="font-medium text-neutral-900 dark:text-neutral-100 text-xs">
-                              {o.customer_name || 'Guest Client'}
-                            </p>
+                            <div className="flex items-center gap-1.5">
+                              <p className="font-medium text-neutral-900 dark:text-neutral-100 text-xs">
+                                {o.customer_name || 'Guest Client'}
+                              </p>
+                              {isCodOrder(o) && (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300">
+                                  COD
+                                </span>
+                              )}
+                            </div>
                             <p className="text-[10px] text-neutral-400 dark:text-neutral-500">
                               {totalItems} item{totalItems === 1 ? '' : 's'}
                             </p>
@@ -784,7 +805,7 @@ const AdminDashboard = () => {
                             {money(o.total)}
                           </td>
                           <td className="py-3.5 text-right pr-2">
-                            <StatusBadge status={o.status} />
+                            <StatusBadge status={o.status} order={o} />
                           </td>
                         </tr>
                       )

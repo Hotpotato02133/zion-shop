@@ -6,7 +6,7 @@ import OrderActions from '../components/orders/OrderActions'
 import StatusBadge from '../components/orders/StatusBadge'
 import CheckoutSteps from '../components/CheckoutSteps'
 import {
-  PAYMENT_LABELS, RETURN_LABELS, STATUS_META, formatDate, formatDateTime, money
+  PAYMENT_LABELS, RETURN_LABELS, STATUS_META, formatDate, formatDateTime, getOrderStatusHint, money
 } from '../lib/orders'
 
 const OrderDetail = () => {
@@ -42,6 +42,24 @@ const OrderDetail = () => {
   }, [supabase, isConfigured, orderId])
 
   useEffect(() => { load() }, [load])
+
+  // Real-time synchronization for order updates & admin actions
+  useEffect(() => {
+    if (!isConfigured || !orderId) return
+    const channel = supabase
+      .channel(`order-${orderId}-realtime`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` }, () => {
+        load()
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'order_events', filter: `order_id=eq.${orderId}` }, () => {
+        load()
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [supabase, isConfigured, orderId, load])
 
   // PayMongo's webhook can land a few seconds after the redirect back: poll briefly.
   useEffect(() => {
@@ -117,8 +135,8 @@ const OrderDetail = () => {
             <p className="text-xs text-neutral-400 mt-1">Placed {formatDateTime(order.created_at)}</p>
           </div>
           <div className="text-right space-y-1">
-            <StatusBadge status={order.status} />
-            <p className="text-xs text-neutral-500">{STATUS_META[order.status]?.hint}</p>
+            <StatusBadge status={order.status} order={order} />
+            <p className="text-xs text-neutral-500">{getOrderStatusHint(order)}</p>
           </div>
         </header>
 
