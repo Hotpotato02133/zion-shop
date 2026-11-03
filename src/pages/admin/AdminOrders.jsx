@@ -9,9 +9,9 @@ import {
   ORDER_TABS, PAYMENT_LABELS, RETURN_LABELS, formatDate, formatDateTime, friendlyError, money
 } from '../../lib/orders'
 
-const btn = 'px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider disabled:opacity-60'
-const primary = `${btn} bg-neutral-950 text-white hover:bg-black`
-const danger = `${btn} border border-red-200 text-red-700 hover:bg-red-50`
+const btn = 'px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider disabled:opacity-60 transition-colors'
+const primary = `${btn} bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200`
+const danger = `${btn} border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40`
 
 const OrderPanel = ({ orderId, onClose, onChanged }) => {
   const { supabase } = useSupabase()
@@ -64,21 +64,21 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
 
   return (
     <div className="fixed inset-0 z-[60] flex justify-end">
-      <div className="absolute inset-0 bg-neutral-950/50" onClick={onClose} />
-      <aside className="relative w-full max-w-lg bg-white h-full overflow-y-auto p-6 space-y-6 shadow-2xl">
-        <button onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100" aria-label="Close"><X size={16} /></button>
+      <div className="absolute inset-0 bg-neutral-950/50 backdrop-blur-xs" onClick={onClose} />
+      <aside className="relative w-full max-w-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 border-l border-neutral-200 dark:border-neutral-800 h-full overflow-y-auto p-6 space-y-6 shadow-2xl">
+        <button onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400" aria-label="Close"><X size={16} /></button>
         {!order ? (
-          <p className="text-sm text-neutral-400">{error || 'Loading…'}</p>
+          <p className="text-sm text-neutral-400 dark:text-neutral-500">{error || 'Loading…'}</p>
         ) : (
           <>
             <header className="space-y-2 pr-8">
               <div className="flex items-center justify-between gap-3">
-                <h2 className="font-heading text-2xl font-semibold font-mono">{order.order_number}</h2>
-                <button onClick={() => printPackingSlip(order)} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-neutral-200 text-xs font-semibold hover:bg-neutral-50">
+                <h2 className="font-heading text-2xl font-semibold font-mono text-neutral-950 dark:text-white">{order.order_number}</h2>
+                <button onClick={() => printPackingSlip(order)} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
                   <Printer size={13} /> Packing slip
                 </button>
               </div>
-              <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500">
+              <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                 <StatusBadge status={order.status} />
                 <span>{PAYMENT_LABELS[order.payment_status]}</span>
                 <span>· {order.payment_method === 'cod' ? 'COD' : 'PayMongo'}</span>
@@ -87,47 +87,47 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             </header>
 
             <section className="text-sm space-y-1">
-              <h3 className="font-semibold text-sm">Customer</h3>
-              <p className="text-neutral-600">
+              <h3 className="font-semibold text-sm text-neutral-950 dark:text-white">Customer</h3>
+              <p className="text-neutral-600 dark:text-neutral-400">
                 {address.full_name} · {address.phone}<br />
                 {order.customer_email}<br />
                 {address.address}, {[address.city, address.province, address.postal_code].filter(Boolean).join(', ')}, {address.country}
               </p>
-              {order.gift_note && <p className="text-xs italic text-neutral-500">Gift note: “{order.gift_note}”</p>}
+              {order.gift_note && <p className="text-xs italic text-neutral-500 dark:text-neutral-400">Gift note: “{order.gift_note}”</p>}
             </section>
 
             <section>
-              <h3 className="font-semibold text-sm mb-2">Items</h3>
-              <ul className="divide-y divide-neutral-100 border border-neutral-100 rounded-xl px-3">
+              <h3 className="font-semibold text-sm mb-2 text-neutral-950 dark:text-white">Items</h3>
+              <ul className="divide-y divide-neutral-100 dark:divide-neutral-800 border border-neutral-100 dark:border-neutral-800 rounded-xl px-3 bg-neutral-50/50 dark:bg-neutral-800/50">
                 {order.order_items.map(i => (
                   <li key={i.id} className="py-2.5 flex items-center gap-3 text-sm">
-                    {i.image_url && <img src={i.image_url} alt="" className="w-10 h-12 rounded-lg object-cover bg-neutral-100" />}
-                    <span className="flex-1 min-w-0 truncate">{i.name} × {i.quantity}</span>
-                    <span className="font-medium tabular-nums">{money(i.price * i.quantity)}</span>
+                    {i.image_url && <img src={i.image_url} alt="" className="w-10 h-12 rounded-lg object-cover bg-neutral-100 dark:bg-neutral-800" />}
+                    <span className="flex-1 min-w-0 truncate text-neutral-800 dark:text-neutral-200">{i.name} × {i.quantity}</span>
+                    <span className="font-medium tabular-nums text-neutral-900 dark:text-white">{money(i.price * i.quantity)}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-right text-sm mt-2">Total <span className="font-heading text-base font-semibold tabular-nums ml-1">{money(order.total)}</span></p>
+              <p className="text-right text-sm mt-2 text-neutral-600 dark:text-neutral-400">Total <span className="font-heading text-base font-semibold tabular-nums ml-1 text-neutral-950 dark:text-white">{money(order.total)}</span></p>
             </section>
 
             {order.return_status && (
-              <section className="p-4 rounded-xl bg-rose-50 border border-rose-100 text-sm text-rose-900">
+              <section className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-100 dark:border-rose-900/50 text-sm text-rose-900 dark:text-rose-200">
                 <strong>{RETURN_LABELS[order.return_status]}</strong>
                 {order.return_reason && <p className="text-xs mt-1">“{order.return_reason}”</p>}
               </section>
             )}
-            {order.cancel_reason && <p className="text-xs text-neutral-500">Cancel reason: {order.cancel_reason}</p>}
+            {order.cancel_reason && <p className="text-xs text-neutral-500 dark:text-neutral-400">Cancel reason: {order.cancel_reason}</p>}
 
-            <section className="space-y-3 border-t border-neutral-100 pt-5">
-              <h3 className="font-semibold text-sm">Actions</h3>
+            <section className="space-y-3 border-t border-neutral-100 dark:border-neutral-800 pt-5">
+              <h3 className="font-semibold text-sm text-neutral-950 dark:text-white">Actions</h3>
 
               {order.status === 'to_ship' && (
                 <div className="grid grid-cols-2 gap-2">
-                  <input placeholder="Courier (e.g. LBC, J&T)" value={courier} onChange={e => setCourier(e.target.value)} className="p-3 rounded-xl border border-neutral-200 text-sm" />
-                  <input placeholder="Tracking number" value={tracking} onChange={e => setTracking(e.target.value)} className="p-3 rounded-xl border border-neutral-200 text-sm" />
+                  <input placeholder="Courier (e.g. LBC, J&T)" value={courier} onChange={e => setCourier(e.target.value)} className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500" />
+                  <input placeholder="Tracking number" value={tracking} onChange={e => setTracking(e.target.value)} className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500" />
                 </div>
               )}
-              <input placeholder="Note for the customer timeline (optional)" value={note} onChange={e => setNote(e.target.value)} className="w-full p-3 rounded-xl border border-neutral-200 text-sm" />
+              <input placeholder="Note for the customer timeline (optional)" value={note} onChange={e => setNote(e.target.value)} className="w-full p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500" />
 
               <div className="flex flex-wrap gap-2">
                 {order.status === 'to_pay' && <button disabled={busy} className={primary} onClick={() => setStatus('to_ship')}>Confirm payment received</button>}
@@ -150,19 +150,19 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
                 )}
               </div>
               {order.payment_status === 'refund_pending' || order.return_status === 'approved' ? (
-                <p className="text-xs text-neutral-500">Issue the actual refund from your PayMongo dashboard, then record it here.</p>
+                <p className="text-xs text-neutral-500 dark:text-neutral-400">Issue the actual refund from your PayMongo dashboard, then record it here.</p>
               ) : null}
-              {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
+              {error && <p role="alert" className="text-xs text-red-600 dark:text-red-400">{error}</p>}
             </section>
 
             <section>
-              <h3 className="font-semibold text-sm mb-3">Timeline</h3>
-              <ol className="space-y-3 border-l border-neutral-200 ml-1.5">
+              <h3 className="font-semibold text-sm mb-3 text-neutral-950 dark:text-white">Timeline</h3>
+              <ol className="space-y-3 border-l border-neutral-200 dark:border-neutral-700 ml-1.5">
                 {order.order_events.map(ev => (
                   <li key={ev.id} className="pl-4 relative">
-                    <span className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-950" />
-                    <p className="text-sm">{ev.note || ev.status}</p>
-                    <p className="text-xs text-neutral-400">{formatDateTime(ev.created_at)}</p>
+                    <span className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-950 dark:bg-white" />
+                    <p className="text-sm text-neutral-800 dark:text-neutral-200">{ev.note || ev.status}</p>
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500">{formatDateTime(ev.created_at)}</p>
                   </li>
                 ))}
               </ol>
@@ -209,24 +209,40 @@ const AdminOrders = () => {
   )
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 w-full">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div role="tablist" className="flex gap-1 overflow-x-auto">
+        <div role="tablist" className="flex gap-1 overflow-x-auto pb-1">
           {ORDER_TABS.map(({ key, label }) => (
             <button
               key={key}
               role="tab"
               aria-selected={tab === key}
               onClick={() => setSearchParams(key === 'all' ? {} : { status: key })}
-              className={`shrink-0 px-3 py-2 rounded-full text-xs font-semibold ${tab === key ? 'bg-neutral-950 text-white' : 'bg-white border border-neutral-200 text-neutral-600'}`}
+              className={`shrink-0 px-3 py-2 rounded-full text-xs font-semibold transition-all ${
+                tab === key 
+                  ? 'bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 shadow-xs' 
+                  : 'bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+              }`}
             >
               {label} {counts[key] ? `(${counts[key]})` : ''}
             </button>
           ))}
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
-          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search order, name, email…" className="flex-1 sm:w-64 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
-          <button onClick={refresh} className="p-3 rounded-xl border border-neutral-200 bg-white hover:bg-neutral-50" aria-label="Refresh orders" title="Refresh"><RefreshCw size={16} /></button>
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search order, name, email…"
+            className="flex-1 sm:w-64 p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-950 dark:focus:ring-white"
+          />
+          <button
+            onClick={refresh}
+            className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-neutral-700 dark:text-neutral-300 transition-colors"
+            aria-label="Refresh orders"
+            title="Refresh"
+          >
+            <RefreshCw size={16} />
+          </button>
           <button
             onClick={() => downloadCsv('zion-orders.csv', visible.map(o => ({
               order: o.order_number, date: o.created_at, customer: o.customer_name, email: o.customer_email,
@@ -234,32 +250,32 @@ const AdminOrders = () => {
               courier: o.courier || '', tracking: o.tracking_number || ''
             })))}
             disabled={visible.length === 0}
-            className="inline-flex items-center gap-2 px-4 rounded-xl border border-neutral-200 bg-white text-xs font-semibold hover:bg-neutral-50 disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 text-xs font-semibold hover:bg-neutral-50 dark:hover:bg-neutral-800 disabled:opacity-50 transition-colors"
           >
             <Download size={14} /> CSV
           </button>
         </div>
       </div>
-      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
-      <div className="bg-white border border-neutral-100 rounded-2xl shadow-sm overflow-x-auto">
+      <div className="w-full bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-2xl shadow-xs overflow-x-auto transition-colors">
         <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 font-medium">
+          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-medium border-b border-neutral-100 dark:border-neutral-800">
             <tr><th className="p-4">Order</th><th className="p-4">Customer</th><th className="p-4">Date</th><th className="p-4">Payment</th><th className="p-4">Status</th><th className="p-4 text-right">Total</th></tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
             {loading ? (
-              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">Loading…</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-neutral-400 dark:text-neutral-500">Loading…</td></tr>
             ) : visible.length === 0 ? (
-              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">No orders match.</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-neutral-400 dark:text-neutral-500">No orders match.</td></tr>
             ) : visible.map(o => (
-              <tr key={o.id} onClick={() => setOpenId(o.id)} className="cursor-pointer hover:bg-neutral-50">
-                <td className="p-4 font-mono font-medium">{o.order_number}</td>
-                <td className="p-4">{o.customer_name}<span className="block text-xs text-neutral-400">{o.customer_email}</span></td>
-                <td className="p-4 text-neutral-500">{formatDate(o.created_at)}</td>
-                <td className="p-4 text-xs">{PAYMENT_LABELS[o.payment_status]}</td>
+              <tr key={o.id} onClick={() => setOpenId(o.id)} className="cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/60 transition-colors">
+                <td className="p-4 font-mono font-medium text-neutral-900 dark:text-neutral-200">{o.order_number}</td>
+                <td className="p-4 text-neutral-900 dark:text-neutral-100">{o.customer_name}<span className="block text-xs text-neutral-400 dark:text-neutral-500">{o.customer_email}</span></td>
+                <td className="p-4 text-neutral-500 dark:text-neutral-400">{formatDate(o.created_at)}</td>
+                <td className="p-4 text-xs text-neutral-700 dark:text-neutral-300">{PAYMENT_LABELS[o.payment_status]}</td>
                 <td className="p-4"><StatusBadge status={o.status} /></td>
-                <td className="p-4 text-right font-semibold">{money(o.total)}</td>
+                <td className="p-4 text-right font-semibold text-neutral-900 dark:text-white">{money(o.total)}</td>
               </tr>
             ))}
           </tbody>

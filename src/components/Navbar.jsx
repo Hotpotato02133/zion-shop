@@ -853,9 +853,13 @@ const Navbar = () => {
                         <p className="text-xs text-neutral-400">Authenticated Member</p>
                       </div>
                     </div>
-                    <span className="text-xs font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">
-                      Active
-                    </span>
+                    <Link
+                      to="/settings"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-xs font-medium text-neutral-700 hover:text-black px-2.5 py-1 bg-neutral-100 hover:bg-neutral-200 rounded-lg transition-colors"
+                    >
+                      Settings
+                    </Link>
                   </div>
                 </SignedIn>
                 <SignedOut>

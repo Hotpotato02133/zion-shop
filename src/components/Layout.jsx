@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ArrowUp,
@@ -38,7 +38,7 @@ const Layout = ({ children }) => {
 
       {/* Main Content Area */}
       <main className="flex-1 w-full">
-        {children}
+        {children || <Outlet />}
       </main>
 
       {/* Luxury Atelier Footer */}

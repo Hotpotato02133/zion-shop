@@ -13,12 +13,14 @@ import Signup from './pages/Signup'
 import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
 import OrderDetail from './pages/OrderDetail'
+import Settings from './pages/Settings'
 import { RequireAuth, RequireAdmin } from './components/RequireAuth'
 import AdminLayout from './pages/admin/AdminLayout'
 import AdminDashboard from './pages/admin/AdminDashboard'
 import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminCustomers from './pages/admin/AdminCustomers'
+import AdminSettings from './pages/admin/AdminSettings'
 import './App.css'
 
 const clerkPublishableKey = 
@@ -31,8 +33,9 @@ function App() {
       <SupabaseProvider>
         <AppProvider>
           <Router>
-            <Layout>
-              <Routes>
+            <Routes>
+              {/* Storefront & Customer Navigation Routes */}
+              <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/cart" element={<Cart />} />
@@ -42,14 +45,18 @@ function App() {
                 <Route path="/checkout" element={<RequireAuth><Checkout /></RequireAuth>} />
                 <Route path="/orders" element={<RequireAuth><Orders /></RequireAuth>} />
                 <Route path="/orders/:orderId" element={<RequireAuth><OrderDetail /></RequireAuth>} />
-                <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
-                  <Route index element={<AdminDashboard />} />
-                  <Route path="products" element={<AdminProducts />} />
-                  <Route path="orders" element={<AdminOrders />} />
-                  <Route path="customers" element={<AdminCustomers />} />
-                </Route>
-              </Routes>
-            </Layout>
+                <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+              </Route>
+
+              {/* Dedicated Admin Portal (Isolated from Storefront Chrome) */}
+              <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="products" element={<AdminProducts />} />
+                <Route path="orders" element={<AdminOrders />} />
+                <Route path="customers" element={<AdminCustomers />} />
+                <Route path="settings" element={<AdminSettings />} />
+              </Route>
+            </Routes>
           </Router>
         </AppProvider>
       </SupabaseProvider>

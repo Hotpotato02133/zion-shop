@@ -11,7 +11,7 @@ const EMPTY = {
   stock: 10, low_stock_threshold: 5, image_url: '', gallery: '', specs: '', is_active: true
 }
 
-const inputClass = 'w-full p-3 rounded-xl border border-neutral-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-black'
+const inputClass = 'w-full p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white transition-colors'
 
 // "Material: Cotton" per line  <->  { Material: 'Cotton' }
 const parseSpecs = (text) =>
@@ -22,7 +22,7 @@ const formatSpecs = (specs) => Object.entries(specs || {}).map(([k, v]) => `${k}
 
 const Field = ({ label, children }) => (
   <label className="block space-y-1.5">
-    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{label}</span>
+    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">{label}</span>
     {children}
   </label>
 )
@@ -94,11 +94,11 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
   return (
     <div className="fixed inset-0 z-[60] flex items-start sm:items-center justify-center p-4 overflow-y-auto">
       <div className="fixed inset-0 bg-neutral-950/60 backdrop-blur-sm" onClick={onClose} />
-      <form onSubmit={handleSubmit} className="relative w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-auto">
-        <button type="button" onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100" aria-label="Close">
+      <form onSubmit={handleSubmit} className="relative w-full max-w-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-5 my-auto">
+        <button type="button" onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-500 dark:text-neutral-400" aria-label="Close">
           <X size={16} />
         </button>
-        <h2 className="font-heading text-2xl font-semibold">{product ? 'Edit product' : 'Add product'}</h2>
+        <h2 className="font-heading text-2xl font-semibold text-neutral-950 dark:text-white">{product ? 'Edit product' : 'Add product'}</h2>
 
         <Field label="Name"><input required className={inputClass} value={form.name} onChange={update('name')} /></Field>
         <Field label="Description">
@@ -129,12 +129,12 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
         </Field>
 
         <div className="space-y-2">
-          <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Main image</span>
+          <span className="text-xs font-medium uppercase tracking-wider text-neutral-500 dark:text-neutral-400">Main image</span>
           <div className="flex gap-3 items-start">
-            {form.image_url && <img src={form.image_url} alt="" className="w-20 h-24 rounded-xl object-cover bg-neutral-100 shrink-0" />}
+            {form.image_url && <img src={form.image_url} alt="" className="w-20 h-24 rounded-xl object-cover bg-neutral-100 dark:bg-neutral-800 shrink-0" />}
             <div className="flex-1 space-y-2">
               <input placeholder="https://… image URL" className={inputClass} value={form.image_url} onChange={update('image_url')} />
-              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold cursor-pointer hover:bg-neutral-50">
+              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-xs font-semibold cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
                 <Upload size={14} /> {uploading ? 'Uploading…' : 'Upload image'}
                 <input type="file" accept="image/*" className="sr-only" disabled={uploading} onChange={e => handleUpload(e.target.files?.[0])} />
               </label>
@@ -149,16 +149,16 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
           <textarea rows={4} placeholder={'Material: 100% Cotton\nSizes: S, M, L'} className={`${inputClass} font-mono text-xs`} value={form.specs} onChange={update('specs')} />
         </Field>
 
-        <label className="flex items-center gap-3 text-sm">
-          <input type="checkbox" checked={form.is_active} onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))} className="w-5 h-5 rounded text-black focus:ring-black" />
+        <label className="flex items-center gap-3 text-sm text-neutral-800 dark:text-neutral-200">
+          <input type="checkbox" checked={form.is_active} onChange={e => setForm(prev => ({ ...prev, is_active: e.target.checked }))} className="w-5 h-5 rounded text-black focus:ring-black dark:focus:ring-white dark:bg-neutral-800 dark:border-neutral-700" />
           Visible in the store
         </label>
 
-        {error && <p role="alert" className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl p-3">{error}</p>}
+        {error && <p role="alert" className="text-xs text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/40 border border-red-100 dark:border-red-900/50 rounded-xl p-3">{error}</p>}
 
         <div className="flex justify-end gap-2">
-          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-xl border border-neutral-200 text-xs font-semibold uppercase tracking-wider">Cancel</button>
-          <button type="submit" disabled={saving || uploading} className="px-5 py-2.5 rounded-xl bg-neutral-950 text-white text-xs font-semibold uppercase tracking-wider disabled:opacity-60">
+          <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-xs font-semibold uppercase tracking-wider transition-colors">Cancel</button>
+          <button type="submit" disabled={saving || uploading} className="px-5 py-2.5 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 text-xs font-semibold uppercase tracking-wider disabled:opacity-60 hover:bg-black dark:hover:bg-neutral-200 transition-colors">
             {saving ? 'Saving…' : 'Save product'}
           </button>
         </div>
@@ -228,81 +228,97 @@ const AdminProducts = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 w-full">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search products…" className="flex-1 sm:w-72 p-3 rounded-xl border border-neutral-200 bg-white text-sm" />
+          <input
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search products…"
+            className="flex-1 sm:w-72 p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 text-sm focus:outline-none focus:ring-1 focus:ring-neutral-950 dark:focus:ring-white"
+          />
           <button
             onClick={() => setSearchParams(lowOnly ? {} : { filter: 'low' })}
             aria-pressed={lowOnly}
-            className={`inline-flex items-center gap-2 px-4 rounded-xl border text-xs font-semibold ${lowOnly ? 'bg-amber-500 border-amber-500 text-white' : 'bg-white border-neutral-200 text-neutral-700 hover:bg-neutral-50'}`}
+            className={`inline-flex items-center gap-2 px-4 rounded-xl border text-xs font-semibold transition-colors ${
+              lowOnly 
+                ? 'bg-amber-500 border-amber-500 text-white' 
+                : 'bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+            }`}
           >
             <AlertTriangle size={14} /> Low stock {lowCount > 0 && `(${lowCount})`}
           </button>
         </div>
-        <button onClick={() => setEditing('new')} className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-950 text-white text-xs font-semibold uppercase tracking-wider">
+        <button
+          onClick={() => setEditing('new')}
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
+        >
           <Plus size={14} /> Add product
         </button>
       </div>
-      {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 
-      <div className="bg-white border border-neutral-100 rounded-2xl shadow-sm overflow-x-auto">
+      <div className="w-full bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 rounded-2xl shadow-xs overflow-x-auto transition-colors">
         <table className="w-full text-sm">
-          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 font-medium">
+          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 dark:text-neutral-500 font-medium border-b border-neutral-100 dark:border-neutral-800">
             <tr>
               <th className="p-4">Product</th><th className="p-4">Category</th>
               <th className="p-4 text-right">Price</th><th className="p-4 text-right">Stock</th>
               <th className="p-4">Status</th><th className="p-4" />
             </tr>
           </thead>
-          <tbody className="divide-y divide-neutral-100">
+          <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
             {loading ? (
-              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">Loading…</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-neutral-400 dark:text-neutral-500">Loading…</td></tr>
             ) : visible.length === 0 ? (
-              <tr><td colSpan={6} className="p-8 text-center text-neutral-400">{lowOnly ? 'Nothing needs restocking. 🎉' : 'No products yet. Add your first one.'}</td></tr>
+              <tr><td colSpan={6} className="p-8 text-center text-neutral-400 dark:text-neutral-500">{lowOnly ? 'Nothing needs restocking. 🎉' : 'No products yet. Add your first one.'}</td></tr>
             ) : visible.map(p => (
-              <tr key={p.id} className={p.is_active ? '' : 'opacity-60'}>
+              <tr key={p.id} className={`${p.is_active ? '' : 'opacity-60'} hover:bg-neutral-50/70 dark:hover:bg-neutral-800/50 transition-colors`}>
                 <td className="p-4">
                   <div className="flex items-center gap-3 min-w-[200px]">
-                    {p.image_url && <img src={p.image_url} alt="" className="w-10 h-12 rounded-lg object-cover bg-neutral-100" />}
-                    <span className="font-semibold">{p.name}</span>
+                    {p.image_url && <img src={p.image_url} alt="" className="w-10 h-12 rounded-lg object-cover bg-neutral-100 dark:bg-neutral-800" />}
+                    <span className="font-semibold text-neutral-900 dark:text-white">{p.name}</span>
                   </div>
                 </td>
-                <td className="p-4 text-neutral-500">{p.category}</td>
-                <td className="p-4 text-right">{money(p.price)}</td>
+                <td className="p-4 text-neutral-500 dark:text-neutral-400">{p.category}</td>
+                <td className="p-4 text-right text-neutral-900 dark:text-white">{money(p.price)}</td>
                 <td className="p-4 text-right">
                   {restockId === p.id ? (
                     <form onSubmit={e => { e.preventDefault(); restock(p) }} className="inline-flex items-center gap-1">
-                      <span className="text-xs text-neutral-400">+</span>
+                      <span className="text-xs text-neutral-400 dark:text-neutral-500">+</span>
                       <input
                         autoFocus type="number" min="1" value={restockQty} onChange={e => setRestockQty(e.target.value)}
-                        className="w-16 p-1.5 rounded-lg border border-neutral-300 text-sm text-right" aria-label={`Units to add to ${p.name}`}
+                        className="w-16 p-1.5 rounded-lg border border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white text-sm text-right" aria-label={`Units to add to ${p.name}`}
                       />
-                      <button type="submit" className="px-2 py-1.5 rounded-lg bg-neutral-950 text-white text-xs font-semibold">Add</button>
-                      <button type="button" onClick={() => setRestockId(null)} className="p-1.5 text-neutral-400" aria-label="Cancel restock"><X size={13} /></button>
+                      <button type="submit" className="px-2 py-1.5 rounded-lg bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 text-xs font-semibold">Add</button>
+                      <button type="button" onClick={() => setRestockId(null)} className="p-1.5 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200" aria-label="Cancel restock"><X size={13} /></button>
                     </form>
                   ) : (
                     <div className="inline-flex items-center gap-2 justify-end">
-                      <span className={`font-semibold ${p.stock === 0 ? 'text-red-600' : isLow(p) ? 'text-amber-700' : ''}`}>
+                      <span className={`font-semibold ${p.stock === 0 ? 'text-red-600 dark:text-red-400' : isLow(p) ? 'text-amber-700 dark:text-amber-400' : 'text-neutral-900 dark:text-neutral-100'}`}>
                         {p.stock === 0 ? 'Sold out' : p.stock}
                       </span>
                       <button
                         onClick={() => { setRestockId(p.id); setRestockQty(10) }}
-                        className={`px-2 py-1 rounded-lg border text-xs font-medium ${isLow(p) ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-neutral-200 text-neutral-500 hover:bg-neutral-50'}`}
+                        className={`px-2 py-1 rounded-lg border text-xs font-medium transition-colors ${
+                          isLow(p) 
+                            ? 'border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300' 
+                            : 'border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800'
+                        }`}
                       >
                         + Restock
                       </button>
                     </div>
                   )}
                 </td>
-                <td className="p-4 text-xs">{p.is_active ? 'Visible' : 'Hidden'}</td>
+                <td className="p-4 text-xs text-neutral-600 dark:text-neutral-400">{p.is_active ? 'Visible' : 'Hidden'}</td>
                 <td className="p-4">
                   <div className="flex justify-end gap-1">
-                    <button onClick={() => setEditing(p)} className="p-2 rounded-lg hover:bg-neutral-100" title="Edit" aria-label={`Edit ${p.name}`}><Pencil size={15} /></button>
-                    <button onClick={() => toggleActive(p)} className="p-2 rounded-lg hover:bg-neutral-100" title={p.is_active ? 'Hide' : 'Show'} aria-label={p.is_active ? `Hide ${p.name}` : `Show ${p.name}`}>
+                    <button onClick={() => setEditing(p)} className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400" title="Edit" aria-label={`Edit ${p.name}`}><Pencil size={15} /></button>
+                    <button onClick={() => toggleActive(p)} className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800 text-neutral-600 dark:text-neutral-400" title={p.is_active ? 'Hide' : 'Show'} aria-label={p.is_active ? `Hide ${p.name}` : `Show ${p.name}`}>
                       {p.is_active ? <EyeOff size={15} /> : <Eye size={15} />}
                     </button>
-                    <button onClick={() => remove(p)} className="p-2 rounded-lg hover:bg-red-50 text-red-600" title="Delete" aria-label={`Delete ${p.name}`}><Trash2 size={15} /></button>
+                    <button onClick={() => remove(p)} className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/40 text-red-600 dark:text-red-400" title="Delete" aria-label={`Delete ${p.name}`}><Trash2 size={15} /></button>
                   </div>
                 </td>
               </tr>

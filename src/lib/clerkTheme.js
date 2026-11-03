@@ -20,8 +20,7 @@ export const luxuryClerkAppearance = {
     borderRadius: '0.75rem'
   },
   elements: {
-    rootBox: 'w-full max-w-md mx-auto',
-    card: 'border border-neutral-200 shadow-2xl rounded-2xl bg-white p-6 sm:p-8',
+    card: 'border border-neutral-200 shadow-2xl rounded-2xl bg-white p-6 sm:p-8 w-full max-w-md mx-auto',
     headerTitle: 'font-heading font-semibold text-2xl sm:text-3xl tracking-tight text-neutral-950',
     headerSubtitle: 'text-xs text-neutral-500 font-medium tracking-wide mt-1',
     formButtonPrimary: 
@@ -40,10 +39,40 @@ export const luxuryClerkAppearance = {
     footerActionText: 'text-xs text-neutral-500',
     identityPreviewText: 'text-xs font-medium text-neutral-800',
     identityPreviewEditButton: 'text-xs text-black font-semibold hover:underline',
+    userButtonRootBox: '!w-auto !max-w-none shrink-0 inline-flex',
+    userButtonBox: '!w-auto !max-w-none shrink-0 inline-flex',
+    userButtonTrigger: 'focus:shadow-none focus:outline-none !p-0',
     userButtonAvatarBox: 'w-8 h-8 rounded-full border border-neutral-200 shadow-sm',
     userButtonPopoverCard: 'border border-neutral-200 shadow-2xl rounded-2xl p-2 bg-white',
     userButtonPopoverActionButton: 'text-xs hover:bg-neutral-100 transition-colors rounded-lg py-2',
     userButtonPopoverActionButtonText: 'text-xs font-medium text-neutral-800',
+    userButtonPopoverFooter: 'hidden'
+  }
+}
+
+export const luxuryClerkDarkAppearance = {
+  ...luxuryClerkAppearance,
+  variables: {
+    ...luxuryClerkAppearance.variables,
+    colorPrimary: '#ffffff',
+    colorText: '#ffffff',
+    colorTextSecondary: '#a3a3a3',
+    colorBackground: '#171717',
+    colorInputBackground: '#262626',
+    colorInputText: '#ffffff'
+  },
+  elements: {
+    ...luxuryClerkAppearance.elements,
+    card: 'border border-neutral-800 shadow-2xl rounded-2xl bg-neutral-900 text-white p-6 sm:p-8 w-full max-w-md mx-auto',
+    headerTitle: 'font-heading font-semibold text-2xl sm:text-3xl tracking-tight text-white',
+    headerSubtitle: 'text-xs text-neutral-400 font-medium tracking-wide mt-1',
+    userButtonRootBox: '!w-auto !max-w-none shrink-0 inline-flex',
+    userButtonBox: '!w-auto !max-w-none shrink-0 inline-flex',
+    userButtonTrigger: 'focus:shadow-none focus:outline-none !p-0',
+    userButtonAvatarBox: 'w-8 h-8 rounded-full border border-neutral-700 shadow-xs',
+    userButtonPopoverCard: 'border border-neutral-800 shadow-2xl rounded-2xl p-2 bg-neutral-900 text-white',
+    userButtonPopoverActionButton: 'text-xs hover:bg-neutral-800 text-neutral-200 transition-colors rounded-lg py-2',
+    userButtonPopoverActionButtonText: 'text-xs font-medium text-neutral-200',
     userButtonPopoverFooter: 'hidden'
   }
 }
