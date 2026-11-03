@@ -19,6 +19,8 @@ import {
 import { useApp } from '../context/AppContext'
 import { useSupabase } from '../context/SupabaseContext'
 import HeroCarousel from '../components/HeroCarousel'
+import ScrollLookbook from '../components/ScrollLookbook'
+import Atelier3DViewer from '../components/Atelier3DViewer'
 
 // Zion apparel catalog (local fallback, mirrored from Supabase `products` table)
 const defaultFeaturedProducts = [
@@ -382,7 +384,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 4. FEATURED PRODUCTS (Dynamic Tabs + Direct Cart/Wishlist integration) */}
+      {/* 4. SCROLL-TRIGGERED EDITORIAL LOOKBOOK */}
+      <ScrollLookbook />
+
+      {/* 5. FEATURED PRODUCTS (Dynamic Tabs + Direct Cart/Wishlist integration) */}
       <section className="w-full py-24 bg-white">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           
@@ -577,17 +582,17 @@ const Home = () => {
               <div className="space-y-5 pt-2">
                 <div className="space-y-1">
                   <h3 className="font-heading font-bold text-base text-black">Zero Synthetic Compromises</h3>
-                  <p className="text-sm text-neutral-600 leading-relaxed">Pure raw materials selected for their tactile aging qualities and rich natural patina.</p>
+                  <p className="text-base text-neutral-600 leading-relaxed">Pure raw materials selected for their tactile aging qualities and rich natural patina.</p>
                 </div>
 
                 <div className="space-y-1">
                   <h3 className="font-heading font-bold text-base text-black">Direct Heritage Workshops</h3>
-                  <p className="text-sm text-neutral-600 leading-relaxed">Partnering directly with mills across Portugal, Japan, and Italy to invest in artisan wages.</p>
+                  <p className="text-base text-neutral-600 leading-relaxed">Partnering directly with mills across Portugal, Japan, and Italy to invest in artisan wages.</p>
                 </div>
 
                 <div className="space-y-1">
                   <h3 className="font-heading font-bold text-base text-black">Circular Longevity Guarantee</h3>
-                  <p className="text-sm text-neutral-600 leading-relaxed">Every garment is engineered and cut to be repaired, re-hemmed, and worn across decades.</p>
+                  <p className="text-base text-neutral-600 leading-relaxed">Every garment is engineered and cut to be repaired, re-hemmed, and worn across decades.</p>
                 </div>
               </div>
 
@@ -604,7 +609,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS & RECOGNITION */}
+      {/* 7. INTERACTIVE 3D ATELIER STAGE (360° Drag Turntable + Material Inspector) */}
+      <Atelier3DViewer />
+
+      {/* 8. TESTIMONIALS & RECOGNITION */}
       <section className="w-full py-24 bg-white">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="max-w-3xl mb-12 space-y-3">
