@@ -109,7 +109,7 @@ const Cart = () => {
 
             <motion.div variants={fadeInUp} className="space-y-2">
               <span className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Bag Overview</span>
-              <h1 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">
+              <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight">
                 Your Bag is Empty
               </h1>
               <p className="text-neutral-500 text-sm sm:text-base font-light leading-relaxed max-w-sm mx-auto">
@@ -155,7 +155,7 @@ const Cart = () => {
             </motion.span>
             <motion.h1
               variants={fadeInUp}
-              className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight"
+              className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight"
             >
               Shopping Bag
             </motion.h1>
@@ -203,11 +203,11 @@ const Cart = () => {
                         <div className="flex items-start justify-between gap-4">
                           <div>
                             {item.category && (
-                              <span className="text-[10px] uppercase tracking-widest font-semibold text-neutral-400 block mb-1">
+                              <span className="text-xs uppercase tracking-wider font-medium text-neutral-400 block mb-1">
                                 {item.category}
                               </span>
                             )}
-                            <h3 className="font-heading text-lg font-bold text-neutral-950 line-clamp-1">
+                            <h3 className="font-heading text-base font-medium text-neutral-950 line-clamp-1">
                               {item.name}
                             </h3>
                           </div>
@@ -224,7 +224,7 @@ const Cart = () => {
 
                         {/* Price Breakdown */}
                         <div className="flex items-baseline gap-2">
-                          <span className="text-sm font-semibold text-neutral-900">${itemPrice.toFixed(2)}</span>
+                          <span className="text-sm font-medium tabular-nums text-neutral-900">${itemPrice.toFixed(2)}</span>
                           <span className="text-xs text-neutral-400 font-light">each</span>
                         </div>
 
@@ -238,7 +238,7 @@ const Cart = () => {
                             >
                               <Minus size={12} />
                             </button>
-                            <span className="w-7 text-center text-xs font-bold">
+                            <span className="w-7 text-center text-xs font-medium tabular-nums">
                               {item.quantity}
                             </span>
                             <button
@@ -250,7 +250,7 @@ const Cart = () => {
                             </button>
                           </div>
 
-                          <div className="font-heading text-lg font-bold text-neutral-950">
+                          <div className="font-heading text-base font-medium tabular-nums text-neutral-950">
                             ${itemLineTotal}
                           </div>
                         </div>
@@ -271,7 +271,7 @@ const Cart = () => {
                     <Gift size={18} />
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-neutral-950">Complimentary Atelier Gift Packaging</p>
+                    <p className="text-sm font-medium text-neutral-950">Complimentary Atelier Gift Packaging</p>
                     <p className="text-xs text-neutral-500 font-light">Matte black ribbon box with personalized wax seal certificate.</p>
                   </div>
                 </div>
@@ -321,13 +321,13 @@ const Cart = () => {
           <div className="lg:col-span-5">
             <div className="p-7 sm:p-8 rounded-[28px] border border-neutral-100 bg-white shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] space-y-6 sticky top-28">
 
-              <h2 className="font-heading text-xl font-bold tracking-tight text-neutral-950">Order Summary</h2>
+              <h2 className="font-heading text-xl font-semibold tracking-tight text-neutral-950">Order Summary</h2>
 
               {/* Price Rows */}
               <div className="space-y-3.5 text-sm">
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Subtotal</span>
-                  <span className="font-medium text-neutral-900">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium tabular-nums text-neutral-900">${subtotal.toFixed(2)}</span>
                 </div>
 
                 {appliedPromo && (
@@ -336,28 +336,28 @@ const Cart = () => {
                       <Tag size={14} />
                       <span>{appliedPromo.label}</span>
                     </span>
-                    <span>-${discountAmount.toFixed(2)}</span>
+                    <span className="tabular-nums">-${discountAmount.toFixed(2)}</span>
                   </div>
                 )}
 
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Tax (8%)</span>
-                  <span className="font-medium text-neutral-900">${tax.toFixed(2)}</span>
+                  <span className="font-medium tabular-nums text-neutral-900">${tax.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Shipping</span>
-                  <span className="font-semibold text-emerald-700">
+                  <span className="font-semibold text-emerald-700 tabular-nums">
                     {shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}
                   </span>
                 </div>
 
                 <div className="border-t border-neutral-100 pt-4 flex justify-between items-baseline">
                   <div>
-                    <span className="font-heading text-lg font-bold block text-neutral-950">Total Amount</span>
-                    <span className="text-[11px] text-neutral-400">Final total is confirmed when you place the order</span>
+                    <span className="font-heading text-base font-medium block text-neutral-950">Total Amount</span>
+                    <span className="text-xs text-neutral-400">Final total is confirmed when you place the order</span>
                   </div>
-                  <span className="font-heading text-2xl font-extrabold text-neutral-950">
+                  <span className="font-heading text-2xl font-semibold tabular-nums text-neutral-950">
                     ${total.toFixed(2)}
                   </span>
                 </div>
@@ -388,7 +388,7 @@ const Cart = () => {
                   </form>
                 )}
                 {promoError && (
-                  <p className="text-[11px] text-red-500 mt-1.5">{promoError}</p>
+                  <p className="text-xs text-red-500 mt-1.5">{promoError}</p>
                 )}
               </div>
 
@@ -420,7 +420,7 @@ const Cart = () => {
               )}
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-2 text-center text-[10px] text-neutral-400 pt-2 border-t border-neutral-50">
+              <div className="grid grid-cols-3 gap-2 text-center text-xs text-neutral-500 pt-2 border-t border-neutral-50">
                 <div className="flex flex-col items-center gap-1">
                   <ShieldCheck size={16} className="text-neutral-600" />
                   <span>256-Bit SSL</span>

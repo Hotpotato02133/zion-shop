@@ -73,7 +73,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
           <>
             <header className="space-y-2 pr-8">
               <div className="flex items-center justify-between gap-3">
-                <h2 className="font-heading text-2xl font-extrabold font-mono">{order.order_number}</h2>
+                <h2 className="font-heading text-2xl font-semibold font-mono">{order.order_number}</h2>
                 <button onClick={() => printPackingSlip(order)} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-neutral-200 text-xs font-semibold hover:bg-neutral-50">
                   <Printer size={13} /> Packing slip
                 </button>
@@ -87,7 +87,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             </header>
 
             <section className="text-sm space-y-1">
-              <h3 className="font-bold">Customer</h3>
+              <h3 className="font-semibold text-sm">Customer</h3>
               <p className="text-neutral-600">
                 {address.full_name} · {address.phone}<br />
                 {order.customer_email}<br />
@@ -97,17 +97,17 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             </section>
 
             <section>
-              <h3 className="font-bold text-sm mb-2">Items</h3>
+              <h3 className="font-semibold text-sm mb-2">Items</h3>
               <ul className="divide-y divide-neutral-100 border border-neutral-100 rounded-xl px-3">
                 {order.order_items.map(i => (
                   <li key={i.id} className="py-2.5 flex items-center gap-3 text-sm">
                     {i.image_url && <img src={i.image_url} alt="" className="w-10 h-12 rounded-lg object-cover bg-neutral-100" />}
                     <span className="flex-1 min-w-0 truncate">{i.name} × {i.quantity}</span>
-                    <span className="font-semibold">{money(i.price * i.quantity)}</span>
+                    <span className="font-medium tabular-nums">{money(i.price * i.quantity)}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-right text-sm mt-2">Total <strong className="font-heading text-lg">{money(order.total)}</strong></p>
+              <p className="text-right text-sm mt-2">Total <span className="font-heading text-base font-semibold tabular-nums ml-1">{money(order.total)}</span></p>
             </section>
 
             {order.return_status && (
@@ -119,7 +119,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             {order.cancel_reason && <p className="text-xs text-neutral-500">Cancel reason: {order.cancel_reason}</p>}
 
             <section className="space-y-3 border-t border-neutral-100 pt-5">
-              <h3 className="font-bold text-sm">Actions</h3>
+              <h3 className="font-semibold text-sm">Actions</h3>
 
               {order.status === 'to_ship' && (
                 <div className="grid grid-cols-2 gap-2">
@@ -156,7 +156,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             </section>
 
             <section>
-              <h3 className="font-bold text-sm mb-3">Timeline</h3>
+              <h3 className="font-semibold text-sm mb-3">Timeline</h3>
               <ol className="space-y-3 border-l border-neutral-200 ml-1.5">
                 {order.order_events.map(ev => (
                   <li key={ev.id} className="pl-4 relative">
@@ -244,7 +244,7 @@ const AdminOrders = () => {
 
       <div className="bg-white border border-neutral-100 rounded-2xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="text-left text-[11px] uppercase tracking-wider text-neutral-400">
+          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 font-medium">
             <tr><th className="p-4">Order</th><th className="p-4">Customer</th><th className="p-4">Date</th><th className="p-4">Payment</th><th className="p-4">Status</th><th className="p-4 text-right">Total</th></tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
@@ -254,7 +254,7 @@ const AdminOrders = () => {
               <tr><td colSpan={6} className="p-8 text-center text-neutral-400">No orders match.</td></tr>
             ) : visible.map(o => (
               <tr key={o.id} onClick={() => setOpenId(o.id)} className="cursor-pointer hover:bg-neutral-50">
-                <td className="p-4 font-mono font-bold">{o.order_number}</td>
+                <td className="p-4 font-mono font-medium">{o.order_number}</td>
                 <td className="p-4">{o.customer_name}<span className="block text-xs text-neutral-400">{o.customer_email}</span></td>
                 <td className="p-4 text-neutral-500">{formatDate(o.created_at)}</td>
                 <td className="p-4 text-xs">{PAYMENT_LABELS[o.payment_status]}</td>

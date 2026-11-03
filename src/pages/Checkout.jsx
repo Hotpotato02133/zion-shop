@@ -31,7 +31,7 @@ const PAYMENT_OPTIONS = [
 
 const Field = ({ label, children }) => (
   <label className="block space-y-1.5">
-    <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">{label}</span>
+    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{label}</span>
     {children}
   </label>
 )
@@ -142,14 +142,14 @@ const Checkout = () => {
 
         <div className="mb-8 border-b border-neutral-100 pb-6 space-y-5">
           <CheckoutSteps current={2} />
-          <h1 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">Checkout</h1>
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight">Checkout</h1>
         </div>
 
         <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <div className="lg:col-span-7 space-y-8">
             {/* 1. Delivery */}
             <section className="space-y-4">
-              <h2 className="font-heading text-xl font-bold">1. Delivery details</h2>
+              <h2 className="font-heading text-xl font-semibold tracking-tight">1. Delivery details</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Field label="Full name">
                   <input required autoComplete="name" className={inputClass} value={form.full_name} onChange={update('full_name')} />
@@ -182,7 +182,7 @@ const Checkout = () => {
 
             {/* 2. Payment */}
             <section className="space-y-4">
-              <h2 className="font-heading text-xl font-bold">2. Payment method</h2>
+              <h2 className="font-heading text-xl font-semibold tracking-tight">2. Payment method</h2>
               <div className="space-y-3">
                 {PAYMENT_OPTIONS.map(({ key, title, description, icon }) => (
                   <label
@@ -200,7 +200,7 @@ const Checkout = () => {
                     />
                     {React.createElement(icon, { size: 20, className: 'mt-0.5 shrink-0' })}
                     <span>
-                      <span className="block text-sm font-bold">{title}</span>
+                      <span className="block text-sm font-medium">{title}</span>
                       <span className="block text-xs text-neutral-500 mt-0.5">{description}</span>
                     </span>
                   </label>
@@ -212,37 +212,37 @@ const Checkout = () => {
           {/* Summary */}
           <aside className="lg:col-span-5">
             <div className="p-7 rounded-[28px] border border-neutral-100 bg-white shadow-[0_20px_60px_-20px_rgba(0,0,0,0.15)] space-y-5 lg:sticky lg:top-28">
-              <h2 className="font-heading text-xl font-bold">Order summary</h2>
+              <h2 className="font-heading text-xl font-semibold tracking-tight">Order summary</h2>
 
               <ul className="space-y-3 max-h-64 overflow-y-auto pr-1">
                 {cart.map(item => (
                   <li key={item.productId ?? item.id} className="flex gap-3 items-center">
                     <img src={item.image} alt="" className="w-12 h-14 rounded-lg object-cover bg-neutral-100" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate">{item.name}</p>
+                      <p className="text-sm font-medium truncate">{item.name}</p>
                       <p className="text-xs text-neutral-400">Qty {item.quantity}</p>
                     </div>
-                    <span className="text-sm font-semibold">{money(Number(item.price) * item.quantity)}</span>
+                    <span className="text-sm font-medium tabular-nums">{money(Number(item.price) * item.quantity)}</span>
                   </li>
                 ))}
               </ul>
 
               <div className="space-y-2.5 text-sm border-t border-neutral-100 pt-4">
-                <div className="flex justify-between"><span className="text-neutral-500">Subtotal</span><span>{money(totals.subtotal)}</span></div>
+                <div className="flex justify-between"><span className="text-neutral-500">Subtotal</span><span className="tabular-nums font-medium">{money(totals.subtotal)}</span></div>
                 {extras.promo && (
                   <div className="flex justify-between text-emerald-700 font-medium">
                     <span className="flex items-center gap-1.5"><Tag size={14} />{extras.promo.code}</span>
-                    <span>-{money(totals.discount)}</span>
+                    <span className="tabular-nums">-{money(totals.discount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between"><span className="text-neutral-500">Tax (8%)</span><span>{money(totals.tax)}</span></div>
+                <div className="flex justify-between"><span className="text-neutral-500">Tax (8%)</span><span className="tabular-nums font-medium">{money(totals.tax)}</span></div>
                 <div className="flex justify-between">
                   <span className="text-neutral-500">Shipping</span>
-                  <span>{totals.shipping === 0 ? 'Free' : money(totals.shipping)}</span>
+                  <span className="tabular-nums font-medium">{totals.shipping === 0 ? 'Free' : money(totals.shipping)}</span>
                 </div>
                 <div className="flex justify-between items-baseline border-t border-neutral-100 pt-3">
-                  <span className="font-heading text-lg font-bold">Total</span>
-                  <span className="font-heading text-2xl font-extrabold">{money(totals.total)}</span>
+                  <span className="font-heading text-base font-medium">Total</span>
+                  <span className="font-heading text-2xl font-semibold tabular-nums">{money(totals.total)}</span>
                 </div>
               </div>
 
@@ -259,7 +259,7 @@ const Checkout = () => {
                 <span>{placing ? 'Placing order…' : paymentMethod === 'cod' ? 'Place order' : 'Place order & pay'}</span>
               </button>
 
-              <p className="flex items-center justify-center gap-1.5 text-[11px] text-neutral-400">
+              <p className="flex items-center justify-center gap-1.5 text-xs text-neutral-500">
                 <ShieldCheck size={13} /> Prices are confirmed on our server when you place the order.
               </p>
             </div>

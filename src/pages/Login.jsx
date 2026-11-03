@@ -117,7 +117,7 @@ const Login = () => {
                   <Sparkles size={12} />
                   Atelier Privé
                 </div>
-                <h1 className="font-heading text-3xl font-bold tracking-tight text-neutral-900 mb-1">
+                <h1 className="font-heading text-3xl font-semibold tracking-tight text-neutral-900 mb-1">
                   Atelier Client Access
                 </h1>
                 <p className="text-neutral-500 text-xs">
@@ -138,11 +138,11 @@ const Login = () => {
               {/* Dev Notice Banner */}
               <div className="mb-6 p-4 rounded-xl bg-neutral-950 text-white border border-neutral-800 shadow-sm">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-amber-400 font-semibold flex items-center gap-1.5">
+                  <span className="text-xs font-mono tracking-wider uppercase text-amber-400 font-medium flex items-center gap-1.5">
                     <Sparkles size={13} />
                     Clerk Integration Engine Ready
                   </span>
-                  <span className="text-[10px] text-neutral-400">Sandbox Preview</span>
+                  <span className="text-xs text-neutral-400">Sandbox Preview</span>
                 </div>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Add <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-200">VITE_CLERK_PUBLISHABLE_KEY</code> to your <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-200">.env.local</code> to activate live Clerk authentication.
@@ -155,7 +155,7 @@ const Login = () => {
                   <Sparkles size={12} />
                   Atelier Privé
                 </div>
-                <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mb-2">
+                <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 mb-2">
                   Welcome Back
                 </h1>
                 <p className="text-neutral-500 text-sm leading-relaxed">
@@ -196,7 +196,7 @@ const Login = () => {
               {/* Divider */}
               <div className="relative flex items-center justify-center my-6">
                 <div className="border-t border-neutral-200 w-full" />
-                <span className="bg-white px-3 text-[11px] font-semibold tracking-wider uppercase text-neutral-400 absolute">
+                <span className="bg-white px-3 text-xs font-medium tracking-wider uppercase text-neutral-400 absolute">
                   or credentials
                 </span>
               </div>
@@ -306,7 +306,7 @@ const Login = () => {
                   New to Zion?{' '}
                   <Link
                     to="/signup"
-                    className="font-bold text-neutral-900 hover:underline inline-flex items-center gap-1"
+                    className="font-medium text-neutral-900 hover:underline inline-flex items-center gap-1"
                   >
                     <span>Request Membership Access</span>
                     <ArrowRight size={12} />
@@ -344,7 +344,7 @@ const Login = () => {
             </blockquote>
             <div className="flex items-center gap-4 border-t border-white/20 pt-4">
               <div>
-                <p className="text-sm font-bold tracking-wider">Atelier Zion International</p>
+                <p className="text-sm font-medium tracking-wider">Atelier Zion International</p>
                 <p className="text-xs text-neutral-400">Exclusive member privileges & private acquisitions</p>
               </div>
             </div>
@@ -379,7 +379,7 @@ const Login = () => {
               >
                 <X size={18} />
               </button>
-              <h3 className="font-heading text-xl font-bold text-neutral-900 mb-2">
+              <h3 className="font-heading text-xl font-semibold text-neutral-900 mb-2">
                 Reset Password
               </h3>
               <p className="text-xs text-neutral-500 mb-6 leading-relaxed">

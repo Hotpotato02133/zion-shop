@@ -14,6 +14,7 @@ dist-ssr
 .env
 .env*.local
 graphify-out/
+.taste-skill/
 
 # Editor directories and files
 .vscode/*

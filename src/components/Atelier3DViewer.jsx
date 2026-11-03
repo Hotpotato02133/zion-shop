@@ -462,7 +462,7 @@ export default function Atelier3DViewer() {
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-10 lg:mb-14 gap-6">
           <div className="space-y-3">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-[1.05]">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-white leading-[1.05]">
               The Structured Carryall
             </h2>
             <p className="text-base text-neutral-300 max-w-xl font-light leading-relaxed">
@@ -473,18 +473,18 @@ export default function Atelier3DViewer() {
           {/* Quick Specifications Pill */}
           <div data-ui className="hidden md:flex items-center gap-6 text-sm text-neutral-400 bg-neutral-900 border border-neutral-800 px-6 py-3.5 rounded-2xl">
             <div>
-              <p className="text-sm text-neutral-400 uppercase tracking-wider font-semibold">Volume</p>
-              <p className="font-bold text-white text-base">38 Litres</p>
+              <p className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Volume</p>
+              <p className="font-medium text-white text-base tabular-nums">38 Litres</p>
             </div>
             <div className="w-px h-8 bg-neutral-800" />
             <div>
-              <p className="text-sm text-neutral-400 uppercase tracking-wider font-semibold">Weight</p>
-              <p className="font-bold text-white text-base">1,240 Grams</p>
+              <p className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Weight</p>
+              <p className="font-medium text-white text-base tabular-nums">1,240 Grams</p>
             </div>
             <div className="w-px h-8 bg-neutral-800" />
             <div>
-              <p className="text-sm text-neutral-400 uppercase tracking-wider font-semibold">Hardware</p>
-              <p className="font-bold text-white text-base">Brushed PVD</p>
+              <p className="text-sm text-neutral-400 uppercase tracking-wider font-medium">Hardware</p>
+              <p className="font-medium text-white text-base">Brushed PVD</p>
             </div>
           </div>
         </div>
@@ -577,7 +577,7 @@ export default function Atelier3DViewer() {
                   </button>
                 </div>
                 <div className="space-y-1">
-                  <h4 className="font-heading text-lg font-bold text-white">
+                  <h4 className="font-heading text-lg font-semibold text-white">
                     {activeHotspot.title}
                   </h4>
                   <p className="text-sm text-neutral-400 font-medium">

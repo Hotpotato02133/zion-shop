@@ -126,7 +126,7 @@ const Signup = () => {
                   <Sparkles size={12} />
                   Private Circle
                 </div>
-                <h1 className="font-heading text-3xl font-bold tracking-tight text-neutral-900 mb-1">
+                <h1 className="font-heading text-3xl font-semibold tracking-tight text-neutral-900 mb-1">
                   Request Atelier Membership
                 </h1>
                 <p className="text-neutral-500 text-xs">
@@ -147,11 +147,11 @@ const Signup = () => {
               {/* Dev Notice Banner */}
               <div className="mb-6 p-4 rounded-xl bg-neutral-950 text-white border border-neutral-800 shadow-sm">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-amber-400 font-semibold flex items-center gap-1.5">
+                  <span className="text-xs font-mono tracking-wider uppercase text-amber-400 font-medium flex items-center gap-1.5">
                     <Sparkles size={13} />
                     Clerk Registration Ready
                   </span>
-                  <span className="text-[10px] text-neutral-400">Sandbox Preview</span>
+                  <span className="text-xs text-neutral-400">Sandbox Preview</span>
                 </div>
                 <p className="text-xs text-neutral-300 leading-relaxed">
                   Add <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-200">VITE_CLERK_PUBLISHABLE_KEY</code> to your <code className="bg-neutral-800 px-1.5 py-0.5 rounded text-neutral-200">.env.local</code> to activate live user signup.
@@ -164,7 +164,7 @@ const Signup = () => {
                   <Sparkles size={12} />
                   Private Circle
                 </div>
-                <h1 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-neutral-900 mb-2">
+                <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight text-neutral-900 mb-2">
                   Request Membership
                 </h1>
                 <p className="text-neutral-500 text-sm leading-relaxed">
@@ -205,7 +205,7 @@ const Signup = () => {
               {/* Divider */}
               <div className="relative flex items-center justify-center my-6">
                 <div className="border-t border-neutral-200 w-full" />
-                <span className="bg-white px-3 text-[11px] font-semibold tracking-wider uppercase text-neutral-400 absolute">
+                <span className="bg-white px-3 text-xs font-medium tracking-wider uppercase text-neutral-400 absolute">
                   or bespoke registration
                 </span>
               </div>
@@ -226,7 +226,7 @@ const Signup = () => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label htmlFor="firstName" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-700 mb-1.5">
+                    <label htmlFor="firstName" className="block text-xs font-medium uppercase tracking-wider text-neutral-700 mb-1.5">
                       First Name
                     </label>
                     <div className="relative">
@@ -244,7 +244,7 @@ const Signup = () => {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="lastName" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-700 mb-1.5">
+                    <label htmlFor="lastName" className="block text-xs font-medium uppercase tracking-wider text-neutral-700 mb-1.5">
                       Last Name
                     </label>
                     <input
@@ -261,7 +261,7 @@ const Signup = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-700 mb-1.5">
+                  <label htmlFor="email" className="block text-xs font-medium uppercase tracking-wider text-neutral-700 mb-1.5">
                     Atelier Email Address
                   </label>
                   <div className="relative">
@@ -280,7 +280,7 @@ const Signup = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-700 mb-1.5">
+                  <label htmlFor="password" className="block text-xs font-medium uppercase tracking-wider text-neutral-700 mb-1.5">
                     Password (8+ characters)
                   </label>
                   <div className="relative">
@@ -306,7 +306,7 @@ const Signup = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="confirmPassword" className="block text-[11px] font-semibold uppercase tracking-wider text-neutral-700 mb-1.5">
+                  <label htmlFor="confirmPassword" className="block text-xs font-medium uppercase tracking-wider text-neutral-700 mb-1.5">
                     Confirm Password
                   </label>
                   <div className="relative">
@@ -388,7 +388,7 @@ const Signup = () => {
                   Already have an atelier account?{' '}
                   <Link
                     to="/login"
-                    className="font-bold text-neutral-900 hover:underline inline-flex items-center gap-1"
+                    className="font-medium text-neutral-900 hover:underline inline-flex items-center gap-1"
                   >
                     <span>Sign In</span>
                     <ArrowRight size={12} />
@@ -431,8 +431,8 @@ const Signup = () => {
                   <Truck size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-white">Complimentary Global Express Courier</p>
-                  <p className="text-neutral-400 text-[11px] leading-relaxed">Insured expedited delivery to your door across 65 territories.</p>
+                  <p className="font-medium text-white">Complimentary Global Express Courier</p>
+                  <p className="text-neutral-400 text-xs leading-relaxed">Insured expedited delivery to your door across 65 territories.</p>
                 </div>
               </div>
 
@@ -441,8 +441,8 @@ const Signup = () => {
                   <Clock size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-white">48-Hour Priority Capsule Access</p>
-                  <p className="text-neutral-400 text-[11px] leading-relaxed">Early allocations to limited runway drops before public release.</p>
+                  <p className="font-medium text-white">48-Hour Priority Capsule Access</p>
+                  <p className="text-neutral-400 text-xs leading-relaxed">Early allocations to limited runway drops before public release.</p>
                 </div>
               </div>
 
@@ -451,8 +451,8 @@ const Signup = () => {
                   <Scissors size={16} />
                 </div>
                 <div>
-                  <p className="font-semibold text-white">Complimentary Tailoring & Alterations</p>
-                  <p className="text-neutral-400 text-[11px] leading-relaxed">Lifetime garment care and bespoke fit adjustments at any Zion boutique.</p>
+                  <p className="font-medium text-white">Complimentary Tailoring & Alterations</p>
+                  <p className="text-neutral-400 text-xs leading-relaxed">Lifetime garment care and bespoke fit adjustments at any Zion boutique.</p>
                 </div>
               </div>
             </div>

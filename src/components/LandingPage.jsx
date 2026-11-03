@@ -137,7 +137,7 @@ export default function LandingPage() {
             {/* Logo */}
             <motion.div 
               whileHover={{ scale: 1.05 }}
-              className="font-heading text-2xl font-bold tracking-tight"
+              className="font-heading text-2xl font-semibold tracking-tight"
             >
               Maison Noir
             </motion.div>
@@ -254,7 +254,7 @@ export default function LandingPage() {
                   className="flex flex-col justify-center space-y-8"
                 >
                   <motion.div variants={fadeInUp} className="space-y-6">
-                    <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight leading-[0.9]">
+                    <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-semibold tracking-tight leading-[0.9]">
                       Discover
                       <br />
                       <span className="text-gray-600">Timeless</span>
@@ -302,7 +302,7 @@ export default function LandingPage() {
                     <div className="aspect-square bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl shadow-2xl flex items-center justify-center">
                       <div className="text-center space-y-4">
                         <div className="w-24 h-24 bg-black rounded-full mx-auto flex items-center justify-center">
-                          <span className="text-white text-2xl font-bold">MN</span>
+                          <span className="text-white text-2xl font-medium">MN</span>
                         </div>
                         <p className="text-gray-600 font-medium">Maison Noir</p>
                       </div>
@@ -350,7 +350,7 @@ export default function LandingPage() {
           >
             <motion.h2 
               variants={fadeInUp}
-              className="font-heading text-4xl md:text-5xl font-bold mb-6"
+              className="font-heading text-4xl md:text-5xl font-semibold mb-6"
             >
               Featured Collections
             </motion.h2>
@@ -431,7 +431,7 @@ export default function LandingPage() {
                   </h3>
                   
                   <div className="flex items-center gap-2 mb-4">
-                    <span className="text-lg font-bold">{product.price}</span>
+                    <span className="text-base font-medium tabular-nums">{product.price}</span>
                     {product.originalPrice && (
                       <span className="text-sm text-gray-400 line-through">
                         {product.originalPrice}
@@ -464,7 +464,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
             >
-              <h3 className="font-heading text-4xl md:text-5xl font-bold mb-8">
+              <h3 className="font-heading text-4xl md:text-5xl font-semibold mb-8">
                 Craftsmanship & Story
               </h3>
               <p className="text-lg text-gray-700 leading-relaxed mb-8">
@@ -511,7 +511,7 @@ export default function LandingPage() {
             transition={{ duration: 0.8 }}
             className="bg-black text-white rounded-3xl p-12 text-center"
           >
-            <h4 className="font-heading text-3xl md:text-4xl font-bold mb-6">
+            <h4 className="font-heading text-3xl md:text-4xl font-semibold mb-6">
               Join Our Circle
             </h4>
             <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
@@ -550,7 +550,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Brand */}
             <div className="sm:col-span-2 lg:col-span-1">
-              <div className="font-heading text-2xl font-bold mb-6">Maison Noir</div>
+              <div className="font-heading text-2xl font-semibold mb-6">Maison Noir</div>
               <p className="text-gray-300 mb-8 max-w-sm leading-relaxed">
                 Refined objects for a considered life. We believe in the power of beautiful, 
                 functional design that stands the test of time.

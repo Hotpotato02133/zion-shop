@@ -42,14 +42,14 @@ const Layout = ({ children }) => {
       </main>
 
       {/* Luxury Atelier Footer */}
-      <footer className="w-full bg-neutral-950 text-white relative">
-        <div className="relative z-10 w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-14 lg:py-16">
+      <footer className="w-full bg-neutral-950 text-white relative overflow-hidden flex flex-col justify-between">
+        <div className="relative z-10 w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 pt-16 lg:pt-20 pb-8 sm:pb-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-12">
 
             {/* Brand Manifesto */}
             <div className="col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <span className="font-heading text-2xl font-bold tracking-tight text-white">
+                <span className="font-heading text-2xl font-semibold tracking-tight text-white">
                   ZION
                 </span>
                 <span className="text-xs px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-neutral-300 font-medium">
@@ -131,15 +131,8 @@ const Layout = ({ children }) => {
             </div>
           </div>
 
-          {/* Monumental Architectural Brandmark Close */}
-          <div className="w-full overflow-hidden select-none pointer-events-none mt-14 -mb-6">
-            <span className="font-heading text-[14vw] font-bold tracking-tighter text-neutral-900 leading-none block text-center">
-              ZION
-            </span>
-          </div>
-
-          {/* Bottom Bar */}
-          <div data-ui className="mt-4 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-neutral-400">
+          {/* Bottom Bar (Legal & Atelier Verification) */}
+          <div data-ui className="mt-12 sm:mt-16 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-neutral-400">
             <p>
               &copy; 2026 ZION Atelier International Inc. All rights reserved.
             </p>
@@ -154,6 +147,18 @@ const Layout = ({ children }) => {
                 Cookie Preferences
               </a>
             </div>
+          </div>
+        </div>
+
+        {/* Submerged 50% Monumental Brandmark Bedrock (Modern Luxury Footer Trend) */}
+        <div className="w-full overflow-hidden select-none pointer-events-none mt-auto">
+          <div className="w-full flex justify-center items-start overflow-hidden h-[11.5vw] sm:h-[12vw] md:h-[12.5vw] 2xl:h-[13vw] leading-none">
+            <span
+              aria-hidden="true"
+              className="font-heading font-black text-[25vw] tracking-tighter text-neutral-800 leading-[0.75] block text-center uppercase select-none transform translate-y-[-2%]"
+            >
+              ZION
+            </span>
           </div>
         </div>
       </footer>

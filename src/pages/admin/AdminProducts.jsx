@@ -22,7 +22,7 @@ const formatSpecs = (specs) => Object.entries(specs || {}).map(([k, v]) => `${k}
 
 const Field = ({ label, children }) => (
   <label className="block space-y-1.5">
-    <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">{label}</span>
+    <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">{label}</span>
     {children}
   </label>
 )
@@ -98,7 +98,7 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
         <button type="button" onClick={onClose} className="absolute top-5 right-5 p-2 rounded-full hover:bg-neutral-100" aria-label="Close">
           <X size={16} />
         </button>
-        <h2 className="font-heading text-2xl font-bold">{product ? 'Edit product' : 'Add product'}</h2>
+        <h2 className="font-heading text-2xl font-semibold">{product ? 'Edit product' : 'Add product'}</h2>
 
         <Field label="Name"><input required className={inputClass} value={form.name} onChange={update('name')} /></Field>
         <Field label="Description">
@@ -129,7 +129,7 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
         </Field>
 
         <div className="space-y-2">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-500">Main image</span>
+          <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">Main image</span>
           <div className="flex gap-3 items-start">
             {form.image_url && <img src={form.image_url} alt="" className="w-20 h-24 rounded-xl object-cover bg-neutral-100 shrink-0" />}
             <div className="flex-1 space-y-2">
@@ -248,7 +248,7 @@ const AdminProducts = () => {
 
       <div className="bg-white border border-neutral-100 rounded-2xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="text-left text-[11px] uppercase tracking-wider text-neutral-400">
+          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 font-medium">
             <tr>
               <th className="p-4">Product</th><th className="p-4">Category</th>
               <th className="p-4 text-right">Price</th><th className="p-4 text-right">Stock</th>
@@ -288,7 +288,7 @@ const AdminProducts = () => {
                       </span>
                       <button
                         onClick={() => { setRestockId(p.id); setRestockQty(10) }}
-                        className={`px-2 py-1 rounded-lg border text-[11px] font-semibold ${isLow(p) ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-neutral-200 text-neutral-500 hover:bg-neutral-50'}`}
+                        className={`px-2 py-1 rounded-lg border text-xs font-medium ${isLow(p) ? 'border-amber-300 bg-amber-50 text-amber-800' : 'border-neutral-200 text-neutral-500 hover:bg-neutral-50'}`}
                       >
                         + Restock
                       </button>

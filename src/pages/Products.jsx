@@ -674,7 +674,7 @@ const Products = () => {
           </motion.div>
           <motion.h1 
             variants={fadeInUp}
-            className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4"
+            className="font-heading text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight mb-4"
           >
             The Collection
           </motion.h1>
@@ -753,7 +753,7 @@ const Products = () => {
                   }`}
                 >
                   <span>{category}</span>
-                  <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
                     selectedCategory === category ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
                   }`}>
                     {count}
@@ -821,7 +821,7 @@ const Products = () => {
                     {/* Tag Badge */}
                     {product.tag && (
                       <div className="absolute top-4 left-4">
-                        <span className="bg-black/85 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                        <span className="bg-black text-white text-xs font-medium uppercase tracking-wider px-2.5 py-1 rounded">
                           {product.tag}
                         </span>
                       </div>
@@ -887,7 +887,7 @@ const Products = () => {
 
                       <h3 
                         onClick={() => openQuickView(product)}
-                        className="font-heading font-bold text-base text-black group-hover:text-gray-600 transition-colors line-clamp-1 cursor-pointer"
+                        className="font-heading font-medium text-base text-neutral-950 group-hover:text-neutral-600 transition-colors line-clamp-1 cursor-pointer"
                       >
                         {product.name}
                       </h3>
@@ -896,7 +896,7 @@ const Products = () => {
                     {/* Price & Action Row */}
                     <div className="pt-4 border-t border-gray-50 flex items-center justify-between mt-3">
                       <div className="flex items-baseline gap-2">
-                        <span className="font-heading text-lg font-bold">${product.price}</span>
+                        <span className="font-heading text-base font-medium tabular-nums text-neutral-950">${product.price}</span>
                         {product.originalPrice && (
                           <span className="text-xs text-gray-400 line-through">
                             ${product.originalPrice}
@@ -929,7 +929,7 @@ const Products = () => {
             <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto text-gray-400">
               <Search size={28} />
             </div>
-            <h3 className="font-heading text-2xl font-bold">No Products Found</h3>
+            <h3 className="font-heading text-2xl font-semibold tracking-tight">No Products Found</h3>
             <p className="text-sm text-gray-500">
               We couldn't find any items matching your current filters or search query.
             </p>
@@ -991,7 +991,7 @@ const Products = () => {
                   </AnimatePresence>
 
                   {selectedProduct.tag && (
-                    <span className="absolute top-4 left-4 bg-black/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    <span className="absolute top-4 left-4 bg-black text-white text-xs font-medium uppercase tracking-wider px-2.5 py-1 rounded">
                       {selectedProduct.tag}
                     </span>
                   )}
@@ -1051,7 +1051,7 @@ const Products = () => {
                 <div className="flex-1 overflow-y-auto px-6 sm:px-8 lg:px-10 pt-7 sm:pt-9 pb-4">
 
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-[11px] uppercase tracking-[0.2em] font-semibold text-neutral-400">
+                    <span className="text-xs uppercase tracking-wider font-medium text-neutral-500">
                       {selectedProduct.category}
                     </span>
                     <div className="flex items-center gap-1.5 text-xs">
@@ -1061,12 +1061,12 @@ const Products = () => {
                     </div>
                   </div>
 
-                  <h2 className="font-heading text-[26px] sm:text-3xl lg:text-[34px] leading-[1.1] font-bold tracking-tight text-neutral-950 mb-3">
+                  <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl leading-[1.1] font-semibold tracking-tight text-neutral-950 mb-3">
                     {selectedProduct.name}
                   </h2>
 
                   <div className="flex items-baseline gap-3 mb-5">
-                    <span className="font-heading text-2xl sm:text-[28px] font-extrabold text-neutral-950">
+                    <span className="font-heading text-2xl sm:text-3xl font-medium tabular-nums text-neutral-950">
                       ${selectedProduct.price}
                     </span>
                     {selectedProduct.originalPrice && (
@@ -1074,7 +1074,7 @@ const Products = () => {
                         <span className="text-sm text-neutral-400 line-through">
                           ${selectedProduct.originalPrice}
                         </span>
-                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">
+                        <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
                           Save ${(selectedProduct.originalPrice - selectedProduct.price).toFixed(0)}
                         </span>
                       </>
@@ -1198,7 +1198,7 @@ const Products = () => {
                   </div>
 
                   {/* Guarantees micro-bar */}
-                  <div className="flex items-center justify-center gap-5 text-[11px] text-neutral-400">
+                  <div className="flex items-center justify-center gap-5 text-xs text-neutral-500">
                     <span className="flex items-center gap-1"><Truck size={12} /> Insured Courier</span>
                     <span className="flex items-center gap-1"><ShieldCheck size={12} /> Certified Authentic</span>
                     <span className="flex items-center gap-1"><RotateCcw size={12} /> 30-Day Returns</span>

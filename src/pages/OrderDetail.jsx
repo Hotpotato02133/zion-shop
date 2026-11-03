@@ -83,7 +83,7 @@ const OrderDetail = () => {
             <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex gap-3 text-emerald-900">
               <CheckCircle2 className="shrink-0" />
               <div>
-                <p className="font-bold">Thank you — your order is in.</p>
+                <p className="font-semibold text-base">Thank you — your order is in.</p>
                 <p className="text-xs mt-0.5">
                   {order.status === 'to_pay'
                     ? 'Complete the payment below to start processing your order.'
@@ -113,7 +113,7 @@ const OrderDetail = () => {
         <header className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <span className="text-xs uppercase tracking-widest font-semibold text-neutral-400 block mb-1">Order</span>
-            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight font-mono">{order.order_number}</h1>
+            <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight font-mono">{order.order_number}</h1>
             <p className="text-xs text-neutral-400 mt-1">Placed {formatDateTime(order.created_at)}</p>
           </div>
           <div className="text-right space-y-1">
@@ -143,34 +143,34 @@ const OrderDetail = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           <section className="md:col-span-3 space-y-6">
-            <h2 className="font-heading text-lg font-bold">Items</h2>
+            <h2 className="font-heading text-lg font-semibold tracking-tight">Items</h2>
             <ul className="divide-y divide-neutral-100 border border-neutral-100 rounded-2xl px-4">
               {order.order_items.map(item => (
                 <li key={item.id} className="flex gap-3 items-center py-3">
                   {item.image_url && <img src={item.image_url} alt="" className="w-14 h-16 rounded-lg object-cover bg-neutral-100" />}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold">{item.name}</p>
+                    <p className="text-sm font-medium">{item.name}</p>
                     <p className="text-xs text-neutral-400">{money(item.price)} × {item.quantity}</p>
                   </div>
-                  <span className="text-sm font-semibold">{money(item.price * item.quantity)}</span>
+                  <span className="text-sm font-medium tabular-nums">{money(item.price * item.quantity)}</span>
                 </li>
               ))}
             </ul>
 
             <dl className="space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-neutral-500">Subtotal</dt><dd>{money(order.subtotal)}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-500">Subtotal</dt><dd className="tabular-nums font-medium">{money(order.subtotal)}</dd></div>
               {Number(order.discount) > 0 && (
-                <div className="flex justify-between text-emerald-700"><dt>Discount {order.promo_code && `(${order.promo_code})`}</dt><dd>-{money(order.discount)}</dd></div>
+                <div className="flex justify-between text-emerald-700"><dt>Discount {order.promo_code && `(${order.promo_code})`}</dt><dd className="tabular-nums font-medium">-{money(order.discount)}</dd></div>
               )}
-              <div className="flex justify-between"><dt className="text-neutral-500">Tax</dt><dd>{money(order.tax)}</dd></div>
-              <div className="flex justify-between"><dt className="text-neutral-500">Shipping</dt><dd>{Number(order.shipping_fee) === 0 ? 'Free' : money(order.shipping_fee)}</dd></div>
-              <div className="flex justify-between border-t border-neutral-100 pt-3 font-heading text-lg font-bold"><dt>Total</dt><dd>{money(order.total)}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-500">Tax</dt><dd className="tabular-nums font-medium">{money(order.tax)}</dd></div>
+              <div className="flex justify-between"><dt className="text-neutral-500">Shipping</dt><dd className="tabular-nums font-medium">{Number(order.shipping_fee) === 0 ? 'Free' : money(order.shipping_fee)}</dd></div>
+              <div className="flex justify-between border-t border-neutral-100 pt-3 font-heading text-base font-semibold"><dt>Total</dt><dd className="tabular-nums">{money(order.total)}</dd></div>
             </dl>
           </section>
 
           <section className="md:col-span-2 space-y-6">
             <div>
-              <h2 className="font-heading text-lg font-bold mb-2">Delivery</h2>
+              <h2 className="font-heading text-lg font-semibold mb-2">Delivery</h2>
               <p className="text-sm leading-relaxed text-neutral-600">
                 {address.full_name}<br />
                 {address.phone}<br />
@@ -181,21 +181,21 @@ const OrderDetail = () => {
               {order.gift_note && <p className="text-xs text-neutral-500 mt-2 italic">Gift note: “{order.gift_note}”</p>}
             </div>
             <div>
-              <h2 className="font-heading text-lg font-bold mb-2">Payment</h2>
+              <h2 className="font-heading text-lg font-semibold mb-2">Payment</h2>
               <p className="text-sm text-neutral-600">
                 {order.payment_method === 'cod' ? 'Cash on delivery' : 'PayMongo (card / e-wallet)'}
                 <br />
-                <span className="font-semibold text-neutral-900">{PAYMENT_LABELS[order.payment_status]}</span>
+                <span className="font-medium text-neutral-900">{PAYMENT_LABELS[order.payment_status]}</span>
                 {order.paid_at && <> · {formatDate(order.paid_at)}</>}
               </p>
             </div>
             <div>
-              <h2 className="font-heading text-lg font-bold mb-3">Timeline</h2>
+              <h2 className="font-heading text-lg font-semibold mb-3">Timeline</h2>
               <ol className="space-y-4 border-l border-neutral-200 ml-1.5">
                 {order.order_events.map(event => (
                   <li key={event.id} className="pl-5 relative">
                     <span className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-950" />
-                    <p className="text-sm font-semibold">{event.note || STATUS_META[event.status]?.label}</p>
+                    <p className="text-sm font-medium">{event.note || STATUS_META[event.status]?.label}</p>
                     <p className="text-xs text-neutral-400">{formatDateTime(event.created_at)}</p>
                   </li>
                 ))}

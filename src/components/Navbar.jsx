@@ -247,7 +247,7 @@ const Navbar = () => {
             </Link>
             <Link to="/wishlist" className="hover:text-white transition-colors flex items-center gap-1">
               <span>Private Reserve</span>
-              {wishlistCount > 0 && <span className="text-white font-bold">({wishlistCount})</span>}
+              {wishlistCount > 0 && <span className="text-white font-medium">({wishlistCount})</span>}
             </Link>
             <SignedIn>
               <Link to="/orders" className="hover:text-white transition-colors">
@@ -288,7 +288,7 @@ const Navbar = () => {
 
               {/* Brand Logotype */}
               <Link to="/" className="inline-block group text-left">
-                <span className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 block transition-transform group-hover:scale-[1.02]">
+                <span className="font-heading text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-950 block transition-transform group-hover:scale-[1.02]">
                   ZION
                 </span>
                 <span className="text-xs font-medium tracking-normal text-neutral-500 block -mt-0.5">
@@ -298,7 +298,7 @@ const Navbar = () => {
             </div>
 
             {/* Middle: Desktop Navigation Menu */}
-            <nav className="hidden lg:flex items-center justify-center gap-5 xl:gap-7 text-sm font-semibold tracking-wider uppercase flex-1 px-2">
+            <nav className="hidden lg:flex items-center justify-center gap-5 xl:gap-7 text-sm font-medium tracking-wide uppercase flex-1 px-2">
               {/* Collections with Mega-Menu */}
               <div
                 ref={collectionsRef}
@@ -347,24 +347,24 @@ const Navbar = () => {
                               />
                               <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors" />
                             </div>
-                            <h4 className="text-xs font-bold text-neutral-900 group-hover:text-black uppercase tracking-wider">
+                            <h4 className="text-sm font-semibold text-neutral-900 group-hover:text-black">
                               {col.title}
                             </h4>
-                            <p className="text-[11px] text-neutral-500 normal-case font-normal mt-0.5 line-clamp-1">
+                            <p className="text-xs text-neutral-500 font-normal mt-0.5 line-clamp-1">
                               {col.subtitle}
                             </p>
                           </Link>
                         ))}
                       </div>
 
-                      <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between text-[11px] font-medium tracking-normal normal-case">
-                        <span className="text-neutral-400">
+                      <div className="mt-5 pt-4 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500 font-normal">
+                        <span>
                           Handcrafted in limited seasonal editions. Complimentary express delivery.
                         </span>
                         <Link
                           to="/products"
                           onClick={() => setIsCollectionsHovered(false)}
-                          className="text-black font-semibold uppercase tracking-wider text-[10px] hover:underline flex items-center gap-1"
+                          className="text-black font-medium text-xs hover:underline flex items-center gap-1"
                         >
                           <span>Explore All 12 Pieces</span>
                           <ArrowRight size={12} />
@@ -383,7 +383,7 @@ const Navbar = () => {
                     key={link.label}
                     to={link.path}
                     className={`relative py-2 transition-colors flex items-center gap-1.5 ${
-                      active ? 'text-black font-bold' : 'text-neutral-600 hover:text-black'
+                      active ? 'text-black font-semibold' : 'text-neutral-600 hover:text-black'
                     }`}
                   >
                     <span>{link.label}</span>
@@ -436,10 +436,10 @@ const Navbar = () => {
                         className="absolute right-0 top-full mt-2 w-64 bg-white border border-neutral-200 rounded-2xl shadow-xl py-3 z-50 text-neutral-800"
                       >
                         <div className="px-4 py-2 border-b border-neutral-100">
-                          <p className="text-xs font-bold uppercase tracking-wider text-neutral-900">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-900">
                             Atelier Member Portal
                           </p>
-                          <p className="text-[11px] text-neutral-400 mt-0.5">
+                          <p className="text-xs text-neutral-400 mt-0.5">
                             Private salon access & acquisitions
                           </p>
                         </div>
@@ -448,7 +448,7 @@ const Navbar = () => {
                           <Link
                             to="/login"
                             onClick={() => setIsAccountOpen(false)}
-                            className="flex items-center justify-between px-4 py-2 text-xs font-semibold hover:bg-neutral-50 transition-colors"
+                            className="flex items-center justify-between px-4 py-2 text-xs font-medium hover:bg-neutral-50 transition-colors"
                           >
                             <span>Sign In to Account</span>
                             <ArrowRight size={13} className="text-neutral-400" />
@@ -459,7 +459,7 @@ const Navbar = () => {
                             className="flex items-center justify-between px-4 py-2 text-xs hover:bg-neutral-50 transition-colors"
                           >
                             <span>Request Circle Membership</span>
-                            <Sparkles size={13} className="text-amber-500" />
+                            <Sparkles size={13} className="text-neutral-900" />
                           </Link>
                         </div>
 
@@ -498,7 +498,7 @@ const Navbar = () => {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute top-0.5 right-0.5 bg-black text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-sm"
+                    className="absolute -top-0.5 -right-0.5 bg-black text-white text-xs font-medium rounded-full min-w-4 h-4 px-1 flex items-center justify-center shadow-sm"
                   >
                     {wishlistCount}
                   </motion.span>
@@ -522,7 +522,7 @@ const Navbar = () => {
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="absolute top-0.5 right-0.5 bg-black text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-sm"
+                      className="absolute -top-0.5 -right-0.5 bg-black text-white text-xs font-medium rounded-full min-w-4 h-4 px-1 flex items-center justify-center shadow-sm"
                     >
                       {cartCount}
                     </motion.span>
@@ -540,13 +540,13 @@ const Navbar = () => {
                       className="absolute right-0 top-full mt-1 w-80 sm:w-96 bg-white border border-neutral-200 rounded-2xl shadow-2xl p-5 z-50 text-neutral-900"
                     >
                       <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-                        <span className="text-xs font-bold uppercase tracking-wider">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-neutral-900">
                           Shopping Bag ({cartCount})
                         </span>
                         <Link
                           to="/cart"
                           onClick={() => setIsMiniBagOpen(false)}
-                          className="text-[11px] text-neutral-500 hover:text-black font-semibold underline"
+                          className="text-xs text-neutral-500 hover:text-black font-medium underline"
                         >
                           View Full Bag
                         </Link>
@@ -559,7 +559,7 @@ const Navbar = () => {
                           <Link
                             to="/products"
                             onClick={() => setIsMiniBagOpen(false)}
-                            className="mt-3 inline-block text-xs font-bold text-black uppercase tracking-wider hover:underline"
+                            className="mt-3 inline-block text-xs font-semibold text-black uppercase tracking-wider hover:underline"
                           >
                             Explore Atelier Collection
                           </Link>
@@ -580,7 +580,7 @@ const Navbar = () => {
                                     <h5 className="text-xs font-semibold truncate text-neutral-900">
                                       {item.name}
                                     </h5>
-                                    <p className="text-[11px] text-neutral-500">
+                                    <p className="text-xs text-neutral-500 tabular-nums">
                                       Qty: {item.quantity} × {typeof item.price === 'number' ? `$${item.price.toFixed(2)}` : item.price}
                                     </p>
                                   </div>
@@ -597,7 +597,7 @@ const Navbar = () => {
                           </div>
 
                           {cart.length > 3 && (
-                            <p className="text-center text-[10px] text-neutral-400 py-1">
+                            <p className="text-center text-xs text-neutral-400 py-1">
                               + {cart.length - 3} more items in bag
                             </p>
                           )}
@@ -605,7 +605,7 @@ const Navbar = () => {
                           <div className="pt-3 border-t border-neutral-100 space-y-3">
                             <div className="flex justify-between items-center text-xs">
                               <span className="text-neutral-500">Estimated Subtotal</span>
-                              <span className="font-bold text-neutral-900 text-sm">
+                              <span className="font-semibold text-neutral-900 text-sm tabular-nums">
                                 {formatCurrency(cartSubtotal)}
                               </span>
                             </div>
@@ -659,7 +659,7 @@ const Navbar = () => {
               className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 z-10 border border-neutral-100"
             >
               <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-neutral-500">
+                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
                   Search Zion Atelier
                 </span>
                 <button
@@ -694,7 +694,7 @@ const Navbar = () => {
 
               {/* Popular Atelier Search Queries */}
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-wider text-neutral-400 mb-3">
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-3">
                   Trending Collections & Search Terms
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -726,8 +726,8 @@ const Navbar = () => {
                     }}
                     className="p-3 bg-neutral-50 hover:bg-neutral-100 rounded-xl text-left transition-colors"
                   >
-                    <p className="text-xs font-bold text-neutral-900">{c.name}</p>
-                    <p className="text-[10px] text-neutral-400">{c.count}</p>
+                    <p className="text-xs font-semibold text-neutral-900">{c.name}</p>
+                    <p className="text-xs text-neutral-400">{c.count}</p>
                   </button>
                 ))}
               </div>
@@ -759,10 +759,10 @@ const Navbar = () => {
               <div>
                 <div className="p-6 border-b border-neutral-100 flex items-center justify-between">
                   <div>
-                    <span className="font-heading text-xl font-bold tracking-tight text-neutral-900 block">
+                    <span className="font-heading text-xl font-semibold tracking-tight text-neutral-900 block">
                       ZION
                     </span>
-                    <span className="text-[9px] font-semibold tracking-widest uppercase text-neutral-400">
+                    <span className="text-xs font-medium tracking-wide uppercase text-neutral-400">
                       Atelier Privé
                     </span>
                   </div>
@@ -791,7 +791,7 @@ const Navbar = () => {
 
                 {/* Mobile Navigation Links */}
                 <div className="py-4 px-6 space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-2">
                     Catalog Categories
                   </p>
                   {navLinks.map((link) => (
@@ -799,12 +799,12 @@ const Navbar = () => {
                       key={link.label}
                       to={link.path}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center justify-between py-3 text-sm font-semibold text-neutral-800 hover:text-black border-b border-neutral-50"
+                      className="flex items-center justify-between py-3 text-sm font-medium text-neutral-800 hover:text-black border-b border-neutral-50"
                     >
                       <div className="flex items-center gap-2">
                         <span>{link.label}</span>
                         {link.badge && (
-                          <span className="px-1.5 py-0.5 bg-black text-white text-[9px] font-bold rounded-full">
+                          <span className="px-2 py-0.5 bg-black text-white text-xs font-medium rounded-full">
                             {link.badge}
                           </span>
                         )}
@@ -816,7 +816,7 @@ const Navbar = () => {
 
                 {/* Collections Shortcut */}
                 <div className="px-6 py-2">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 mb-3">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-3">
                     Featured Capsules
                   </p>
                   <div className="space-y-2">
@@ -833,8 +833,8 @@ const Navbar = () => {
                           className="w-10 h-10 rounded-lg object-cover bg-neutral-100"
                         />
                         <div>
-                          <p className="text-xs font-semibold text-neutral-900">{c.title}</p>
-                          <p className="text-[10px] text-neutral-400">{c.category}</p>
+                          <p className="text-xs font-medium text-neutral-900">{c.title}</p>
+                          <p className="text-xs text-neutral-400">{c.category}</p>
                         </div>
                       </Link>
                     ))}
@@ -849,11 +849,11 @@ const Navbar = () => {
                     <div className="flex items-center gap-3">
                       <AccountMenu />
                       <div>
-                        <p className="text-xs font-bold text-neutral-900">Atelier Client</p>
-                        <p className="text-[10px] text-neutral-400">Authenticated Member</p>
+                        <p className="text-xs font-semibold text-neutral-900">Atelier Client</p>
+                        <p className="text-xs text-neutral-400">Authenticated Member</p>
                       </div>
                     </div>
-                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-bold">
+                    <span className="text-xs font-mono uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 font-medium">
                       Active
                     </span>
                   </div>

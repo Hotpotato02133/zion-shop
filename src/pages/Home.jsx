@@ -264,19 +264,19 @@ const Home = () => {
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="space-y-1.5">
-              <h3 className="font-heading font-bold text-base text-white">Global Express Freight</h3>
+              <h3 className="font-heading font-medium text-base text-white">Global Express Freight</h3>
               <p className="text-base text-neutral-300">Insured express delivery worldwide on all orders over $150.</p>
             </div>
             <div className="space-y-1.5">
-              <h3 className="font-heading font-bold text-base text-white">Artisanal Provenance</h3>
+              <h3 className="font-heading font-medium text-base text-white">Artisanal Provenance</h3>
               <p className="text-base text-neutral-300">Lifetime craftsmanship repair and verified workshop sourcing.</p>
             </div>
             <div className="space-y-1.5">
-              <h3 className="font-heading font-bold text-base text-white">30-Day Returns</h3>
+              <h3 className="font-heading font-medium text-base text-white">30-Day Returns</h3>
               <p className="text-base text-neutral-300">Complimentary courier collection for exchanges and returns.</p>
             </div>
             <div className="space-y-1.5">
-              <h3 className="font-heading font-bold text-base text-white">Private Concierge</h3>
+              <h3 className="font-heading font-medium text-base text-white">Private Concierge</h3>
               <p className="text-base text-neutral-300">Dedicated styling assistance and bespoke sizing consultation.</p>
             </div>
           </div>
@@ -288,7 +288,7 @@ const Home = () => {
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="space-y-2">
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
                 Curated Collections
               </h2>
               <p className="text-base text-neutral-600">Considered garments engineered for silhouette, movement, and permanence.</p>
@@ -313,7 +313,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
                   
                   <div className="absolute bottom-8 left-8 right-8 text-white space-y-2">
-                    <h3 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
+                    <h3 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight">
                       Outerwear & Tailoring
                     </h3>
                     <p className="text-base text-neutral-200 font-light max-w-md line-clamp-2">
@@ -341,7 +341,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
                   
                   <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                    <h3 className="font-heading text-2xl font-bold tracking-tight">
+                    <h3 className="font-heading text-2xl font-semibold tracking-tight">
                       Everyday Apparel
                     </h3>
                     <p className="text-sm text-neutral-200 font-light line-clamp-1">
@@ -366,7 +366,7 @@ const Home = () => {
                   <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
                   
                   <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                    <h3 className="font-heading text-2xl font-bold tracking-tight">
+                    <h3 className="font-heading text-2xl font-semibold tracking-tight">
                       Footwear & Leather Objects
                     </h3>
                     <p className="text-sm text-neutral-200 font-light line-clamp-1">
@@ -393,7 +393,7 @@ const Home = () => {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="space-y-2">
-              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
                 Featured Catalog
               </h2>
               <p className="text-sm text-neutral-600">Pure raw materials selected for their tactile aging qualities.</p>
@@ -513,7 +513,7 @@ const Home = () => {
                           <span className="shrink-0 text-neutral-500">In Stock</span>
                         </div>
 
-                        <h3 className="font-heading font-bold text-base text-black group-hover:text-neutral-700 transition-colors line-clamp-1">
+                        <h3 className="font-heading font-medium text-base text-neutral-950 group-hover:text-neutral-600 transition-colors line-clamp-1">
                           {product.name}
                         </h3>
                       </div>
@@ -521,7 +521,7 @@ const Home = () => {
                       {/* Pricing */}
                       <div className="pt-2 flex items-center justify-between">
                         <div className="flex items-baseline gap-2">
-                          <span className="font-heading text-lg font-bold">${product.price}</span>
+                          <span className="font-heading text-base font-medium tabular-nums text-neutral-950">${product.price}</span>
                           {product.originalPrice && (
                             <span className="text-sm text-neutral-600 line-through">${product.originalPrice}</span>
                           )}
@@ -571,7 +571,7 @@ const Home = () => {
             {/* Narrative Story (6 cols) */}
             <div className="lg:col-span-6 space-y-8">
               <div className="space-y-3">
-                <h2 className="font-heading text-4xl sm:text-5xl font-bold tracking-tight text-black leading-tight">
+                <h2 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight text-black leading-tight">
                   Restraint. Material Honesty. Longevity.
                 </h2>
                 <p className="text-base sm:text-lg text-neutral-600 font-light leading-relaxed">
@@ -581,24 +581,24 @@ const Home = () => {
 
               <div className="space-y-5 pt-2">
                 <div className="space-y-1">
-                  <h3 className="font-heading font-bold text-base text-black">Zero Synthetic Compromises</h3>
+                  <h3 className="font-heading font-semibold text-base text-black">Zero Synthetic Compromises</h3>
                   <p className="text-base text-neutral-600 leading-relaxed">Pure raw materials selected for their tactile aging qualities and rich natural patina.</p>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="font-heading font-bold text-base text-black">Direct Heritage Workshops</h3>
+                  <h3 className="font-heading font-semibold text-base text-black">Direct Heritage Workshops</h3>
                   <p className="text-base text-neutral-600 leading-relaxed">Partnering directly with mills across Portugal, Japan, and Italy to invest in artisan wages.</p>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="font-heading font-bold text-base text-black">Circular Longevity Guarantee</h3>
+                  <h3 className="font-heading font-semibold text-base text-black">Circular Longevity Guarantee</h3>
                   <p className="text-base text-neutral-600 leading-relaxed">Every garment is engineered and cut to be repaired, re-hemmed, and worn across decades.</p>
                 </div>
               </div>
 
               <div className="pt-2">
                 <Link to="/products">
-                  <button className="text-sm font-bold tracking-wider uppercase text-black underline underline-offset-8 hover:text-neutral-600 transition-colors">
+                  <button className="text-sm font-medium tracking-wide uppercase text-black underline underline-offset-8 hover:text-neutral-600 transition-colors">
                     Read Our Complete Provenance Report →
                   </button>
                 </Link>
@@ -616,7 +616,7 @@ const Home = () => {
       <section className="w-full py-24 bg-white">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="max-w-3xl mb-12 space-y-3">
-            <blockquote className="font-heading text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-neutral-950 leading-snug">
+            <blockquote className="font-heading text-xl sm:text-2xl lg:text-3xl font-medium tracking-tight text-neutral-950 leading-snug">
               "Zion embodies quiet luxury — garments of architectural weight and material restraint, without superfluous detail."
             </blockquote>
             <p className="text-sm text-neutral-600 font-medium">
@@ -630,7 +630,7 @@ const Home = () => {
                 "Fast international courier, immaculate packaging, and a level of finish that outclasses brands twice the price."
               </p>
               <p className="text-base text-neutral-600">
-                <span className="font-bold text-black">Julian Vance</span> · Verified Private Collector, London
+                <span className="font-medium text-black">Julian Vance</span> · Verified Private Collector, London
               </p>
             </div>
             <div className="space-y-2.5">
@@ -638,7 +638,7 @@ const Home = () => {
                 "Uncompromising minimalism. You can sense the human hand in every selvedge seam and collar edge."
               </p>
               <p className="text-base text-neutral-600">
-                <span className="font-bold text-black">Kaito Tanaka</span> · Industrial Designer, Tokyo
+                <span className="font-medium text-black">Kaito Tanaka</span> · Industrial Designer, Tokyo
               </p>
             </div>
           </div>
@@ -658,7 +658,7 @@ const Home = () => {
               transition={{ duration: 0.5, ease: 'easeOut' }}
               className="space-y-5 text-center lg:text-left"
             >
-              <h2 className="font-heading text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+              <h2 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight leading-[1.05]">
                 Join The Zion Private Circle
               </h2>
               <p className="text-neutral-300 font-light text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
@@ -686,7 +686,7 @@ const Home = () => {
                     <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center mx-auto">
                       <Check size={22} strokeWidth={2.5} />
                     </div>
-                    <p className="font-heading text-xl font-bold">Welcome to the Private Circle</p>
+                    <p className="font-heading text-xl font-semibold">Welcome to the Private Circle</p>
                     <p className="text-sm text-neutral-400">We have sent a verification invitation to your email.</p>
                   </motion.div>
                 ) : (
@@ -702,7 +702,7 @@ const Home = () => {
                     className="space-y-4"
                   >
                     <div className="space-y-1">
-                      <h3 className="font-heading text-lg font-bold">Request Your Invitation</h3>
+                      <h3 className="font-heading text-lg font-semibold">Request Your Invitation</h3>
                       <p className="text-sm text-neutral-400">Strict confidentiality. No promotional marketing.</p>
                     </div>
 

@@ -9,10 +9,10 @@ import { ORDER_TABS, formatDate, money } from '../../lib/orders'
 const Stat = ({ icon, label, value, to }) => (
   <Link to={to} className="p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm hover:shadow-md transition-shadow">
     <div className="flex items-center justify-between text-neutral-400">
-      <span className="text-[11px] font-semibold uppercase tracking-wider">{label}</span>
+      <span className="text-xs font-medium uppercase tracking-wider">{label}</span>
       {React.createElement(icon, { size: 16 })}
     </div>
-    <p className="font-heading text-3xl font-extrabold mt-3">{value}</p>
+    <p className="font-heading text-3xl font-semibold tabular-nums mt-3">{value}</p>
   </Link>
 )
 
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <section className="lg:col-span-2 p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading text-lg font-bold">Recent orders</h2>
+            <h2 className="font-heading text-lg font-semibold">Recent orders</h2>
             <Link to="/admin/orders" className="text-xs font-semibold underline">View all</Link>
           </div>
           {orders.length === 0 ? (
@@ -72,11 +72,11 @@ const AdminDashboard = () => {
               {orders.slice(0, 6).map(o => (
                 <li key={o.id} className="py-3 flex items-center justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="font-mono text-sm font-bold">{o.order_number}</p>
+                    <p className="font-mono text-sm font-medium">{o.order_number}</p>
                     <p className="text-xs text-neutral-400 truncate">{o.customer_name} · {formatDate(o.created_at)}</p>
                   </div>
                   <StatusBadge status={o.status} />
-                  <span className="text-sm font-semibold w-20 text-right">{money(o.total)}</span>
+                  <span className="text-sm font-medium tabular-nums w-20 text-right">{money(o.total)}</span>
                 </li>
               ))}
             </ul>
@@ -85,7 +85,7 @@ const AdminDashboard = () => {
 
         <div className="space-y-6">
           <section className="p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm">
-            <h2 className="font-heading text-lg font-bold mb-3">Orders by status</h2>
+            <h2 className="font-heading text-lg font-semibold mb-3">Orders by status</h2>
             <ul className="space-y-2 text-sm">
               {ORDER_TABS.filter(t => t.key !== 'all').map(t => (
                 <li key={t.key} className="flex justify-between">
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
 
           <section className="p-5 rounded-2xl bg-white border border-neutral-100 shadow-sm">
             <div className="flex items-center justify-between mb-3">
-              <h2 className="font-heading text-lg font-bold flex items-center gap-2">
+              <h2 className="font-heading text-lg font-semibold flex items-center gap-2">
                 <AlertTriangle size={16} className="text-amber-600" /> Needs restocking
               </h2>
               {lowStock.length > 0 && <Link to="/admin/products?filter=low" className="text-xs font-semibold underline">Restock</Link>}

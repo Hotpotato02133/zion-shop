@@ -47,7 +47,7 @@ const Orders = () => {
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="mb-8">
           <span className="text-xs uppercase tracking-widest font-semibold text-neutral-400 block mb-2">Account</span>
-          <h1 className="font-heading text-4xl sm:text-5xl font-extrabold tracking-tight">My Orders</h1>
+          <h1 className="font-heading text-4xl sm:text-5xl font-semibold tracking-tight">My Orders</h1>
         </div>
 
         <div role="tablist" className="flex gap-1 overflow-x-auto border-b border-neutral-100 mb-6">
@@ -62,7 +62,7 @@ const Orders = () => {
               }`}
             >
               {label}
-              {counts[key] ? <span className="ml-1.5 text-[10px] text-neutral-400">({counts[key]})</span> : null}
+              {counts[key] ? <span className="ml-1.5 text-xs text-neutral-400">({counts[key]})</span> : null}
             </button>
           ))}
         </div>
@@ -89,7 +89,7 @@ const Orders = () => {
             <article key={order.id} className="p-5 sm:p-6 rounded-3xl border border-neutral-100 shadow-sm space-y-4">
               <header className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <Link to={`/orders/${order.id}`} className="font-mono text-sm font-bold hover:underline">{order.order_number}</Link>
+                  <Link to={`/orders/${order.id}`} className="font-mono text-sm font-medium hover:underline">{order.order_number}</Link>
                   <p className="text-xs text-neutral-400">Placed {formatDate(order.created_at)}</p>
                 </div>
                 <StatusBadge status={order.status} />
@@ -100,10 +100,10 @@ const Orders = () => {
                   <li key={item.id} className="flex gap-3 items-center py-2.5">
                     {item.image_url && <img src={item.image_url} alt="" className="w-12 h-14 rounded-lg object-cover bg-neutral-100" />}
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold truncate">{item.name}</p>
+                      <p className="text-sm font-medium truncate">{item.name}</p>
                       <p className="text-xs text-neutral-400">Qty {item.quantity}</p>
                     </div>
-                    <span className="text-sm">{money(item.price * item.quantity)}</span>
+                    <span className="text-sm font-medium tabular-nums">{money(item.price * item.quantity)}</span>
                   </li>
                 ))}
               </ul>
@@ -111,7 +111,7 @@ const Orders = () => {
               <footer className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-neutral-100">
                 <div>
                   <p className="text-xs text-neutral-400">{STATUS_META[order.status]?.hint}</p>
-                  <p className="text-sm">Total <strong className="font-heading text-lg">{money(order.total)}</strong></p>
+                  <p className="text-sm">Total <span className="font-heading text-base font-medium tabular-nums text-neutral-950 ml-1">{money(order.total)}</span></p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   <OrderActions order={order} onUpdated={replaceOrder} />

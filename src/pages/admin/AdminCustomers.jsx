@@ -49,7 +49,7 @@ const AdminCustomers = () => {
       {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
       <div className="bg-white border border-neutral-100 rounded-2xl shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="text-left text-[11px] uppercase tracking-wider text-neutral-400">
+          <thead className="text-left text-xs uppercase tracking-wider text-neutral-400 font-medium">
             <tr>
               <th className="p-4">Customer</th><th className="p-4">Email</th>
               <th className="p-4 text-right">Orders</th><th className="p-4 text-right">Paid spend</th><th className="p-4">Joined</th>

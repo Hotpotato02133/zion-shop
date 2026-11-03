@@ -25,7 +25,7 @@ const Dialog = ({ title, onClose, children }) => (
       <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-full hover:bg-neutral-100" aria-label="Close">
         <X size={16} />
       </button>
-      <h3 className="font-heading text-xl font-bold pr-8">{title}</h3>
+      <h3 className="font-heading text-xl font-semibold pr-8">{title}</h3>
       {children}
     </div>
   </div>

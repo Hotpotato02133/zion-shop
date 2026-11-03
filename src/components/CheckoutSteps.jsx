@@ -5,14 +5,14 @@ const STEPS = ['Bag', 'Sign in', 'Delivery & payment', 'Confirmation']
 
 /** current: 0-based index of the active step */
 const CheckoutSteps = ({ current }) => (
-  <ol className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold overflow-x-auto pb-1">
+  <ol className="flex items-center gap-2 sm:gap-3 text-xs uppercase tracking-wider font-medium overflow-x-auto pb-1">
     {STEPS.map((label, index) => {
       const done = index < current
       const active = index === current
       return (
         <li key={label} className="flex items-center gap-2 sm:gap-3 shrink-0">
           <span
-            className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] border ${
+            className={`w-5 h-5 rounded-full flex items-center justify-center text-xs border ${
               done
                 ? 'bg-neutral-950 text-white border-neutral-950'
                 : active

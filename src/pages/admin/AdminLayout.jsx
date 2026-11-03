@@ -13,7 +13,7 @@ const NAV = [
 
 const Badge = ({ value, tone }) =>
   value > 0 ? (
-    <span className={`ml-1 min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold inline-flex items-center justify-center ${tone === 'amber' ? 'bg-amber-500 text-white' : 'bg-neutral-950 text-white'}`}>
+    <span className={`ml-1 min-w-[18px] h-[18px] px-1 rounded-full text-xs font-medium inline-flex items-center justify-center ${tone === 'amber' ? 'bg-amber-500 text-white' : 'bg-neutral-950 text-white'}`}>
       {value}
     </span>
   ) : null
@@ -47,7 +47,7 @@ const NotificationBell = () => {
       >
         <Bell size={18} />
         {notifications.length > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">
+          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-600 text-white text-xs font-medium flex items-center justify-center">
             {notifications.length > 9 ? '9+' : notifications.length}
           </span>
         )}
@@ -56,9 +56,9 @@ const NotificationBell = () => {
       {open && (
         <div className="absolute right-0 top-full mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white border border-neutral-200 rounded-2xl shadow-xl z-50 overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-100">
-            <p className="text-xs font-bold uppercase tracking-wider">Notifications</p>
+            <p className="text-xs font-semibold uppercase tracking-wider">Notifications</p>
             {notifications.length > 0 && (
-              <button onClick={() => markRead(notifications.map(n => n.id))} className="text-[11px] font-semibold underline">
+              <button onClick={() => markRead(notifications.map(n => n.id))} className="text-xs font-medium underline">
                 Mark all read
               </button>
             )}
@@ -77,7 +77,7 @@ const NotificationBell = () => {
                       {n.title}
                     </p>
                     {n.body && <p className="text-xs text-neutral-500 mt-0.5 line-clamp-2">{n.body}</p>}
-                    <p className="text-[10px] text-neutral-400 mt-1">{formatDateTime(n.created_at)}</p>
+                    <p className="text-xs text-neutral-400 mt-1">{formatDateTime(n.created_at)}</p>
                   </button>
                 </li>
               ))}
@@ -125,7 +125,7 @@ const Shell = () => {
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
             <span className="text-xs uppercase tracking-widest font-semibold text-neutral-400">Store admin</span>
-            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight">Zion Control Room</h1>
+            <h1 className="font-heading text-3xl sm:text-4xl font-semibold tracking-tight">Zion Control Room</h1>
           </div>
           <div className="flex items-center gap-2">
             <button

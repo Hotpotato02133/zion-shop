@@ -36,7 +36,7 @@ export const RequireAdmin = ({ children }) => {
         children
       ) : (
         <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-6">
-          <h1 className="font-heading text-3xl font-extrabold tracking-tight">Admins only</h1>
+          <h1 className="font-heading text-3xl font-semibold tracking-tight">Admins only</h1>
           <p className="text-sm text-neutral-500 mt-2 max-w-sm">
             Your account does not have access to the store dashboard.
           </p>

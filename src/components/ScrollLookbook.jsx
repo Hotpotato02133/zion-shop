@@ -50,7 +50,7 @@ export default function ScrollLookbook() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="space-y-2">
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight">
               Chapters of Form
             </h2>
             <p className="text-base text-neutral-600 max-w-xl leading-relaxed">
@@ -104,12 +104,12 @@ export default function ScrollLookbook() {
 
           {/* Foreground Editorial Plate Content */}
           <div className="relative z-10 p-6 sm:p-10 lg:p-14 max-w-2xl space-y-4">
-            <h3 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+            <h3 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
               {CHAPTERS[activeChapterIndex].title}
             </h3>
 
             <p className="text-base sm:text-lg text-neutral-200 font-light leading-relaxed">
-              <span className="font-semibold text-white mr-2">{CHAPTERS[activeChapterIndex].category} —</span>
+              <span className="font-medium text-white mr-2">{CHAPTERS[activeChapterIndex].category} —</span>
               {CHAPTERS[activeChapterIndex].description}
             </p>
 

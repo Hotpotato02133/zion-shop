@@ -211,7 +211,7 @@ const HeroCarousel = () => {
               className="max-w-xl lg:max-w-2xl space-y-6 lg:space-y-8 pointer-events-auto"
               aria-live="polite"
             >
-              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95] text-white">
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-semibold tracking-tight leading-[0.95] text-white">
                 {active.title} {active.titleAccent}
               </h1>
 
@@ -261,11 +261,11 @@ const HeroCarousel = () => {
               <span>{active.spotlight.collection}</span>
               <span>In Stock</span>
             </div>
-            <h3 className="font-heading text-base font-bold text-black leading-tight">
+            <h3 className="font-heading text-base font-medium text-neutral-950 leading-tight">
               {active.spotlight.name}
             </h3>
             <div className="flex items-center justify-between pt-1">
-              <span className="text-lg font-bold text-black">${active.spotlight.price}</span>
+              <span className="font-heading text-base font-medium tabular-nums text-neutral-950">${active.spotlight.price}</span>
               <Link to={active.ctaPrimary.to}>
                 <button className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
                   <span>View Item</span>

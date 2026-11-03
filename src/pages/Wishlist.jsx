@@ -134,7 +134,7 @@ const Wishlist = () => {
               Private Atelier
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-950 mb-4">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-neutral-950 mb-4">
               Your Wishlist is Empty
             </h1>
 
@@ -206,7 +206,7 @@ const Wishlist = () => {
               <Sparkles size={12} />
               Private Atelier Reserve
             </div>
-            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-950">
+            <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-neutral-950">
               Saved Pieces
             </h1>
             <p className="text-neutral-500 text-sm sm:text-base mt-2">
@@ -268,12 +268,12 @@ const Wishlist = () => {
                     {/* Top Badges */}
                     <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
                       {item.tag && (
-                        <span className="px-2.5 py-1 bg-black/90 backdrop-blur-md text-white text-[10px] font-bold tracking-widest uppercase rounded-full shadow-sm">
+                        <span className="px-2.5 py-1 bg-black text-white text-xs font-medium tracking-wider uppercase rounded shadow-sm">
                           {item.tag}
                         </span>
                       )}
                       {item.originalPrice && (
-                        <span className="px-2.5 py-1 bg-white/90 backdrop-blur-md text-emerald-700 text-[10px] font-bold tracking-wider uppercase rounded-full shadow-sm">
+                        <span className="px-2.5 py-1 bg-emerald-50 text-emerald-700 text-xs font-medium tracking-wide uppercase rounded shadow-sm">
                           Save ${(item.originalPrice - item.price).toFixed(0)}
                         </span>
                       )}
@@ -310,7 +310,7 @@ const Wishlist = () => {
                     <div>
                       {/* Category & Rating */}
                       <div className="flex items-center justify-between text-xs mb-2">
-                        <span className="font-semibold text-neutral-400 tracking-wider uppercase text-[11px]">
+                        <span className="font-medium text-neutral-400 tracking-wider uppercase text-xs">
                           {item.category || 'Atelier Collection'}
                         </span>
                         {item.rating && (
@@ -318,7 +318,7 @@ const Wishlist = () => {
                             <Star size={12} className="fill-amber-400 text-amber-400" />
                             <span className="text-neutral-700 text-xs">{item.rating}</span>
                             {item.reviews && (
-                              <span className="text-neutral-400 text-[10px]">({item.reviews})</span>
+                              <span className="text-neutral-400 text-xs">({item.reviews})</span>
                             )}
                           </div>
                         )}
@@ -331,7 +331,7 @@ const Wishlist = () => {
 
                       {/* Price */}
                       <div className="flex items-baseline gap-2 mb-4">
-                        <span className="text-lg font-bold text-neutral-950">
+                        <span className="text-base font-medium tabular-nums text-neutral-950">
                           {formatPrice(item.price)}
                         </span>
                         {item.originalPrice && (
@@ -380,7 +380,7 @@ const Wishlist = () => {
                 <ShieldCheck size={20} />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-neutral-950">Price & Allocation Lock</h4>
+                <h4 className="text-sm font-semibold text-neutral-950">Price & Allocation Lock</h4>
                 <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
                   Saved atelier items retain current priority allocations for 14 calendar days.
                 </p>
@@ -392,7 +392,7 @@ const Wishlist = () => {
                 <ShoppingBag size={20} />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-neutral-950">Complimentary Courier</h4>
+                <h4 className="text-sm font-semibold text-neutral-950">Complimentary Courier</h4>
                 <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
                   Every order includes insured express global delivery with signature verification.
                 </p>
@@ -404,7 +404,7 @@ const Wishlist = () => {
                 <RotateCcw size={20} />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-neutral-950">30-Day White-Glove Returns</h4>
+                <h4 className="text-sm font-semibold text-neutral-950">30-Day White-Glove Returns</h4>
                 <p className="text-xs text-neutral-500 mt-1 leading-relaxed">
                   Complimentary concierge courier pickup for returns and bespoke alterations.
                 </p>
@@ -449,7 +449,7 @@ const Wishlist = () => {
                   className="w-full h-full object-cover"
                 />
                 {quickViewProduct.tag && (
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-black/90 backdrop-blur-md text-white text-[10px] font-bold tracking-widest uppercase rounded-full">
+                  <span className="absolute top-4 left-4 px-2.5 py-1 bg-black text-white text-xs font-medium tracking-wider uppercase rounded">
                     {quickViewProduct.tag}
                   </span>
                 )}
@@ -461,12 +461,12 @@ const Wishlist = () => {
                   <span className="text-xs font-semibold text-neutral-400 tracking-widest uppercase">
                     {quickViewProduct.category || 'Atelier'}
                   </span>
-                  <h3 className="font-heading text-2xl font-bold text-neutral-950 mt-1 mb-2">
+                  <h3 className="font-heading text-2xl font-semibold tracking-tight text-neutral-950 mt-1 mb-2">
                     {quickViewProduct.name}
                   </h3>
 
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="text-2xl font-bold text-neutral-950">
+                    <span className="text-2xl font-medium tabular-nums text-neutral-950">
                       {formatPrice(quickViewProduct.price)}
                     </span>
                     {quickViewProduct.originalPrice && (
@@ -474,7 +474,7 @@ const Wishlist = () => {
                         <span className="text-sm text-neutral-400 line-through">
                           {formatPrice(quickViewProduct.originalPrice)}
                         </span>
-                        <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-1 rounded-full">
+                        <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
                           Save ${(parseNumericPrice(quickViewProduct.originalPrice) - parseNumericPrice(quickViewProduct.price)).toFixed(0)}
                         </span>
                       </>
