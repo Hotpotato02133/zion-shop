@@ -28,7 +28,9 @@ const defaultFeaturedProducts = [
     price: 28,
     originalPrice: 35,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?q=80&w=1400&auto=format&fit=crop',
     category: 'Tops',
+    spec: '240 GSM Organic Cotton',
     tag: 'Bestseller',
     rating: 4.8,
     reviews: 326
@@ -39,7 +41,9 @@ const defaultFeaturedProducts = [
     price: 48,
     originalPrice: 58,
     image: 'https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1400&auto=format&fit=crop',
     category: 'Bottoms',
+    spec: 'Fine-Weave Wool & Cotton',
     tag: 'Bestseller',
     rating: 4.7,
     reviews: 133
@@ -50,7 +54,9 @@ const defaultFeaturedProducts = [
     price: 68,
     originalPrice: 82,
     image: 'https://images.unsplash.com/photo-1475178626620-a4d074967452?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1400&auto=format&fit=crop',
     category: 'Bottoms',
+    spec: '13.5oz Stretch Selvedge',
     tag: 'Bestseller',
     rating: 4.8,
     reviews: 241
@@ -61,7 +67,9 @@ const defaultFeaturedProducts = [
     price: 148,
     originalPrice: 178,
     image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=1400&auto=format&fit=crop',
     category: 'Outerwear',
+    spec: 'Tuscan Grain Vegan Nappa',
     tag: 'Bestseller',
     rating: 4.8,
     reviews: 97
@@ -72,7 +80,9 @@ const defaultFeaturedProducts = [
     price: 96,
     originalPrice: null,
     image: 'https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?q=80&w=1400&auto=format&fit=crop',
     category: 'Outerwear',
+    spec: '14oz Raw Indigo Selvedge',
     tag: 'New In',
     rating: 4.7,
     reviews: 112
@@ -83,7 +93,9 @@ const defaultFeaturedProducts = [
     price: 132,
     originalPrice: 155,
     image: 'https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1400&auto=format&fit=crop',
     category: 'Footwear',
+    spec: 'Full-Grain Calfskin Welted',
     tag: 'Bestseller',
     rating: 4.8,
     reviews: 164
@@ -94,7 +106,9 @@ const defaultFeaturedProducts = [
     price: 110,
     originalPrice: 130,
     image: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1400&auto=format&fit=crop',
     category: 'Footwear',
+    spec: 'Vibram Sole & Italian Suede',
     tag: 'New Arrival',
     rating: 4.6,
     reviews: 72
@@ -105,7 +119,9 @@ const defaultFeaturedProducts = [
     price: 38,
     originalPrice: 48,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?q=80&w=1400&auto=format&fit=crop',
+    secondaryImage: 'https://images.unsplash.com/photo-1508296695146-257a814070b4?q=80&w=1400&auto=format&fit=crop',
     category: 'Accessories',
+    spec: 'Titanium Wire & Mineral Glass',
     tag: 'Bestseller',
     rating: 4.7,
     reviews: 198
@@ -242,102 +258,126 @@ const Home = () => {
       <HeroCarousel />
 
       {/* 2. VALUE PROPOSITION RIBBON */}
-      <section className="w-full py-12 bg-black text-white">
+      <section className="w-full py-12 bg-neutral-950 text-white">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-            
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-                <Truck size={22} className="text-white" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-heading font-bold text-base">Complimentary Global Freight</h4>
-                <p className="text-sm text-gray-400">Insured express courier on all worldwide orders over $150.</p>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="space-y-1.5">
+              <h3 className="font-heading font-bold text-base text-white">Global Express Freight</h3>
+              <p className="text-base text-neutral-300">Insured express delivery worldwide on all orders over $150.</p>
             </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-                <ShieldCheck size={22} className="text-white" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-heading font-bold text-base">Artisanal Warranty</h4>
-                <p className="text-sm text-gray-400">Lifetime craftsmanship repair and certified provenance.</p>
-              </div>
+            <div className="space-y-1.5">
+              <h3 className="font-heading font-bold text-base text-white">Artisanal Provenance</h3>
+              <p className="text-base text-neutral-300">Lifetime craftsmanship repair and verified workshop sourcing.</p>
             </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-                <Clock size={22} className="text-white" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-heading font-bold text-base">30-Day Effortless Returns</h4>
-                <p className="text-sm text-gray-400">Complimentary home collection for exchanges and returns.</p>
-              </div>
+            <div className="space-y-1.5">
+              <h3 className="font-heading font-bold text-base text-white">30-Day Returns</h3>
+              <p className="text-base text-neutral-300">Complimentary courier collection for exchanges and returns.</p>
             </div>
-
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-                <Sparkles size={22} className="text-white" />
-              </div>
-              <div className="space-y-1">
-                <h4 className="font-heading font-bold text-base">Private Concierge</h4>
-                <p className="text-sm text-gray-400">24/7 dedicated personal styling and gifting consultation.</p>
-              </div>
+            <div className="space-y-1.5">
+              <h3 className="font-heading font-bold text-base text-white">Private Concierge</h3>
+              <p className="text-base text-neutral-300">Dedicated styling assistance and bespoke sizing consultation.</p>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* 3. CURATED CATEGORY SHOWCASE (Interactive Grid) */}
-      <section id="collections" className="w-full py-20 bg-gray-50/50">
+      {/* 3. CURATED CATEGORY SHOWCASE (Asymmetrical Editorial Mosaic) */}
+      <section id="collections" className="w-full py-20 lg:py-28 bg-neutral-50">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div className="space-y-3">
-              <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
-                Architectural Universes
-              </span>
+            <div className="space-y-2">
               <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
                 Curated Collections
               </h2>
+              <p className="text-base text-neutral-600">Considered garments engineered for silhouette, movement, and permanence.</p>
             </div>
-            <Link to="/products" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-gray-600 transition-colors group">
+            <Link to="/products" className="inline-flex items-center gap-2 text-sm font-semibold hover:text-neutral-600 transition-colors group">
               <span>Explore All Categories</span>
               <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-            {collectionShowcases.map((col, idx) => (
-              <Link key={idx} to={col.link} className="group block">
-                <motion.div
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  className="relative aspect-[3/4] rounded-3xl overflow-hidden shadow-sm group-hover:shadow-2xl transition-all duration-500 bg-gray-900"
-                >
+          {/* Asymmetrical Editorial Mosaic (7 / 5 Grid) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
+            {/* Left Dominant Frame (7 Columns) */}
+            <div className="lg:col-span-7">
+              <Link to="/products?category=Outerwear" className="group block h-full">
+                <div className="relative h-[440px] sm:h-[500px] lg:h-[620px] rounded-2xl overflow-hidden bg-neutral-900">
                   <img 
-                    src={col.image} 
-                    alt={col.title}
+                    src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1400&auto=format&fit=crop" 
+                    alt="Outerwear & Tailoring"
                     className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
                   
-                  <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                    <h3 className="font-heading text-2xl font-bold tracking-tight">
-                      {col.title}
+                  <div className="absolute bottom-8 left-8 right-8 text-white space-y-2">
+                    <h3 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight">
+                      Outerwear & Tailoring
                     </h3>
-                    <p className="text-sm text-gray-300 font-light line-clamp-2">
-                      {col.description}
+                    <p className="text-base text-neutral-200 font-light max-w-md line-clamp-2">
+                      Jackets built to layer, weather, and wear in with character. Milled in northern Italy and finished by hand.
                     </p>
-                    <div className="pt-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white group-hover:underline">
-                      <span>Browse Gallery</span>
+                    <div className="pt-2 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-white group-hover:underline">
+                      <span>Explore Outerwear</span>
+                      <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+
+            {/* Right Stacked Frames (5 Columns) */}
+            <div className="lg:col-span-5 flex flex-col gap-6 lg:gap-8">
+              {/* Top Frame: Everyday Apparel */}
+              <Link to="/products?category=Tops" className="group block flex-1">
+                <div className="relative h-[260px] sm:h-[280px] lg:h-[294px] rounded-2xl overflow-hidden bg-neutral-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=900&auto=format&fit=crop" 
+                    alt="Everyday Apparel"
+                    className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
+                  
+                  <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
+                    <h3 className="font-heading text-2xl font-bold tracking-tight">
+                      Everyday Apparel
+                    </h3>
+                    <p className="text-sm text-neutral-200 font-light line-clamp-1">
+                      Tees, knits, and shirt dresses cut from 240 GSM organic jersey.
+                    </p>
+                    <div className="pt-1 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-white group-hover:underline">
+                      <span>View Apparel</span>
                       <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
-                </motion.div>
+                </div>
               </Link>
-            ))}
+
+              {/* Bottom Frame: Footwear & Accessories */}
+              <Link to="/products?category=Footwear" className="group block flex-1">
+                <div className="relative h-[260px] sm:h-[280px] lg:h-[294px] rounded-2xl overflow-hidden bg-neutral-900">
+                  <img 
+                    src="https://images.unsplash.com/photo-1608256246200-53e635b5b65f?q=80&w=900&auto=format&fit=crop" 
+                    alt="Footwear & Objects"
+                    className="w-full h-full object-cover object-center transform transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                  />
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
+                  
+                  <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
+                    <h3 className="font-heading text-2xl font-bold tracking-tight">
+                      Footwear & Leather Objects
+                    </h3>
+                    <p className="text-sm text-neutral-200 font-light line-clamp-1">
+                      Goodyear-welted leather boots and minimal everyday carry.
+                    </p>
+                    <div className="pt-1 flex items-center gap-1.5 text-sm font-semibold uppercase tracking-wider text-white group-hover:underline">
+                      <span>View Footwear</span>
+                      <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -347,25 +387,23 @@ const Home = () => {
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-            <div className="space-y-3">
-              <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
-                Atelier Handpicked
-              </span>
+            <div className="space-y-2">
               <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
                 Featured Catalog
               </h2>
+              <p className="text-sm text-neutral-600">Pure raw materials selected for their tactile aging qualities.</p>
             </div>
 
-            {/* Category Filter Pills */}
+            {/* Category Filter Tabs */}
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-300 ${
+                  className={`px-4 py-2 rounded-full text-sm font-semibold tracking-wider uppercase transition-colors ${
                     activeCategory === cat
-                      ? 'bg-black text-white shadow-md'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-black text-white'
+                      : 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200'
                   }`}
                 >
                   {cat}
@@ -387,64 +425,74 @@ const Home = () => {
                   <motion.article
                     layout
                     key={product.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
+                    initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-gray-200 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col group"
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.25 }}
+                    className="bg-white rounded-2xl overflow-hidden flex flex-col group"
                   >
-                    {/* Image Area */}
-                    <div className="relative aspect-[4/5] bg-gray-50 overflow-hidden">
+                    {/* Image Area with Lookbook Crossfade */}
+                    <div className="relative aspect-[4/5] bg-neutral-100 overflow-hidden rounded-2xl">
                       <img 
                         src={product.image} 
                         alt={product.name} 
-                        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                        className={`w-full h-full object-cover transition-all duration-500 ${
+                          product.secondaryImage ? 'group-hover:opacity-0 group-hover:scale-105' : 'group-hover:scale-105'
+                        }`}
                         loading="lazy"
                       />
+                      {product.secondaryImage && (
+                        <img 
+                          src={product.secondaryImage} 
+                          alt={`${product.name} detail view`} 
+                          className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      )}
                       
                       {/* Tag Badge */}
                       {product.tag && (
-                        <div className="absolute top-4 left-4">
-                          <span className="bg-black/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                        <div className="absolute top-3 left-3 z-10">
+                          <span className="bg-black text-white text-xs font-medium px-2.5 py-1 rounded">
                             {product.tag}
                           </span>
                         </div>
                       )}
 
-                      {/* Floating Quick Action Buttons */}
-                      <div className="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {/* Quick Action Buttons */}
+                      <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                           onClick={() => handleToggleWishlist(product)}
-                          className={`p-2.5 rounded-full shadow-lg transition-colors backdrop-blur-md ${
+                          className={`p-2 rounded-full transition-colors ${
                             inWishlist
-                              ? 'bg-red-500 text-white'
-                              : 'bg-white/90 text-black hover:bg-white'
+                              ? 'bg-black text-white'
+                              : 'bg-white text-black hover:bg-neutral-100'
                           }`}
                           title="Save to Wishlist"
                         >
-                          <Heart size={16} className={inWishlist ? 'fill-white' : ''} />
+                          <Heart size={15} className={inWishlist ? 'fill-white' : ''} />
                         </motion.button>
                         
                         <Link to={`/products?search=${encodeURIComponent(product.name)}`}>
                           <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="p-2.5 bg-white/90 backdrop-blur-md text-black hover:bg-white rounded-full shadow-lg transition-colors"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="p-2 bg-white text-black hover:bg-neutral-100 rounded-full transition-colors"
                             title="Inspect details"
                           >
-                            <Eye size={16} />
+                            <Eye size={15} />
                           </motion.button>
                         </Link>
                       </div>
 
                       {/* Quick Add To Cart Hover Pill */}
-                      <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <div className="absolute bottom-3 left-3 right-3 z-10 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-200">
                         <motion.button
                           whileTap={{ scale: 0.97 }}
                           onClick={() => handleAddToCartWithToast(product)}
-                          className="w-full bg-black/90 hover:bg-black backdrop-blur-md text-white py-3 rounded-2xl text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-xl"
+                          className="w-full bg-black hover:bg-neutral-800 text-white py-2.5 rounded-xl text-sm font-semibold tracking-wider uppercase flex items-center justify-center gap-2"
                         >
                           <ShoppingBag size={14} />
                           <span>Quick Add to Bag</span>
@@ -453,32 +501,26 @@ const Home = () => {
                     </div>
 
                     {/* Content Details */}
-                    <div className="p-5 flex-1 flex flex-col justify-between">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-xs text-gray-500">
-                          <span className="uppercase tracking-widest font-medium">{product.category}</span>
-                          <div className="flex items-center gap-1 text-gray-700">
-                            <Star size={12} className="fill-yellow-400 text-yellow-400" />
-                            <span>{product.rating}</span>
-                          </div>
+                    <div className="pt-3 pb-1 px-1 flex-1 flex flex-col justify-between">
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-sm text-neutral-600">
+                          <span className="font-medium text-neutral-700 truncate mr-2">{product.spec || product.category}</span>
+                          <span className="shrink-0 text-neutral-500">In Stock</span>
                         </div>
 
-                        <h3 className="font-heading font-bold text-base text-black group-hover:text-gray-600 transition-colors line-clamp-1">
+                        <h3 className="font-heading font-bold text-base text-black group-hover:text-neutral-700 transition-colors line-clamp-1">
                           {product.name}
                         </h3>
                       </div>
 
                       {/* Pricing */}
-                      <div className="pt-4 flex items-center justify-between">
+                      <div className="pt-2 flex items-center justify-between">
                         <div className="flex items-baseline gap-2">
                           <span className="font-heading text-lg font-bold">${product.price}</span>
                           {product.originalPrice && (
-                            <span className="text-xs text-gray-400 line-through">${product.originalPrice}</span>
+                            <span className="text-sm text-neutral-600 line-through">${product.originalPrice}</span>
                           )}
                         </div>
-                        <span className="text-xs font-medium text-gray-500 hover:text-black">
-                          In Stock
-                        </span>
                       </div>
                     </div>
 
@@ -489,12 +531,12 @@ const Home = () => {
           </motion.div>
 
           {/* Catalog CTA */}
-          <div className="text-center mt-16">
+          <div className="text-center mt-14">
             <Link to="/products">
               <motion.button
-                whileHover={{ scale: 1.03 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="bg-black text-white px-10 py-4 rounded-full text-sm font-semibold tracking-wider uppercase shadow-xl hover:bg-gray-800 transition-all duration-300 inline-flex items-center gap-2"
+                className="bg-black text-white px-9 py-4 rounded-full text-sm font-semibold tracking-wider uppercase hover:bg-neutral-800 transition-colors inline-flex items-center gap-2"
               >
                 <span>View Full Catalog</span>
                 <ArrowRight size={16} />
@@ -506,75 +548,52 @@ const Home = () => {
       </section>
 
       {/* 5. CRAFTSMANSHIP & EDITORIAL STORY SECTION */}
-      <section className="w-full py-24 bg-gray-50/70 border-t border-b border-gray-100">
+      <section className="w-full py-24 bg-neutral-50">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
             
             {/* Visual Mosaic (6 cols) */}
-            <div className="lg:col-span-6 space-y-4">
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+            <div className="lg:col-span-6">
+              <div className="relative rounded-2xl overflow-hidden bg-neutral-900">
                 <img 
                   src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1400&auto=format&fit=crop" 
                   alt="Zion Craft Workshop"
-                  className="w-full h-[480px] object-cover"
+                  className="w-full h-[460px] object-cover"
                 />
-                <div className="absolute inset-0 bg-black/20" />
-                <div className="absolute bottom-6 left-6 right-6 p-6 rounded-2xl bg-white/90 backdrop-blur-md text-black">
-                  <p className="font-heading text-sm font-bold uppercase tracking-wider text-gray-500">Workshop Manifesto</p>
-                  <p className="text-sm font-medium mt-1">"We eliminate every superfluous curve until only true functional essence remains."</p>
-                </div>
               </div>
             </div>
 
             {/* Narrative Story (6 cols) */}
             <div className="lg:col-span-6 space-y-8">
-              <div className="space-y-4">
-                <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
-                  The Zion Philosophy
-                </span>
+              <div className="space-y-3">
                 <h2 className="font-heading text-4xl sm:text-5xl font-bold tracking-tight text-black leading-tight">
                   Restraint. Material Honesty. Longevity.
                 </h2>
-                <p className="text-base sm:text-lg text-gray-600 font-light leading-relaxed">
+                <p className="text-base sm:text-lg text-neutral-600 font-light leading-relaxed">
                   In an age of rapid disposability, Zion stands for permanence. We partner directly with mills and workshops across Portugal, Japan, and northern Italy to cut and finish everyday apparel using honest cotton, full-grain leather, and durable denim.
                 </p>
               </div>
 
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
-                    <Check size={16} />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-bold text-base">Zero Synthetic Compromises</h4>
-                    <p className="text-sm text-gray-600">Pure raw materials selected for their tactile aging qualities and patina.</p>
-                  </div>
+              <div className="space-y-5 pt-2">
+                <div className="space-y-1">
+                  <h3 className="font-heading font-bold text-base text-black">Zero Synthetic Compromises</h3>
+                  <p className="text-sm text-neutral-600 leading-relaxed">Pure raw materials selected for their tactile aging qualities and rich natural patina.</p>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
-                    <Check size={16} />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-bold text-base">Direct Heritage Workshops</h4>
-                    <p className="text-sm text-gray-600">Eliminating middlemen markups to invest directly in artisan fair wages.</p>
-                  </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading font-bold text-base text-black">Direct Heritage Workshops</h3>
+                  <p className="text-sm text-neutral-600 leading-relaxed">Partnering directly with mills across Portugal, Japan, and Italy to invest in artisan wages.</p>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center shrink-0 mt-1">
-                    <Check size={16} />
-                  </div>
-                  <div>
-                    <h4 className="font-heading font-bold text-base">Circular Longevity Guarantee</h4>
-                    <p className="text-sm text-gray-600">Every garment is cut to be repaired, re-hemmed, and worn for years.</p>
-                  </div>
+                <div className="space-y-1">
+                  <h3 className="font-heading font-bold text-base text-black">Circular Longevity Guarantee</h3>
+                  <p className="text-sm text-neutral-600 leading-relaxed">Every garment is engineered and cut to be repaired, re-hemmed, and worn across decades.</p>
                 </div>
               </div>
 
-              <div className="pt-4">
+              <div className="pt-2">
                 <Link to="/products">
-                  <button className="text-sm font-bold uppercase tracking-wider text-black border-b-2 border-black pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                  <button className="text-sm font-bold tracking-wider uppercase text-black underline underline-offset-8 hover:text-neutral-600 transition-colors">
                     Read Our Complete Provenance Report →
                   </button>
                 </Link>
@@ -585,109 +604,67 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 6. TESTIMONIALS & CLIENT ACCOLADES */}
+      {/* 6. TESTIMONIALS & RECOGNITION */}
       <section className="w-full py-24 bg-white">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-          <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-            <span className="text-xs uppercase tracking-widest font-semibold text-gray-500">
-              Patron Testimonials
-            </span>
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-              Words From The Circle
-            </h2>
-            <p className="text-gray-600 font-light">
-              Trusted by architects, designers, and discerning collectors in over 40 countries.
+          <div className="max-w-3xl mb-12 space-y-3">
+            <blockquote className="font-heading text-xl sm:text-2xl md:text-[26px] font-bold tracking-tight text-neutral-950 leading-snug">
+              "Zion embodies quiet luxury — garments of architectural weight and material restraint, without superfluous detail."
+            </blockquote>
+            <p className="text-sm text-neutral-600 font-medium">
+              — Elena Rostova, <span className="text-neutral-900 font-semibold">Architectural Digest Reviewer</span> · Milan
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -6 }}
-                className="p-8 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6"
-              >
-                <div className="space-y-4">
-                  <div className="flex gap-1 text-yellow-400">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-gray-700 italic text-base leading-relaxed">
-                    "{t.quote}"
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <div>
-                    <p className="font-heading font-bold text-sm text-black">{t.author}</p>
-                    <p className="text-xs text-gray-400">{t.role}</p>
-                  </div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">{t.city}</span>
-                </div>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 pt-4">
+            <div className="space-y-2.5">
+              <p className="text-neutral-800 text-base sm:text-lg leading-relaxed font-light">
+                "Fast international courier, immaculate packaging, and a level of finish that outclasses brands twice the price."
+              </p>
+              <p className="text-base text-neutral-600">
+                <span className="font-bold text-black">Julian Vance</span> · Verified Private Collector, London
+              </p>
+            </div>
+            <div className="space-y-2.5">
+              <p className="text-neutral-800 text-base sm:text-lg leading-relaxed font-light">
+                "Uncompromising minimalism. You can sense the human hand in every selvedge seam and collar edge."
+              </p>
+              <p className="text-base text-neutral-600">
+                <span className="font-bold text-black">Kaito Tanaka</span> · Industrial Designer, Tokyo
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* 7. VIP PRIVATE CIRCLE NEWSLETTER */}
-      <section className="w-full py-20 lg:py-28 bg-black text-white relative overflow-hidden">
-        {/* Decorative ambient glows */}
-        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] bg-white/[0.06] rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-32 -right-24 w-[480px] h-[480px] bg-white/[0.05] rounded-full blur-3xl pointer-events-none" />
-        {/* Brand texture, consistent with hero */}
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.05] pointer-events-none" />
-
+      <section className="w-full py-20 lg:py-24 bg-neutral-950 text-white relative">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
-            {/* Left: Copy & Benefits */}
+            {/* Left: Copy */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              className="space-y-7 text-center lg:text-left"
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+              className="space-y-5 text-center lg:text-left"
             >
-              <span className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-gray-400">
-                <Sparkles size={14} className="text-white" />
-                Exclusive Access
-              </span>
-              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.02]">
-                Join The Zion
-                <br className="hidden lg:block" /> Private Circle
+              <h2 className="font-heading text-4xl sm:text-5xl font-bold tracking-tight leading-[1.05]">
+                Join The Zion Private Circle
               </h2>
-              <p className="text-gray-400 font-light text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Receive private previews of limited atelier runs, architectural lookbooks, and invitations to seasonal private sales.
+              <p className="text-neutral-300 font-light text-base sm:text-lg leading-relaxed max-w-lg mx-auto lg:mx-0">
+                Receive private previews of limited atelier runs, architectural lookbooks, and invitations to seasonal private releases.
               </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 max-w-xl mx-auto lg:mx-0">
-                {[
-                  { icon: Gift, label: 'Limited Atelier Previews' },
-                  { icon: Calendar, label: 'Seasonal Private Sales' },
-                  { icon: Sparkles, label: 'Architectural Lookbooks' }
-                ].map(({ icon: Icon, label }) => (
-                  <div
-                    key={label}
-                    className="flex flex-col items-center lg:items-start gap-2.5 text-center lg:text-left"
-                  >
-                    <div className="w-9 h-9 rounded-full bg-white/10 border border-white/10 flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-white" />
-                    </div>
-                    <span className="text-xs font-medium text-gray-300 leading-snug">{label}</span>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
             {/* Right: Signup Card */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
-              className="bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-3xl p-8 sm:p-10 shadow-2xl"
+              transition={{ duration: 0.5, ease: 'easeOut', delay: 0.1 }}
+              className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 sm:p-10"
             >
               <AnimatePresence mode="wait">
                 {newsletterSubscribed ? (
@@ -698,11 +675,11 @@ const Home = () => {
                     exit={{ opacity: 0, scale: 0.95 }}
                     className="text-center py-6 space-y-3"
                   >
-                    <div className="w-14 h-14 rounded-full bg-white text-black flex items-center justify-center mx-auto">
-                      <Check size={26} strokeWidth={2.5} />
+                    <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center mx-auto">
+                      <Check size={22} strokeWidth={2.5} />
                     </div>
                     <p className="font-heading text-xl font-bold">Welcome to the Private Circle</p>
-                    <p className="text-sm text-gray-400">We have sent a verification invitation to your email.</p>
+                    <p className="text-sm text-neutral-400">We have sent a verification invitation to your email.</p>
                   </motion.div>
                 ) : (
                   <motion.form
@@ -714,11 +691,11 @@ const Home = () => {
                       e.preventDefault()
                       if (newsletterEmail) setNewsletterSubscribed(true)
                     }}
-                    className="space-y-5"
+                    className="space-y-4"
                   >
-                    <div className="space-y-1.5">
-                      <h3 className="font-heading text-xl font-bold">Request Your Invitation</h3>
-                      <p className="text-xs text-gray-400">Strict confidentiality. No promotional spam.</p>
+                    <div className="space-y-1">
+                      <h3 className="font-heading text-lg font-bold">Request Your Invitation</h3>
+                      <p className="text-sm text-neutral-400">Strict confidentiality. No promotional marketing.</p>
                     </div>
 
                     <div className="space-y-3">
@@ -728,20 +705,20 @@ const Home = () => {
                         value={newsletterEmail}
                         onChange={(e) => setNewsletterEmail(e.target.value)}
                         required
-                        className="w-full px-5 py-4 rounded-2xl bg-white/5 text-white placeholder-gray-500 border border-white/15 focus:outline-none focus:ring-2 focus:ring-white/60 focus:border-transparent text-sm transition-all"
+                        className="w-full px-4 py-3.5 rounded-xl bg-neutral-950 text-white placeholder-neutral-500 border border-neutral-700 focus:outline-none focus:ring-1 focus:ring-white text-base transition-all"
                       />
                       <motion.button
-                        whileHover={{ scale: 1.02 }}
+                        whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
                         type="submit"
-                        className="w-full bg-white text-black py-4 rounded-2xl text-sm font-bold tracking-wider uppercase hover:bg-gray-100 transition-colors shadow-lg flex items-center justify-center gap-2"
+                        className="w-full bg-white text-black py-3.5 rounded-xl text-sm font-semibold tracking-wider uppercase hover:bg-neutral-100 transition-colors flex items-center justify-center gap-2"
                       >
                         <span>Join the Circle</span>
                         <ArrowRight size={16} />
                       </motion.button>
                     </div>
 
-                    <p className="text-[11px] text-gray-500 text-center">
+                    <p className="text-sm text-neutral-400 text-center">
                       Unsubscribe with one click anytime.
                     </p>
                   </motion.form>

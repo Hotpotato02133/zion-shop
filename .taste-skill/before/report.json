@@ -1,0 +1,2364 @@
+{
+ "url": "http://localhost:4173/",
+ "at": "2026-11-02T12:41:00.582Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.98,
+    1,
+    0.59,
+    0.6,
+    0.59,
+    0.87,
+    0.98
+   ],
+   "motion": {
+    "elements": 64,
+    "css": 4,
+    "transitions": 31,
+    "scripted": 29,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5743,
+     "screens": 6.4,
+     "words": 612,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 83,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 2,
+     "size": 72,
+     "vw": 5,
+     "font": "Google Sans",
+     "weight": 800,
+     "tracking": -0.025,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.47,
+     "top": 346,
+     "mixedFonts": [
+      "Google Sans",
+      "Google Sans italic"
+     ],
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 2,
+     "size": 72,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.07,
+      "top": 58,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 2,
+      "size": 72,
+      "vw": 5,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 346,
+      "mixedFonts": [
+       "Google Sans",
+       "Google Sans italic"
+      ],
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.3,
+      "top": 1296,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 2087,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.38,
+      "top": 3487,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.47,
+      "top": 4220,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 60,
+      "vw": 4.2,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.37,
+      "top": 4879,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 4,
+     "mixedFontHeadings": 1
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      9,
+      10,
+      11,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      48,
+      60,
+      72
+     ],
+     "sizeCount": 13,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 300,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 60,
+     "max": {
+      "size": 72,
+      "vw": 5,
+      "font": "Google Sans",
+      "text": "Cut For"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "ui-monospace"
+     ],
+     "monoSamples": [
+      "Atelier"
+     ],
+     "microLabels": 36,
+     "microLabelShare": 0.107,
+     "microSamples": [
+      "ATELIER CONCIERGE: COMPLIMENTARY SIZING ",
+      "|",
+      "|",
+      "Denim & Bottoms",
+      "Artisanal Sourced",
+      "TrustPilot Score"
+     ],
+     "upperShare": 0.21,
+     "centerShare": 0.13,
+     "smallText": 48
+    },
+    "eyebrows": [
+     {
+      "text": "Denim & Bottoms",
+      "above": "Cut For Movement.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 12,
+      "top": 291
+     },
+     {
+      "text": "Architectural Universes",
+      "above": "Curated Collections",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1266
+     },
+     {
+      "text": "Atelier Handpicked",
+      "above": "Featured Catalog",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 2057
+     },
+     {
+      "text": "The Zion Philosophy",
+      "above": "Restraint. Material Honesty. Longevity.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3453
+     },
+     {
+      "text": "Patron Testimonials",
+      "above": "Words From The Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 4190
+     },
+     {
+      "text": "Exclusive Access",
+      "above": "Join The Zion Private Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 4829
+     }
+    ],
+    "numbered": [
+     {
+      "text": "02",
+      "size": 12,
+      "top": 150
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 150
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 126,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 5294,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#ffffff",
+       "share": 0.17
+      },
+      {
+       "color": "#000000",
+       "share": 0.16
+      },
+      {
+       "color": "#4b5563",
+       "share": 0.14
+      },
+      {
+       "color": "#9ca3af",
+       "share": 0.12
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.12
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Search...",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#a3a3a3",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "$390",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "$155",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Architectural Digest Reviewer",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Verified Private Collector",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "Industrial Designer",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 18,
+     "inHero": 3,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories",
+      "View Item"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 29,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.bg-white/95.backdrop-blur-md → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 8,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "div.w-full.bg-black 1440px",
+      "header.sticky.top-0 1440px",
+      "div.pt-6.border-t 512px",
+      "section.w-full.py-24 1440px",
+      "div.pt-4.border-t 297px"
+     ],
+     "outlinedBoxes": 13,
+     "dashed": 0,
+     "blurred": 16,
+     "roundedBoxes": 19,
+     "boxRadius": 24,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 24,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 8,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2183
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 4368
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.9
+     }
+    ],
+    "nav": {
+     "links": 10,
+     "fixed": true,
+     "height": 89,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5743,
+    "margins": {
+     "left": 144,
+     "right": 96
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 126,
+      "height": 5168,
+      "words": 489,
+      "media": 12,
+      "middle": 64,
+      "heading": {
+       "text": "Cut For",
+       "size": 72,
+       "tag": "h1"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 144,
+      "textRight": 48,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 5294,
+      "height": 449,
+      "words": 90,
+      "media": 0,
+      "middle": 231,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 144,
+      "right": 144,
+      "textLeft": 144,
+      "textRight": 144,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 72,
+      "top": 346,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 144,
+      "n": 8
+     },
+     {
+      "x": 165,
+      "n": 4
+     },
+     {
+      "x": 752,
+      "n": 4
+     },
+     {
+      "x": 800,
+      "n": 4
+     },
+     {
+      "x": 563,
+      "n": 3
+     },
+     {
+      "x": 461,
+      "n": 2
+     },
+     {
+      "x": 957,
+      "n": 2
+     },
+     {
+      "x": 1053,
+      "n": 2
+     },
+     {
+      "x": 177,
+      "n": 1
+     },
+     {
+      "x": 192,
+      "n": 1
+     },
+     {
+      "x": 1109,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 32,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.99,
+    0.87,
+    0.78,
+    0.68,
+    0.68,
+    0.79,
+    0.69,
+    0.96
+   ],
+   "motion": {
+    "elements": 35,
+    "css": 4,
+    "transitions": 3,
+    "scripted": 28,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7916,
+     "screens": 7.7,
+     "words": 593,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 83,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 2,
+     "size": 60,
+     "vw": 7.8,
+     "font": "Google Sans",
+     "weight": 800,
+     "tracking": -0.025,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.75,
+     "top": 504,
+     "mixedFonts": [
+      "Google Sans",
+      "Google Sans italic"
+     ],
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 2,
+     "size": 60,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.13,
+      "top": 58,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 2,
+      "size": 60,
+      "vw": 7.8,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.75,
+      "top": 504,
+      "mixedFonts": [
+       "Google Sans",
+       "Google Sans italic"
+      ],
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.56,
+      "top": 1428,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.33,
+      "top": 2027,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 5346,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 6051,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 6798,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 2,
+     "medianWords": 4,
+     "mixedFontHeadings": 1
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      9,
+      10,
+      11,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      48,
+      60
+     ],
+     "sizeCount": 12,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 300,
+      "tracking": 0,
+      "contrast": null
+     },
+     "measureChars": 78,
+     "max": {
+      "size": 60,
+      "vw": 7.8,
+      "font": "Google Sans",
+      "text": "Cut For"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "ui-monospace"
+     ],
+     "monoSamples": [
+      "Atelier"
+     ],
+     "microLabels": 35,
+     "microLabelShare": 0.109,
+     "microSamples": [
+      "AUTUMN / WINTER 2026 RUNWAY CAPSULE NOW ",
+      "|",
+      "|",
+      "Denim & Bottoms",
+      "Artisanal Sourced",
+      "TrustPilot Score"
+     ],
+     "upperShare": 0.2,
+     "centerShare": 0.19,
+     "smallText": 48
+    },
+    "eyebrows": [
+     {
+      "text": "Denim & Bottoms",
+      "above": "Cut For Movement.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 12,
+      "top": 457
+     },
+     {
+      "text": "Architectural Universes",
+      "above": "Curated Collections",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1398
+     },
+     {
+      "text": "Atelier Handpicked",
+      "above": "Featured Catalog",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1997
+     },
+     {
+      "text": "The Zion Philosophy",
+      "above": "Restraint. Material Honesty. Longevity.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 5312
+     },
+     {
+      "text": "Patron Testimonials",
+      "above": "Words From The Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 6021
+     },
+     {
+      "text": "Exclusive Access",
+      "above": "Join The Zion Private Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 6748
+     }
+    ],
+    "numbered": [
+     {
+      "text": "02",
+      "size": 12,
+      "top": 150
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 150
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 126,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 7463,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#ffffff",
+       "share": 0.17
+      },
+      {
+       "color": "#000000",
+       "share": 0.16
+      },
+      {
+       "color": "#4b5563",
+       "share": 0.15
+      },
+      {
+       "color": "#9ca3af",
+       "share": 0.13
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.12
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "$390",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      },
+      {
+       "text": "$155",
+       "ratio": 2.5,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#9ca3af",
+       "bg": "#ffffff"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 17,
+     "inHero": 2,
+     "radius": 16,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 28,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 8,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 5,
+     "hairlineSamples": [
+      "div.w-full.bg-black 768px",
+      "header.sticky.top-0 768px",
+      "div.pt-6.border-t 512px",
+      "section.w-full.py-24 768px",
+      "div.border-t.border-white/10 704px"
+     ],
+     "outlinedBoxes": 12,
+     "dashed": 0,
+     "blurred": 13,
+     "roundedBoxes": 18,
+     "boxRadius": 24,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 24,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 8,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2171
+      },
+      {
+       "count": 3,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 6199
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.9
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 89,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7916,
+    "margins": {
+     "left": 32,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 126,
+      "height": 7337,
+      "words": 478,
+      "media": 12,
+      "middle": 0,
+      "heading": {
+       "text": "Cut For",
+       "size": 60,
+       "tag": "h1"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 32,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 7463,
+      "height": 453,
+      "words": 90,
+      "media": 0,
+      "middle": 43,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 32,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 60,
+      "top": 504,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 32,
+      "n": 7
+     },
+     {
+      "x": 53,
+      "n": 6
+     },
+     {
+      "x": 80,
+      "n": 4
+     },
+     {
+      "x": 417,
+      "n": 4
+     },
+     {
+      "x": 65,
+      "n": 2
+     },
+     {
+      "x": 299,
+      "n": 2
+     },
+     {
+      "x": 310,
+      "n": 1
+     },
+     {
+      "x": 541,
+      "n": 1
+     },
+     {
+      "x": 556,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 28,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.88,
+    1,
+    1,
+    0.78,
+    0.72,
+    0.85,
+    0.65,
+    0.76,
+    0.74,
+    0.65,
+    1,
+    0.77
+   ],
+   "motion": {
+    "elements": 35,
+    "css": 4,
+    "transitions": 3,
+    "scripted": 28,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 12775,
+     "screens": 15.1,
+     "words": 581,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 83,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [
+      "★"
+     ],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 2,
+     "size": 36,
+     "vw": 9.2,
+     "font": "Google Sans",
+     "weight": 800,
+     "tracking": -0.025,
+     "leading": 0.95,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 307,
+     "mixedFonts": [
+      "Google Sans",
+      "Google Sans italic"
+     ],
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 2,
+     "size": 36,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 48,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 0.95,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 307,
+      "mixedFonts": [
+       "Google Sans",
+       "Google Sans italic"
+      ],
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1446,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Everyday Apparel",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 1915,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Outerwear Edit",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 2416,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Footwear & Accessories",
+      "words": 3,
+      "chars": 22,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 2918,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3266,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 9175,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 10024,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 800,
+      "tracking": -0.025,
+      "leading": 1.02,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 11253,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.14,
+      "top": 12138,
+      "tag": "span",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 11,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 2,
+     "medianWords": 2,
+     "mixedFontHeadings": 1
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      },
+      {
+       "family": "ui-monospace",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      9,
+      10,
+      11,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      36
+     ],
+     "sizeCount": 11,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 300,
+      "tracking": 0,
+      "contrast": 21
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "text": "Cut For"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [
+      "ui-monospace"
+     ],
+     "monoSamples": [
+      "Atelier"
+     ],
+     "microLabels": 33,
+     "microLabelShare": 0.109,
+     "microSamples": [
+      "ATELIER CONCIERGE: COMPLIMENTARY SIZING ",
+      "Denim & Bottoms",
+      "Artisanal Sourced",
+      "TrustPilot Score",
+      "Global Dispatch",
+      "Architectural Universes"
+     ],
+     "upperShare": 0.19,
+     "centerShare": 0.19,
+     "smallText": 46
+    },
+    "eyebrows": [
+     {
+      "text": "Denim & Bottoms",
+      "above": "Cut For Movement.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": true,
+      "size": 12,
+      "top": 260
+     },
+     {
+      "text": "Architectural Universes",
+      "above": "Curated Collections",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 1416
+     },
+     {
+      "text": "Atelier Handpicked",
+      "above": "Featured Catalog",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 3236
+     },
+     {
+      "text": "The Zion Philosophy",
+      "above": "Restraint. Material Honesty. Longevity.",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 9141
+     },
+     {
+      "text": "Patron Testimonials",
+      "above": "Words From The Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 9994
+     },
+     {
+      "text": "Exclusive Access",
+      "above": "Join The Zion Private Circle",
+      "upper": true,
+      "tracked": true,
+      "mono": false,
+      "pill": false,
+      "size": 12,
+      "top": 11203
+     }
+    ],
+    "numbered": [
+     {
+      "text": "02",
+      "size": 12,
+      "top": 130
+     },
+     {
+      "text": "04",
+      "size": 12,
+      "top": 130
+     }
+    ],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 106,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#111827",
+       "top": 1574,
+       "hsl": {
+        "h": 221,
+        "s": 0.39,
+        "l": 0.11
+       }
+      },
+      {
+       "color": "#f9fafb",
+       "top": 3499,
+       "hsl": {
+        "h": 210,
+        "s": 0.2,
+        "l": 0.98
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 12082,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#ffffff",
+       "share": 0.18
+      },
+      {
+       "color": "#000000",
+       "share": 0.16
+      },
+      {
+       "color": "#4b5563",
+       "share": 0.15
+      },
+      {
+       "color": "#9ca3af",
+       "share": 0.13
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.11
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 17,
+     "inHero": 2,
+     "radius": 16,
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 28,
+     "shadowOverlay": 0,
+     "shadowSamples": [
+      "button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+      "div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0"
+     ],
+     "gradients": 0,
+     "scrims": 8,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 8,
+     "hairlineSamples": [
+      "div.w-full.bg-black 390px",
+      "header.sticky.top-0 390px",
+      "div.pt-6.border-t 358px",
+      "section.w-full.py-24 390px",
+      "div.pt-4.border-t 292px"
+     ],
+     "outlinedBoxes": 12,
+     "dashed": 0,
+     "blurred": 13,
+     "roundedBoxes": 18,
+     "boxRadius": 24,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 24,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.92
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 73,
+     "floatingPill": false,
+     "blur": true
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 12775,
+    "margins": {
+     "left": 16,
+     "right": 16
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 106,
+      "height": 11976,
+      "words": 428,
+      "media": 12,
+      "middle": 0,
+      "heading": {
+       "text": "Cut For",
+       "size": 36,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 16,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 12082,
+      "height": 693,
+      "words": 90,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 16,
+      "right": 21,
+      "textLeft": 16,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 36,
+      "top": 307,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 37,
+      "n": 13
+     },
+     {
+      "x": 16,
+      "n": 7
+     },
+     {
+      "x": 64,
+      "n": 4
+     },
+     {
+      "x": 49,
+      "n": 3
+     }
+    ],
+    "leftBlocks": 27,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "mixed-font-headline",
+   "width": 1440,
+   "message": "1 headline(s) switch typeface or to italic mid-line (the \"one italic serif word\" move).",
+   "fix": "Set the whole headline in one face. Emphasis comes from the words.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "eyebrow",
+   "width": 1440,
+   "message": "6 eyebrow/kicker label(s) above headings: \"Denim & Bottoms\" (pill) above \"Cut For Movement.\"; \"Architectural Universes\" above \"Curated Collections\"; \"Atelier Handpicked\" above \"Featured Catalog\"; \"The Zion Philosophy\" above \"Restraint. Material Honesty. Longevity.\"; \"Patron Testimonials\" above \"Words From The Circle\"",
+   "fix": "Delete them. If the label carried real information, fold it into the headline or the supporting sentence.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "numbering",
+   "width": 1440,
+   "message": "Decorative index numbers: \"02\", \"04\"",
+   "fix": "Remove them. If order truly matters, write it into the words (\"First, …\") or use a real <ol>.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "36 tiny uppercase letter-spaced labels (e.g. \"ATELIER CONCIERGE: COMPLIMENTARY SIZING \", \"|\", \"|\", \"Denim & Bottoms\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "emoji",
+   "width": 1440,
+   "message": "Emoji in the page: ★",
+   "fix": "Remove. Use words or real imagery.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "shadow",
+   "width": 1440,
+   "message": "29 box-shadow(s) on elements at rest: button.w-full.sm:w-auto → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | div.bg-white/95.backdrop-blur-md → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0 | div.relative.aspect-[3/4] → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0",
+   "fix": "Remove. Separate surfaces with a tone step or space. Shadows are for things that really float (menus, dialogs, sticky bars).",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "hairline",
+   "width": 1440,
+   "message": "8 thin rule(s)/divider line(s): div.w-full.bg-black 1440px | header.sticky.top-0 1440px | div.pt-6.border-t 512px | section.w-full.py-24 1440px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "13 boxes drawn with a 1px outline.",
+   "fix": "Define a surface by its fill (one tone step from the page) or leave the content unboxed.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "glass",
+   "width": 1440,
+   "message": "16 backdrop-blur surfaces.",
+   "fix": "One blurred sticky bar at most; glass cards are a tell.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "icon-cards",
+   "width": 1440,
+   "message": "1 row(s) of identical cards each topped with a small icon (3 cards).",
+   "fix": "Replace with one composed section from the direction: a narrative split, a list set in large type, or real imagery per item.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Unreadable text: \"Search...\" 2.5:1 (#a3a3a3 on #ffffff); \"$390\" 2.5:1 (#9ca3af on #ffffff); \"$155\" 2.5:1 (#9ca3af on #ffffff); \"Architectural Digest Reviewer\" 2.5:1 (#9ca3af on #ffffff)",
+   "fix": "Raise contrast to at least 4.5:1 for text, 3:1 for large display.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "font-fallback",
+   "width": 1440,
+   "message": "Typeface(s) declared but not loaded, so a fallback is rendering: Google Sans",
+   "fix": "Fix the font URL / family name, or the screenshots you are judging are not the design.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "13 different font sizes (9, 10, 11, 12, 14, 16, 18, 20, 24, 30, 48, 60, 72).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 1440,
+   "message": "48 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 144px on the left, 96px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "WARN",
+   "id": "ragged-edges",
+   "width": 1440,
+   "message": "Left-aligned text starts at 11 different lines (144px, 165px, 752px, 800px, 563px, 461px, 957px); the three most used hold only 50% of it.",
+   "fix": "Pick two or three anchor lines from the grid and start every heading and paragraph on one of them."
+  },
+  {
+   "level": "WARN",
+   "id": "name-only-title",
+   "width": 390,
+   "message": "The h1 is a bare name (\"Cut For Movement.\") and nothing else on the first screen says what this is.",
+   "fix": "Keep the name if it leads, and give the line under it (18px or more) the plain words: what it is, for whom, where or when. In the study of 97 Sites of the Day, first screens that named nothing lost usability and content points."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\desktop-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\tablet-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\mobile-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\before\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

@@ -42,10 +42,7 @@ const Layout = ({ children }) => {
       </main>
 
       {/* Luxury Atelier Footer */}
-      <footer className="w-full bg-neutral-950 text-white relative overflow-hidden">
-        {/* Subtle ambient texture, consistent with hero/newsletter */}
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:28px_28px] opacity-[0.04] pointer-events-none" />
-
+      <footer className="w-full bg-neutral-950 text-white relative">
         <div className="relative z-10 w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-14 lg:py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-10 lg:gap-12">
 
@@ -55,26 +52,26 @@ const Layout = ({ children }) => {
                 <span className="font-heading text-2xl font-bold tracking-tight text-white">
                   ZION
                 </span>
-                <span className="text-[10px] font-mono tracking-widest uppercase px-2 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                <span className="text-xs px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-neutral-300 font-medium">
                   Atelier
                 </span>
               </div>
-              <p className="text-neutral-400 text-sm leading-relaxed max-w-sm mb-6">
+              <p className="text-neutral-300 text-base leading-relaxed max-w-sm mb-6">
                 An international atelier dedicated to understated luxury, architectural permanence, and handcrafted materials sourced across Biella, Florence, and Tokyo.
               </p>
-              <div className="flex items-center gap-2.5 text-xs text-neutral-400 mb-6">
+              <div className="flex items-center gap-2.5 text-sm text-neutral-400 mb-6">
                 <ShieldCheck size={16} className="text-white" />
                 <span>Verified Official Atelier Store • 256-Bit SSL Protection</span>
               </div>
 
               {/* Social Links */}
-              <div className="flex items-center gap-3">
+              <div data-ui className="flex items-center gap-3">
                 {[Instagram, Twitter, Facebook, Youtube].map((Icon, idx) => (
                   <a
                     key={idx}
                     href="#"
                     aria-label="Social link"
-                    className="w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-black text-neutral-300 flex items-center justify-center transition-colors"
+                    className="w-9 h-9 rounded-full bg-neutral-900 border border-neutral-800 hover:bg-white hover:text-black text-neutral-300 flex items-center justify-center transition-colors"
                   >
                     <Icon size={15} />
                   </a>
@@ -84,10 +81,10 @@ const Layout = ({ children }) => {
 
             {/* Catalog Links */}
             <div>
-              <h5 className="font-semibold text-xs uppercase tracking-widest text-neutral-300 mb-5">
+              <h4 className="font-semibold text-sm text-white mb-4">
                 The Collections
-              </h5>
-              <div className="space-y-3 text-xs font-medium">
+              </h4>
+              <div className="space-y-3 text-sm font-medium">
                 <Link to="/products?category=Tops" className="block text-neutral-400 hover:text-white transition-colors">
                   Tops & Dresses
                 </Link>
@@ -111,10 +108,10 @@ const Layout = ({ children }) => {
 
             {/* Client Services */}
             <div>
-              <h5 className="font-semibold text-xs uppercase tracking-widest text-neutral-300 mb-5">
+              <h4 className="font-semibold text-sm text-white mb-4">
                 Client Concierge
-              </h5>
-              <div className="space-y-3 text-xs font-medium">
+              </h4>
+              <div className="space-y-3 text-sm font-medium">
                 <Link to="/wishlist" className="block text-neutral-400 hover:text-white transition-colors">
                   Private Reserve / Wishlist
                 </Link>
@@ -134,19 +131,26 @@ const Layout = ({ children }) => {
             </div>
           </div>
 
+          {/* Monumental Architectural Brandmark Close */}
+          <div className="w-full overflow-hidden select-none pointer-events-none mt-14 -mb-6">
+            <span className="font-heading text-[14vw] font-bold tracking-tighter text-neutral-900 leading-none block text-center">
+              ZION
+            </span>
+          </div>
+
           {/* Bottom Bar */}
-          <div className="border-t border-white/10 mt-12 lg:mt-14 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
+          <div data-ui className="mt-4 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-neutral-400">
             <p>
               &copy; 2026 ZION Atelier International Inc. All rights reserved.
             </p>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <a href="#terms" className="hover:text-neutral-300 transition-colors">
+              <a href="#terms" className="hover:text-white transition-colors">
                 Terms of Atelier
               </a>
-              <a href="#privacy" className="hover:text-neutral-300 transition-colors">
+              <a href="#privacy" className="hover:text-white transition-colors">
                 Privacy Code
               </a>
-              <a href="#cookies" className="hover:text-neutral-300 transition-colors">
+              <a href="#cookies" className="hover:text-white transition-colors">
                 Cookie Preferences
               </a>
             </div>
@@ -160,19 +164,19 @@ const Layout = ({ children }) => {
           <motion.button
             key="back-to-top"
             onClick={scrollToTop}
-            initial={{ opacity: 0, scale: 0.7, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.7, y: 16 }}
-            whileHover={{ scale: 1.08, y: -2 }}
-            whileTap={{ scale: 0.94 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.2 }}
             aria-label="Scroll back to top"
-            className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 p-3 sm:p-3.5 rounded-full bg-neutral-950/90 hover:bg-black text-white shadow-2xl border border-neutral-700/60 hover:border-neutral-400 backdrop-blur-md group transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 flex items-center justify-center cursor-pointer"
+            className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 p-3 sm:p-3.5 rounded-full bg-neutral-900 hover:bg-black text-white border border-neutral-700 transition-colors flex items-center justify-center cursor-pointer"
           >
             <ArrowUp
               size={18}
               strokeWidth={2.5}
-              className="text-white transition-transform duration-300 group-hover:-translate-y-0.5"
+              className="text-white"
             />
             <span className="sr-only">Scroll back to top</span>
           </motion.button>

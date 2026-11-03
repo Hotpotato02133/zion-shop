@@ -23,9 +23,9 @@ import AccountMenu from './AccountMenu'
 import { useApp } from '../context/AppContext'
 
 const ANNOUNCEMENTS = [
-  'FREE SHIPPING ON ORDERS OVER $150 · 30-DAY RETURNS',
-  'AUTUMN / WINTER 2026 RUNWAY CAPSULE NOW AVAILABLE IN LIMITED QUANTITIES',
-  'ATELIER CONCIERGE: COMPLIMENTARY SIZING & STYLING CONSULTATIONS OPEN'
+  'Complimentary express courier on orders over $150 · 30-day returns',
+  'Autumn / Winter 2026 Collection now available in limited atelier runs',
+  'Private styling and bespoke sizing consultations available'
 ]
 
 const FEATURED_COLLECTIONS = [
@@ -159,7 +159,6 @@ const Navbar = () => {
 
   const navLinks = [
     { label: 'All Pieces', path: '/products' },
-    { label: 'New In', path: '/products?category=New%20In', badge: 'AW26' },
     { label: 'Tops', path: '/products?category=Tops' },
     { label: 'Bottoms', path: '/products?category=Bottoms' },
     { label: 'Outerwear', path: '/products?category=Outerwear' },
@@ -193,21 +192,21 @@ const Navbar = () => {
   return (
     <>
       {/* 1. Top Announcement & Utility Bar */}
-      <div className="w-full bg-black text-white text-[11px] font-medium tracking-widest uppercase border-b border-neutral-800 relative z-40">
+      <div data-ui className="w-full bg-neutral-950 text-neutral-300 text-xs font-normal relative z-40">
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 h-8 sm:h-9 flex items-center justify-between">
           {/* Left: Region & Currency Selector */}
           <div className="relative hidden md:flex items-center gap-2">
             <button
               onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
-              className="flex items-center gap-1.5 text-neutral-400 hover:text-white transition-colors"
+              className="flex items-center gap-1.5 text-neutral-400 hover:text-white transition-colors text-xs"
             >
-              <Globe size={12} />
+              <Globe size={13} />
               <span>{selectedCurrency}</span>
-              <ChevronDown size={10} className={`transform transition-transform ${isCurrencyOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={11} className={`transform transition-transform ${isCurrencyOpen ? 'rotate-180' : ''}`} />
             </button>
 
             {isCurrencyOpen && (
-              <div className="absolute top-full left-0 mt-1 w-32 bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl py-1 z-50 text-neutral-300">
+              <div className="absolute top-full left-0 mt-1 w-32 bg-neutral-900 border border-neutral-800 rounded-lg py-1 z-50 text-neutral-300">
                 {['USD ($)', 'EUR (€)', 'GBP (£)', 'JPY (¥)'].map((curr) => (
                   <button
                     key={curr}
@@ -215,10 +214,10 @@ const Navbar = () => {
                       setSelectedCurrency(curr)
                       setIsCurrencyOpen(false)
                     }}
-                    className="w-full text-left px-3 py-1.5 text-[10px] hover:bg-neutral-800 hover:text-white transition-colors flex items-center justify-between"
+                    className="w-full text-left px-3 py-1.5 text-xs hover:bg-neutral-800 hover:text-white transition-colors flex items-center justify-between"
                   >
                     <span>{curr}</span>
-                    {selectedCurrency === curr && <Check size={10} className="text-white" />}
+                    {selectedCurrency === curr && <Check size={11} className="text-white" />}
                   </button>
                 ))}
               </div>
@@ -230,29 +229,26 @@ const Navbar = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeAnnouncement}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center justify-center gap-2 text-neutral-200 truncate"
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.25 }}
+                className="flex items-center justify-center text-neutral-300 text-xs truncate"
               >
-                <Sparkles size={11} className="text-amber-400 shrink-0 hidden sm:inline" />
                 <span className="truncate">{ANNOUNCEMENTS[activeAnnouncement]}</span>
               </motion.div>
             </AnimatePresence>
           </div>
 
           {/* Right: Atelier Service & Contact Shortcuts */}
-          <div className="hidden md:flex items-center gap-4 text-neutral-400 text-[10px] tracking-wider">
+          <div className="hidden md:flex items-center gap-5 text-neutral-400 text-xs">
             <Link to="/products" className="hover:text-white transition-colors">
               Lookbook
             </Link>
-            <span className="text-neutral-700">|</span>
             <Link to="/wishlist" className="hover:text-white transition-colors flex items-center gap-1">
               <span>Private Reserve</span>
               {wishlistCount > 0 && <span className="text-white font-bold">({wishlistCount})</span>}
             </Link>
-            <span className="text-neutral-700">|</span>
             <SignedIn>
               <Link to="/orders" className="hover:text-white transition-colors">
                 My Orders
@@ -269,8 +265,9 @@ const Navbar = () => {
 
       {/* 2. Main Navigation Header */}
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b ${
-          isScrolled ? 'border-neutral-200 shadow-md py-2 sm:py-2.5' : 'border-neutral-100 py-3 sm:py-4'
+        data-ui
+        className={`sticky top-0 z-50 w-full transition-colors duration-200 ${
+          isScrolled ? 'bg-neutral-50/95 py-2 sm:py-2.5' : 'bg-white py-3 sm:py-3.5'
         }`}
       >
         <div className="w-full max-w-7xl 2xl:max-w-screen-2xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
@@ -294,14 +291,14 @@ const Navbar = () => {
                 <span className="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-neutral-950 block transition-transform group-hover:scale-[1.02]">
                   ZION
                 </span>
-                <span className="text-[9px] font-medium tracking-[0.3em] uppercase text-neutral-400 block -mt-1">
+                <span className="text-xs font-medium tracking-normal text-neutral-500 block -mt-0.5">
                   Atelier Privé
                 </span>
               </Link>
             </div>
 
             {/* Middle: Desktop Navigation Menu */}
-            <nav className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-xs font-semibold tracking-wider uppercase flex-1 px-4">
+            <nav className="hidden lg:flex items-center justify-center gap-5 xl:gap-7 text-sm font-semibold tracking-wider uppercase flex-1 px-2">
               {/* Collections with Mega-Menu */}
               <div
                 ref={collectionsRef}
@@ -390,11 +387,6 @@ const Navbar = () => {
                     }`}
                   >
                     <span>{link.label}</span>
-                    {link.badge && (
-                      <span className="px-1.5 py-0.5 bg-black text-white text-[9px] font-bold rounded-full tracking-widest">
-                        {link.badge}
-                      </span>
-                    )}
                     {active && (
                       <motion.div
                         layoutId="activeNavIndicator"
@@ -411,13 +403,10 @@ const Navbar = () => {
               {/* Search Trigger Button */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 sm:p-2.5 text-neutral-700 hover:text-black hover:bg-neutral-100 rounded-full transition-colors flex items-center gap-2 group"
+                className="p-2 sm:p-2.5 text-neutral-700 hover:text-black hover:bg-neutral-100 rounded-full transition-colors flex items-center justify-center"
                 aria-label="Open product search"
               >
                 <Search size={18} strokeWidth={2} />
-                <span className="hidden xl:inline text-xs font-medium text-neutral-400 group-hover:text-neutral-700">
-                  Search...
-                </span>
               </button>
 
               {/* Account Dropdown Trigger / UserButton */}

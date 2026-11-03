@@ -179,19 +179,12 @@ const HeroCarousel = () => {
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.07] pointer-events-none" />
       </div>
 
-      {/* Slide counter */}
-      <div className="absolute top-6 right-4 sm:right-6 md:right-8 lg:right-12 z-20 flex items-center gap-2 text-white/70 text-xs font-semibold tracking-widest">
-        <span className="text-white">{String(slide + 1).padStart(2, '0')}</span>
-        <span className="w-6 h-px bg-white/30" />
-        <span>{String(total).padStart(2, '0')}</span>
-      </div>
-
       {/* Arrows */}
       <button
         type="button"
         onClick={prev}
         aria-label="Previous slide"
-        className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white items-center justify-center transition-all duration-300"
+        className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center transition-colors"
       >
         <ChevronLeft size={20} />
       </button>
@@ -199,7 +192,7 @@ const HeroCarousel = () => {
         type="button"
         onClick={next}
         aria-label="Next slide"
-        className="hidden lg:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white items-center justify-center transition-all duration-300"
+        className="hidden lg:flex absolute right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center transition-colors"
       >
         <ChevronRight size={20} />
       </button>
@@ -218,29 +211,20 @@ const HeroCarousel = () => {
               className="max-w-xl lg:max-w-2xl space-y-6 lg:space-y-8 pointer-events-auto"
               aria-live="polite"
             >
-              <span className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                <span className="text-xs font-semibold tracking-wider uppercase text-white">
-                  {active.badge}
-                </span>
-              </span>
-
-              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight leading-[0.95] text-white">
-                {active.title}
-                <br />
-                <span className="text-white/60 font-light italic">{active.titleAccent}</span>
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight leading-[0.95] text-white">
+                {active.title} {active.titleAccent}
               </h1>
 
-              <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-lg leading-relaxed font-light">
+              <p className="text-lg sm:text-xl text-neutral-200 max-w-lg leading-relaxed font-light">
                 {active.description}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Link to={active.ctaPrimary.to}>
                   <motion.button
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto bg-white text-black px-8 py-4 rounded-full text-base font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 group/btn"
+                    className="w-full sm:w-auto bg-white text-black px-8 py-4 rounded-full text-base font-semibold hover:bg-neutral-100 transition-colors flex items-center justify-center gap-3 group/btn"
                   >
                     <span>{active.ctaPrimary.label}</span>
                     <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
@@ -249,53 +233,33 @@ const HeroCarousel = () => {
 
                 <a href={active.ctaSecondary.href}>
                   <motion.button
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full sm:w-auto bg-transparent text-white border-2 border-white/40 hover:border-white px-8 py-4 rounded-full text-base font-semibold transition-all duration-300 flex items-center justify-center"
+                    className="w-full sm:w-auto bg-transparent text-white border-2 border-white/60 hover:border-white px-8 py-4 rounded-full text-base font-semibold transition-colors flex items-center justify-center"
                   >
                     {active.ctaSecondary.label}
                   </motion.button>
                 </a>
-              </div>
-
-              <div className="pt-6 border-t border-white/15 grid grid-cols-3 gap-6 max-w-lg">
-                <div>
-                  <div className="font-heading text-xl lg:text-2xl font-bold text-white">100%</div>
-                  <div className="text-[11px] text-white/60 uppercase tracking-wider mt-0.5">Artisanal Sourced</div>
-                </div>
-                <div>
-                  <div className="font-heading text-xl lg:text-2xl font-bold text-white">4.9★</div>
-                  <div className="text-[11px] text-white/60 uppercase tracking-wider mt-0.5">TrustPilot Score</div>
-                </div>
-                <div>
-                  <div className="font-heading text-xl lg:text-2xl font-bold text-white">48h</div>
-                  <div className="text-[11px] text-white/60 uppercase tracking-wider mt-0.5">Global Dispatch</div>
-                </div>
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Floating spotlight card */}
-      <div className="hidden lg:block absolute bottom-10 right-10 xl:right-16 z-20 w-72">
+      {/* Spotlight preview card */}
+      <div data-ui className="hidden lg:block absolute bottom-10 right-10 xl:right-16 z-20 w-72">
         <AnimatePresence mode="wait">
           <motion.div
             key={active.id}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.4 }}
-            className="bg-white/95 backdrop-blur-md border border-white/20 rounded-2xl p-5 shadow-2xl space-y-3"
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl p-5 space-y-3 border border-neutral-200"
           >
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500">
-                {active.spotlight.tag}
-              </span>
-              <div className="flex items-center gap-1 text-yellow-500 text-xs">
-                <Star size={12} className="fill-yellow-500" />
-                <span>{active.spotlight.rating} ({active.spotlight.reviews}+)</span>
-              </div>
+            <div className="flex items-center justify-between text-sm text-neutral-600 font-medium">
+              <span>{active.spotlight.collection}</span>
+              <span>In Stock</span>
             </div>
             <h3 className="font-heading text-base font-bold text-black leading-tight">
               {active.spotlight.name}
@@ -303,7 +267,7 @@ const HeroCarousel = () => {
             <div className="flex items-center justify-between pt-1">
               <span className="text-lg font-bold text-black">${active.spotlight.price}</span>
               <Link to={active.ctaPrimary.to}>
-                <button className="bg-black text-white px-4 py-2 rounded-full text-xs font-semibold hover:bg-gray-800 transition-colors flex items-center gap-1.5">
+                <button className="bg-black text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-neutral-800 transition-colors flex items-center gap-1.5">
                   <span>View Item</span>
                   <ArrowUpRight size={14} />
                 </button>
@@ -313,29 +277,24 @@ const HeroCarousel = () => {
         </AnimatePresence>
       </div>
 
-      {/* Progress dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+      {/* Interactive Chapter Dock */}
+      <div data-ui className="absolute bottom-6 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-16 z-20 flex flex-wrap items-center gap-2 sm:gap-3">
         {heroSlides.map((s, idx) => (
           <button
             key={s.id}
             type="button"
             onClick={() => goTo(idx)}
-            aria-label={`Go to slide ${idx + 1}`}
+            aria-label={`View chapter: ${s.spotlight.collection}`}
             aria-current={idx === slide}
-            className="relative h-1.5 rounded-full bg-white/25 overflow-hidden transition-all duration-300"
-            style={{ width: idx === slide ? 40 : 18 }}
+            className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors flex items-center gap-2 ${
+              idx === slide
+                ? 'bg-white text-black font-semibold'
+                : 'bg-black/40 text-neutral-300 hover:text-white hover:bg-black/60'
+            }`}
           >
-            {idx === slide && !isPaused && (
-              <motion.span
-                key={`${active.id}-progress`}
-                className="absolute inset-y-0 left-0 bg-white rounded-full"
-                initial={{ width: '0%' }}
-                animate={{ width: '100%' }}
-                transition={{ duration: AUTOPLAY_MS / 1000, ease: 'linear' }}
-              />
-            )}
-            {idx === slide && isPaused && (
-              <span className="absolute inset-0 bg-white rounded-full" />
+            <span>{s.spotlight.collection}</span>
+            {idx === slide && (
+              <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0" />
             )}
           </button>
         ))}

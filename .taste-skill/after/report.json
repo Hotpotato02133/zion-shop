@@ -1,0 +1,1920 @@
+{
+ "url": "http://localhost:4173/",
+ "at": "2026-11-02T13:15:55.988Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.91,
+    1,
+    0.48,
+    0.59,
+    0.55,
+    0.98,
+    0.98
+   ],
+   "motion": {
+    "elements": 44,
+    "css": 2,
+    "transitions": 14,
+    "scripted": 28,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 5416,
+     "screens": 6,
+     "words": 581,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 47,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 1,
+     "size": 72,
+     "vw": 5,
+     "font": "Google Sans",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.47,
+     "top": 399,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 1,
+     "size": 72,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 30,
+      "vw": 2.1,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.07,
+      "top": 55,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 1,
+      "size": 72,
+      "vw": 5,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 399,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.36,
+      "top": 1196,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.27,
+      "top": 1980,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.38,
+      "top": 3332,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.47,
+      "top": 4087,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 48,
+      "vw": 3.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.38,
+      "top": 4632,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      9,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      48,
+      72
+     ],
+     "sizeCount": 11,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.8
+     },
+     "measureChars": 60,
+     "max": {
+      "size": 72,
+      "vw": 5,
+      "font": "Google Sans",
+      "text": "Cut For Movement."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 11,
+     "microLabelShare": 0.024,
+     "microSamples": [
+      "Tops",
+      "Bottoms",
+      "Fashion",
+      "Accessories",
+      "Home",
+      "Footwear"
+     ],
+     "upperShare": 0.12,
+     "centerShare": 0.1,
+     "smallText": 35
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 120,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#fafafa",
+       "top": 1116,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.98
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 4478,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525252",
+       "share": 0.26
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.23
+      },
+      {
+       "color": "#000000",
+       "share": 0.15
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.12
+      },
+      {
+       "color": "#262626",
+       "share": 0.08
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": [
+      {
+       "text": "Unsubscribe with one click anytime.",
+       "ratio": 3.8,
+       "need": 4.5,
+       "size": 12,
+       "fg": "#737373",
+       "bg": "#171717"
+      }
+     ]
+    },
+    "buttons": {
+     "count": 18,
+     "inHero": 3,
+     "radius": "pill",
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories",
+      "View Item"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 3,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 2,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 22,
+     "boxRadius": 16,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 16,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 8,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2104
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.9
+     }
+    ],
+    "nav": {
+     "links": 9,
+     "fixed": true,
+     "height": 84,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 5416,
+    "margins": {
+     "left": 144,
+     "right": 144
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 120,
+      "height": 4838,
+      "words": 466,
+      "media": 12,
+      "middle": 64,
+      "heading": {
+       "text": "Cut For",
+       "size": 72,
+       "tag": "h1"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 144,
+      "textRight": 85,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 4958,
+      "height": 458,
+      "words": 90,
+      "media": 0,
+      "middle": 183,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 144,
+      "right": 144,
+      "textLeft": 144,
+      "textRight": 144,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 72,
+      "top": 399,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 144,
+      "n": 12
+     },
+     {
+      "x": 752,
+      "n": 10
+     },
+     {
+      "x": 160,
+      "n": 4
+     },
+     {
+      "x": 440,
+      "n": 2
+     },
+     {
+      "x": 456,
+      "n": 2
+     },
+     {
+      "x": 563,
+      "n": 2
+     },
+     {
+      "x": 949,
+      "n": 2
+     },
+     {
+      "x": 1032,
+      "n": 2
+     },
+     {
+      "x": 1048,
+      "n": 2
+     },
+     {
+      "x": 387,
+      "n": 1
+     },
+     {
+      "x": 547,
+      "n": 1
+     },
+     {
+      "x": 736,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 43,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.91,
+    0.89,
+    0.77,
+    0.76,
+    0.71,
+    0.79,
+    0.85,
+    0.95
+   ],
+   "motion": {
+    "elements": 33,
+    "css": 2,
+    "transitions": 3,
+    "scripted": 28,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 7492,
+     "screens": 7.3,
+     "words": 566,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 47,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 1,
+     "size": 60,
+     "vw": 7.8,
+     "font": "Google Sans",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.75,
+     "top": 654,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 1,
+     "size": 60,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 30,
+      "vw": 3.9,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.13,
+      "top": 55,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 1,
+      "size": 60,
+      "vw": 7.8,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.75,
+      "top": 654,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.66,
+      "top": 1374,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.34,
+      "top": 1985,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 5229,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.88,
+      "top": 5911,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 1,
+      "size": 48,
+      "vw": 6.3,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 6457,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      9,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20,
+      24,
+      30,
+      48,
+      60
+     ],
+     "sizeCount": 11,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.8
+     },
+     "measureChars": 78,
+     "max": {
+      "size": 60,
+      "vw": 7.8,
+      "font": "Google Sans",
+      "text": "Cut For Movement."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 11,
+     "microLabelShare": 0.025,
+     "microSamples": [
+      "Tops",
+      "Bottoms",
+      "Fashion",
+      "Accessories",
+      "Home",
+      "Footwear"
+     ],
+     "upperShare": 0.11,
+     "centerShare": 0.14,
+     "smallText": 35
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 120,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#fafafa",
+       "top": 1294,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.98
+       }
+      },
+      {
+       "color": "#171717",
+       "top": 4721,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.09
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 6377,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525252",
+       "share": 0.25
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.23
+      },
+      {
+       "color": "#000000",
+       "share": 0.14
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.13
+      },
+      {
+       "color": "#262626",
+       "share": 0.08
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 17,
+     "inHero": 2,
+     "radius": 12,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 3,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 21,
+     "boxRadius": 16,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 16,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 8,
+       "iconTopped": false,
+       "rounded": true,
+       "top": 2177
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.91
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 84,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 7492,
+    "margins": {
+     "left": 32,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 120,
+      "height": 6877,
+      "words": 455,
+      "media": 12,
+      "middle": 0,
+      "heading": {
+       "text": "Cut For",
+       "size": 60,
+       "tag": "h1"
+      },
+      "left": 32,
+      "right": 32,
+      "textLeft": 32,
+      "textRight": 48,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 6997,
+      "height": 495,
+      "words": 90,
+      "media": 0,
+      "middle": 28,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 32,
+      "right": 39,
+      "textLeft": 32,
+      "textRight": 39,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 60,
+      "top": 654,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 32,
+      "n": 19
+     },
+     {
+      "x": 48,
+      "n": 6
+     },
+     {
+      "x": 400,
+      "n": 4
+     },
+     {
+      "x": 412,
+      "n": 4
+     },
+     {
+      "x": 299,
+      "n": 2
+     },
+     {
+      "x": 73,
+      "n": 1
+     },
+     {
+      "x": 237,
+      "n": 1
+     },
+     {
+      "x": 280,
+      "n": 1
+     },
+     {
+      "x": 528,
+      "n": 1
+     },
+     {
+      "x": 541,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 40,
+    "bodySize": 14,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.86,
+    1,
+    1,
+    0.83,
+    0.75,
+    0.77,
+    0.69,
+    0.82,
+    0.66,
+    0.6,
+    1,
+    0.69
+   ],
+   "motion": {
+    "elements": 33,
+    "css": 2,
+    "transitions": 3,
+    "scripted": 28,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 12007,
+     "screens": 14.2,
+     "words": 555,
+     "img": 13,
+     "video": 0,
+     "canvas": 0,
+     "svg": 47,
+     "sections": 7,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 13,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [
+      "photo-1475178626620-a4d074967452?q=80&w=1800&aut",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=900&auto",
+      "photo-1551028719-00167b16eac5?q=80&w=900&auto=fo",
+      "photo-1608256246200-53e635b5b65f?q=80&w=900&auto",
+      "photo-1521572163474-6864f9cf17ab?q=80&w=1400&aut",
+      "photo-1475178626620-a4d074967452?q=80&w=1400&aut",
+      "photo-1553062407-98eeb64c6a62?q=80&w=1400&auto=f",
+      "photo-1511499767150-a48a237f0083?q=80&w=1400&aut"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "chars": 17,
+     "lines": 1,
+     "size": 36,
+     "vw": 9.2,
+     "font": "Google Sans",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 0.95,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.92,
+     "top": 451,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Cut For Movement.",
+     "words": 3,
+     "lines": 1,
+     "size": 36,
+     "font": "Google Sans"
+    },
+    "headings": [
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 47,
+      "tag": "span",
+      "kind": "heading"
+     },
+     {
+      "text": "Cut For Movement.",
+      "words": 3,
+      "chars": 17,
+      "lines": 1,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 0.95,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 451,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Curated Collections",
+      "words": 2,
+      "chars": 19,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 1400,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Everyday Apparel",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 1917,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Outerwear Edit",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 2418,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Footwear & Accessories",
+      "words": 3,
+      "chars": 22,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.79,
+      "top": 2920,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Featured Catalog",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 3232,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Restraint. Material Honesty. Longevity.",
+      "words": 4,
+      "chars": 39,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 9000,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Words From The Circle",
+      "words": 4,
+      "chars": 21,
+      "lines": 1,
+      "size": 30,
+      "vw": 7.7,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 9834,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Join The Zion Private Circle",
+      "words": 5,
+      "chars": 28,
+      "lines": 2,
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.05,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "center",
+      "position": "center",
+      "widthRatio": 0.92,
+      "top": 10718,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "ZION",
+      "words": 1,
+      "chars": 4,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "Google Sans",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.33,
+      "upper": true,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.14,
+      "top": 11328,
+      "tag": "span",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 11,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 1,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Google Sans",
+       "share": 1,
+       "mono": false
+      }
+     ],
+     "familyCount": 1,
+     "sizes": [
+      9,
+      10,
+      12,
+      14,
+      16,
+      18,
+      24,
+      30,
+      36
+     ],
+     "sizeCount": 9,
+     "notLoaded": [
+      "Google Sans"
+     ],
+     "body": {
+      "font": "Google Sans",
+      "size": 14,
+      "leading": 1.43,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 7.8
+     },
+     "measureChars": 45,
+     "max": {
+      "size": 36,
+      "vw": 9.2,
+      "font": "Google Sans",
+      "text": "Cut For Movement."
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 11,
+     "microLabelShare": 0.025,
+     "microSamples": [
+      "Tops",
+      "Bottoms",
+      "Fashion",
+      "Accessories",
+      "Home",
+      "Footwear"
+     ],
+     "upperShare": 0.11,
+     "centerShare": 0.14,
+     "smallText": 33
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#ffffff",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 1
+     },
+     "dark": false,
+     "sectionBgs": [
+      {
+       "color": "#ffffff",
+       "top": 0,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 1
+       }
+      },
+      {
+       "color": "#000000",
+       "top": 104,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0
+       }
+      },
+      {
+       "color": "#0a0a0a",
+       "top": 864,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#fafafa",
+       "top": 1320,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.98
+       }
+      },
+      {
+       "color": "#171717",
+       "top": 1576,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.09
+       }
+      },
+      {
+       "color": "#f5f5f5",
+       "top": 3500,
+       "hsl": {
+        "h": 0,
+        "s": 0,
+        "l": 0.96
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#525252",
+       "share": 0.26
+      },
+      {
+       "color": "#a3a3a3",
+       "share": 0.22
+      },
+      {
+       "color": "#000000",
+       "share": 0.15
+      },
+      {
+       "color": "#ffffff",
+       "share": 0.13
+      },
+      {
+       "color": "#262626",
+       "share": 0.09
+      }
+     ],
+     "button": {
+      "bg": "#000000",
+      "hsl": {
+       "h": 0,
+       "s": 0,
+       "l": 0
+      },
+      "fg": "#ffffff"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 17,
+     "inHero": 2,
+     "radius": 12,
+     "height": 36,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 15,
+     "heroLabels": [
+      "Shop Bottoms",
+      "Curated Categories"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 3,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 1,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 21,
+     "boxRadius": 16,
+     "squareMedia": 1,
+     "roundedMedia": 12,
+     "mediaRadius": 16,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.92
+     }
+    ],
+    "nav": {
+     "links": 3,
+     "fixed": true,
+     "height": 72,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "google sans flex"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 12007,
+    "margins": {
+     "left": 16,
+     "right": 16
+    },
+    "sections": [
+     {
+      "sel": "main.flex-1.w-full",
+      "tag": "main",
+      "top": 104,
+      "height": 11168,
+      "words": 414,
+      "media": 12,
+      "middle": 0,
+      "heading": {
+       "text": "Cut For",
+       "size": 36,
+       "tag": "h1"
+      },
+      "left": 16,
+      "right": 16,
+      "textLeft": 16,
+      "textRight": 17,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.w-full.bg-neutral-950",
+      "tag": "footer",
+      "top": 11272,
+      "height": 735,
+      "words": 90,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "ZION",
+       "size": 24,
+       "tag": "span"
+      },
+      "left": 16,
+      "right": 21,
+      "textLeft": 16,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Cut For Movement.",
+      "size": 36,
+      "top": 451,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 16,
+      "n": 25
+     },
+     {
+      "x": 32,
+      "n": 13
+     },
+     {
+      "x": 142,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 39,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "micro-label",
+   "width": 1440,
+   "message": "11 tiny uppercase letter-spaced labels (e.g. \"Tops\", \"Bottoms\", \"Fashion\", \"Accessories\").",
+   "fix": "Use sentence-case text at a readable size, or delete the label.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "outlined-box",
+   "width": 1440,
+   "message": "2 box(es) drawn with a 1px outline.",
+   "fix": "Prefer a filled surface or no box.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "contrast",
+   "width": 1440,
+   "message": "Low-contrast text: \"Unsubscribe with one click anytime.\" 3.8:1 needs 4.5:1",
+   "fix": "Darken or lighten the text colour."
+  },
+  {
+   "level": "WARN",
+   "id": "font-fallback",
+   "width": 1440,
+   "message": "Typeface(s) declared but not loaded, so a fallback is rendering: Google Sans",
+   "fix": "Fix the font URL / family name, or the screenshots you are judging are not the design.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "11 different font sizes (9, 10, 12, 14, 16, 18, 20, 24, 30, 48, 72).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768
+   ]
+  },
+  {
+   "level": "FAIL",
+   "id": "body-size",
+   "width": 1440,
+   "message": "Body text is 14px (the size most of the running text is set in).",
+   "fix": "Body copy 16–20px. Map small sizes from blueprints onto your body step.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "FAIL",
+   "id": "small-text",
+   "width": 1440,
+   "message": "35 text blocks under 13px.",
+   "fix": "Nothing meant to be read goes below 13px.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "name-only-title",
+   "width": 390,
+   "message": "The h1 is a bare name (\"Cut For Movement.\") and nothing else on the first screen says what this is.",
+   "fix": "Keep the name if it leads, and give the line under it (18px or more) the plain words: what it is, for whom, where or when. In the study of 97 Sites of the Day, first screens that named nothing lost usability and content points."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\desktop-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\tablet-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\mobile-page-01.jpg",
+    "C:\\Users\\windows11\\Documents\\GitHub\\zion-shop\\.taste-skill\\after\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}
