@@ -73,15 +73,33 @@ export const AdminAlertsProvider = ({ children }) => {
     // Build unified notification list:
     // 1. If a 'new_order' notification belongs to an order that is now 'cancelled', transform/suppress it
     // 2. Synthesize unread 'order_cancelled' alerts for customer-cancelled orders so the admin is always notified
+    // 3. Detect and auto-clean orphaned notifications referencing deleted orders
     const dbNotes = notes.data || []
     const dbCancelOrderIds = new Set(
       dbNotes.filter(n => n.type === 'order_cancelled' && n.order_id).map(n => n.order_id)
     )
 
+    const isFullOrderList = !recentOrdersRes.error && recentOrders.length < 200
+    const orphanedDbNoteIds = isFullOrderList
+      ? dbNotes.filter(n => n.order_id && !orderById.has(n.order_id)).map(n => n.id)
+      : []
+
+    if (orphanedDbNoteIds.length > 0) {
+      supabase
+        .from('admin_notifications')
+        .update({ read_at: new Date().toISOString() })
+        .in('id', orphanedDbNoteIds)
+        .then(() => {})
+        .catch(() => {})
+    }
+
     const filteredDbNotes = dbNotes.filter(n => {
-      if (n.type === 'new_order' && n.order_id) {
+      if (n.order_id) {
         const linked = orderById.get(n.order_id)
-        if (linked && linked.status === 'cancelled') {
+        if (!linked && isFullOrderList) {
+          return false
+        }
+        if (n.type === 'new_order' && linked && linked.status === 'cancelled') {
           return false
         }
       }

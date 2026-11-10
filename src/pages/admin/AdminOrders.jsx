@@ -88,16 +88,24 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
   const [tracking, setTracking] = useState('')
   const [note, setNote] = useState('')
   const [busy, setBusy] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   const load = useCallback(async () => {
+    setLoading(true)
     const { data, error: fetchError } = await supabase
       .from('orders')
       .select('*, order_items (*), order_events (*)')
       .eq('id', orderId)
       .maybeSingle()
-    if (fetchError) setError(fetchError.message)
-    else if (data) {
+    if (fetchError) {
+      setError(fetchError.message)
+      setOrder(null)
+    } else if (!data) {
+      setError('Order not found or has been removed from the database.')
+      setOrder(null)
+    } else {
+      setError('')
       data.order_events = sortOrderEvents(data.order_events || [])
       setOrder(data)
       setCourier((prev) => prev || data.courier || '')
@@ -106,6 +114,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
         if (rows && rows.length > 0) setRefundTriage(rows[0])
       })
     }
+    setLoading(false)
   }, [supabase, orderId])
 
   useEffect(() => {
@@ -116,13 +125,13 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
       }
     })
     const poll = setInterval(() => {
-      if (document.visibilityState === 'visible') load()
+      if (document.visibilityState === 'visible' && !error) load()
     }, 4000)
     return () => {
       unsubscribeSync()
       clearInterval(poll)
     }
-  }, [load, orderId])
+  }, [load, orderId, error])
 
   const call = async (name, params) => {
     setBusy(true)
@@ -225,8 +234,38 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
         >
           <X size={16} />
         </button>
-        {!order ? (
-          <p className="text-sm text-neutral-400 dark:text-neutral-500">{error || 'Loading…'}</p>
+        {loading && !order ? (
+          <div className="py-24 flex flex-col items-center justify-center text-center space-y-3">
+            <div className="w-8 h-8 rounded-full border-2 border-neutral-300 dark:border-neutral-700 border-t-neutral-900 dark:border-t-white animate-spin" />
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">
+              Loading order details…
+            </p>
+          </div>
+        ) : error && !order ? (
+          <div className="py-20 px-4 flex flex-col items-center justify-center text-center space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 flex items-center justify-center shadow-xs">
+              <AlertCircle size={24} />
+            </div>
+            <div className="space-y-1.5">
+              <h3 className="font-heading text-base font-semibold text-neutral-950 dark:text-white">
+                Unable to display order
+              </h3>
+              <p className="text-xs text-neutral-500 dark:text-neutral-400 max-w-xs mx-auto leading-relaxed">
+                {error}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-2 px-4 py-2 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
+            >
+              Return to Orders
+            </button>
+          </div>
+        ) : !order ? (
+          <div className="py-20 text-center text-xs text-neutral-400 dark:text-neutral-500">
+            No order details found.
+          </div>
         ) : (
           <>
             <header className="space-y-2 pr-8">
@@ -616,8 +655,22 @@ const AdminOrders = () => {
   const tab = searchParams.get('status') || 'all'
   const orderParam = searchParams.get('order')
 
+  const openOrderPanel = useCallback((id) => {
+    setOpenId(id)
+    const next = new URLSearchParams(searchParams)
+    next.set('order', id)
+    setSearchParams(next, { replace: true })
+  }, [searchParams, setSearchParams])
+
+  const closeOrderPanel = useCallback(() => {
+    setOpenId(null)
+    const next = new URLSearchParams(searchParams)
+    next.delete('order')
+    setSearchParams(next, { replace: true })
+  }, [searchParams, setSearchParams])
+
   useEffect(() => {
-    if (orderParam) setOpenId(orderParam)
+    setOpenId(orderParam || null)
   }, [orderParam])
 
   const load = useCallback(async () => {
@@ -950,7 +1003,7 @@ const AdminOrders = () => {
                 return (
                   <tr
                     key={o.id}
-                    onClick={() => setOpenId(o.id)}
+                    onClick={() => openOrderPanel(o.id)}
                     className="cursor-pointer hover:bg-neutral-50/80 dark:hover:bg-neutral-800/60 transition-colors"
                   >
                     {/* Order Number & Date */}
@@ -1072,7 +1125,7 @@ const AdminOrders = () => {
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setOpenId(o.id)
+                              openOrderPanel(o.id)
                             }}
                             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-medium transition-colors"
                           >
@@ -1084,7 +1137,7 @@ const AdminOrders = () => {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            setOpenId(o.id)
+                            openOrderPanel(o.id)
                           }}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
                         >
@@ -1106,7 +1159,7 @@ const AdminOrders = () => {
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation()
-                              setOpenId(o.id)
+                              openOrderPanel(o.id)
                             }}
                             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-medium transition-colors"
                           >
@@ -1118,7 +1171,7 @@ const AdminOrders = () => {
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation()
-                            setOpenId(o.id)
+                            openOrderPanel(o.id)
                           }}
                           className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-medium transition-colors"
                         >
@@ -1137,7 +1190,7 @@ const AdminOrders = () => {
       {openId && (
         <OrderPanel
           orderId={openId}
-          onClose={() => setOpenId(null)}
+          onClose={closeOrderPanel}
           onChanged={() => {
             load()
             refresh()
