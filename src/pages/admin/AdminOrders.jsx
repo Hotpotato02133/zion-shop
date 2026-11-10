@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Search,
   ShieldCheck,
+  Sparkles,
   Truck,
   X
 } from 'lucide-react'
@@ -19,6 +20,7 @@ import { useAdminAlerts } from './AdminAlerts'
 import { downloadCsv, printPackingSlip } from '../../lib/adminExport'
 import { useSupabase } from '../../context/SupabaseContext'
 import StatusBadge from '../../components/orders/StatusBadge'
+import { fetchOrderRefundRequests } from '../../services/refundTriageService'
 import {
   ORDER_TABS,
   PAYMENT_LABELS,
@@ -42,6 +44,7 @@ const POPULAR_COURIERS = ['LBC Express', 'J&T Express', 'Ninja Van', 'Flash Expr
 const OrderPanel = ({ orderId, onClose, onChanged }) => {
   const { supabase } = useSupabase()
   const [order, setOrder] = useState(null)
+  const [refundTriage, setRefundTriage] = useState(null)
   const [courier, setCourier] = useState('')
   const [tracking, setTracking] = useState('')
   const [note, setNote] = useState('')
@@ -60,6 +63,9 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
       setOrder(data)
       setCourier(data.courier || '')
       setTracking(data.tracking_number || '')
+      fetchOrderRefundRequests(orderId, supabase).then(rows => {
+        if (rows && rows.length > 0) setRefundTriage(rows[0])
+      })
     }
   }, [supabase, orderId])
 
@@ -262,9 +268,49 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
             </section>
 
             {order.return_status && (
-              <section className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-100 dark:border-rose-900/50 text-sm text-rose-900 dark:text-rose-200">
-                <strong>{RETURN_LABELS[order.return_status]}</strong>
-                {order.return_reason && <p className="text-xs mt-1">“{order.return_reason}”</p>}
+              <section className="p-4 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-100 dark:border-rose-900/50 text-sm text-rose-900 dark:text-rose-200 space-y-2.5">
+                <div>
+                  <strong>{RETURN_LABELS[order.return_status]}</strong>
+                  {order.return_reason && <p className="text-xs mt-1">“{order.return_reason}”</p>}
+                </div>
+
+                {refundTriage && (
+                  <div className="p-3 rounded-xl bg-white dark:bg-neutral-900 border border-rose-200 dark:border-rose-900/60 text-neutral-900 dark:text-neutral-100 flex items-start gap-3">
+                    {refundTriage.evidence_image_url && (
+                      <img
+                        src={refundTriage.evidence_image_url}
+                        alt="Customer return evidence"
+                        className="w-14 h-14 rounded-lg object-cover border border-neutral-200 dark:border-neutral-700 shrink-0"
+                      />
+                    )}
+                    <div className="space-y-1 text-xs min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="font-semibold uppercase tracking-wider text-[10px] inline-flex items-center gap-1">
+                          <Sparkles size={11} /> AI Vision Triage
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                            refundTriage.status === 'auto_approved'
+                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300'
+                              : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                          }`}
+                        >
+                          {refundTriage.status === 'auto_approved'
+                            ? 'Auto-Approved Recommendation'
+                            : 'Manual Review Required'}
+                        </span>
+                        <span className="text-[10px] text-neutral-500">
+                          {Math.round(Number(refundTriage.ai_confidence_score || 0) * 100)}% confidence
+                        </span>
+                      </div>
+                      {refundTriage.ai_assessment_notes && (
+                        <p className="text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                          {refundTriage.ai_assessment_notes}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </section>
             )}
             {order.cancel_reason && (

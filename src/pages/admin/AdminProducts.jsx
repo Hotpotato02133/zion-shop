@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { AlertTriangle, Eye, EyeOff, Pencil, Plus, Trash2, Upload, X } from 'lucide-react'
+import { AlertTriangle, Eye, EyeOff, Loader2, Pencil, Plus, Sparkles, Trash2, Upload, X } from 'lucide-react'
 import { useAdminAlerts } from './AdminAlerts'
 import { useSupabase } from '../../context/SupabaseContext'
 import { friendlyError, money } from '../../lib/orders'
+import { AiProductAutoFiller } from '../../components/admin/AiProductAutoFiller'
+import { embedProductInSupabase, embedAllProductsInSupabase } from '../../services/productEmbeddingService'
 
 const DEFAULT_CATEGORIES = ['Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Accessories']
 const EMPTY = {
@@ -39,12 +41,14 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
     : EMPTY)
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [imageFile, setImageFile] = useState(null)
   const [error, setError] = useState('')
 
   const update = (field) => (e) => setForm(prev => ({ ...prev, [field]: e.target.value }))
 
   const handleUpload = async (file) => {
     if (!file) return
+    setImageFile(file)
     setUploading(true)
     setError('')
     const ext = file.name.split('.').pop()
@@ -57,6 +61,19 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
       setForm(prev => ({ ...prev, image_url: data.publicUrl }))
     }
     setUploading(false)
+  }
+
+  const handleAiAutoFill = (aiListing) => {
+    setForm(prev => ({
+      ...prev,
+      name: aiListing.name || prev.name,
+      category: aiListing.category || prev.category,
+      description: aiListing.description || prev.description,
+      price: aiListing.price ?? prev.price,
+      original_price: aiListing.original_price ?? prev.original_price,
+      tag: aiListing.tag ?? prev.tag,
+      specs: aiListing.specsText || prev.specs
+    }))
   }
 
   const handleSubmit = async (e) => {
@@ -80,13 +97,18 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
     }
 
     const query = product
-      ? supabase.from('products').update(payload).eq('id', product.id)
-      : supabase.from('products').insert(payload)
-    const { error: saveError } = await query
+      ? supabase.from('products').update(payload).eq('id', product.id).select().single()
+      : supabase.from('products').insert(payload).select().single()
+    const { data: savedRow, error: saveError } = await query
     setSaving(false)
     if (saveError) {
       setError(friendlyError(saveError))
       return
+    }
+    if (savedRow) {
+      embedProductInSupabase(savedRow, supabase).catch(err =>
+        console.warn('Background AI embedding skipped:', err?.message)
+      )
     }
     onSaved()
   }
@@ -134,10 +156,18 @@ const ProductForm = ({ product, categories, onClose, onSaved }) => {
             {form.image_url && <img src={form.image_url} alt="" className="w-20 h-24 rounded-xl object-cover bg-neutral-100 dark:bg-neutral-800 shrink-0" />}
             <div className="flex-1 space-y-2">
               <input placeholder="https://… image URL" className={inputClass} value={form.image_url} onChange={update('image_url')} />
-              <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-xs font-semibold cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
-                <Upload size={14} /> {uploading ? 'Uploading…' : 'Upload image'}
-                <input type="file" accept="image/*" className="sr-only" disabled={uploading} onChange={e => handleUpload(e.target.files?.[0])} />
-              </label>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-700 text-neutral-700 dark:text-neutral-300 text-xs font-semibold cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors">
+                  <Upload size={14} /> {uploading ? 'Uploading…' : 'Upload image'}
+                  <input type="file" accept="image/*" className="sr-only" disabled={uploading} onChange={e => handleUpload(e.target.files?.[0])} />
+                </label>
+                <AiProductAutoFiller
+                  imageFile={imageFile}
+                  imageUrl={form.image_url}
+                  currentName={form.name}
+                  onAutoFillForm={handleAiAutoFill}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -179,11 +209,32 @@ const AdminProducts = () => {
   const lowOnly = searchParams.get('filter') === 'low'
   const [restockId, setRestockId] = useState(null)
   const [restockQty, setRestockQty] = useState(10)
+  const [embeddingProgress, setEmbeddingProgress] = useState(null)
+
+  const handleSyncAllEmbeddings = useCallback(async () => {
+    if (embeddingProgress) return
+    setEmbeddingProgress({ current: 0, total: products.length || 19, status: 'Starting…' })
+    try {
+      const result = await embedAllProductsInSupabase(supabase, ({ current, total, name }) => {
+        setEmbeddingProgress({ current, total, status: `Indexing ${current}/${total}: ${name}` })
+      })
+      setEmbeddingProgress({
+        current: result.total,
+        total: result.total,
+        status: `Indexed ${result.embedded}/${result.total} products`
+      })
+      setTimeout(() => setEmbeddingProgress(null), 3500)
+    } catch (err) {
+      setError(err?.message || 'Failed to sync AI vector embeddings')
+      setEmbeddingProgress(null)
+    }
+  }, [embeddingProgress, products.length, supabase])
 
   const load = useCallback(async () => {
     const { data, error: fetchError } = await supabase.from('products').select('*').order('created_at', { ascending: false })
     if (fetchError) setError(fetchError.message)
-    setProducts(data || [])
+    const rows = data || []
+    setProducts(rows)
     setLoading(false)
   }, [supabase])
 
@@ -249,12 +300,33 @@ const AdminProducts = () => {
             <AlertTriangle size={14} /> Low stock {lowCount > 0 && `(${lowCount})`}
           </button>
         </div>
-        <button
-          onClick={() => setEditing('new')}
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
-        >
-          <Plus size={14} /> Add product
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            disabled={Boolean(embeddingProgress)}
+            onClick={handleSyncAllEmbeddings}
+            title="Generate 768-dim Gemini vector embeddings for all products in Supabase"
+            className="inline-flex items-center gap-2 px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-50 dark:hover:bg-neutral-800 text-xs font-semibold uppercase tracking-wider transition-colors disabled:opacity-60"
+          >
+            {embeddingProgress ? (
+              <>
+                <Loader2 size={14} className="animate-spin" />
+                <span>{embeddingProgress.status}</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={14} />
+                <span>Sync AI Embeddings</span>
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => setEditing('new')}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
+          >
+            <Plus size={14} /> Add product
+          </button>
+        </div>
       </div>
       {error && <p role="alert" className="text-sm text-red-600 dark:text-red-400">{error}</p>}
 

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Loader2, X } from 'lucide-react'
+import { useUser } from '@clerk/clerk-react'
+import { Camera, Loader2, Sparkles, X } from 'lucide-react'
 import { useSupabase } from '../../context/SupabaseContext'
 import { fetchDemoPaymentsEnabled, startPayment } from '../../lib/payments'
 import { friendlyError } from '../../lib/orders'
+import { evaluateRefundClaim } from '../../services/refundTriageService'
 
 const CANCEL_REASONS = [
   'Changed my mind',
@@ -37,11 +39,14 @@ const Dialog = ({ title, onClose, children }) => (
  */
 const OrderActions = ({ order, onUpdated }) => {
   const { supabase } = useSupabase()
+  const { user } = useUser()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [dialog, setDialog] = useState(null) // 'cancel' | 'return'
   const [reason, setReason] = useState('')
   const [details, setDetails] = useState('')
+  const [damagePhotoFile, setDamagePhotoFile] = useState(null)
+  const [damagePreviewUrl, setDamagePreviewUrl] = useState('')
   const [demoEnabled, setDemoEnabled] = useState(false)
 
   const awaitingOnlinePayment = order.status === 'to_pay' && order.payment_method === 'paymongo'
@@ -80,9 +85,52 @@ const OrderActions = ({ order, onUpdated }) => {
   const closeDialog = () => {
     setDialog(null)
     setError('')
+    setDamagePhotoFile(null)
+    setDamagePreviewUrl('')
+  }
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setDamagePhotoFile(file)
+    const reader = new FileReader()
+    reader.onloadend = () => setDamagePreviewUrl(typeof reader.result === 'string' ? reader.result : '')
+    reader.readAsDataURL(file)
   }
 
   const reasonText = [reason, details.trim()].filter(Boolean).join(' - ')
+
+  const submitReturnWithAiTriage = () => run(async () => {
+    const primaryItemName =
+      order.order_items?.[0]?.name || `Order ${order.order_number}`
+
+    const triageRecord = await evaluateRefundClaim(
+      {
+        orderId: order.id,
+        clerkUserId: user?.id || order.user_id,
+        productName: primaryItemName,
+        userReason: reasonText,
+        damagePhotoFile
+      },
+      supabase
+    )
+
+    const enrichedReason = triageRecord?.status === 'auto_approved'
+      ? `${reasonText} [AI Verified ${(Number(triageRecord.ai_confidence_score || 0) * 100).toFixed(0)}%]`
+      : reasonText
+
+    const { data, error: rpcError } = await supabase.rpc('request_return', {
+      p_order_id: order.id,
+      p_reason: enrichedReason
+    })
+    if (rpcError) throw rpcError
+    setDialog(null)
+    setReason('')
+    setDetails('')
+    setDamagePhotoFile(null)
+    setDamagePreviewUrl('')
+    onUpdated?.(data)
+  })
 
   return (
     <div className="space-y-3">
@@ -139,7 +187,9 @@ const OrderActions = ({ order, onUpdated }) => {
 
       {dialog === 'return' && (
         <Dialog title="Request a return or refund" onClose={closeDialog}>
-          <p className="text-xs text-neutral-500">Returns are accepted within 30 days of delivery.</p>
+          <p className="text-xs text-neutral-500">
+            Returns are accepted within 30 days of delivery. Attach a photo for instant AI quality verification.
+          </p>
           <select value={reason} onChange={e => setReason(e.target.value)} className="w-full p-3 rounded-xl border border-neutral-200 text-sm">
             <option value="">Select a reason…</option>
             {RETURN_REASONS.map(r => <option key={r}>{r}</option>)}
@@ -151,15 +201,46 @@ const OrderActions = ({ order, onUpdated }) => {
             placeholder="Tell us a bit more (optional)"
             className="w-full p-3 rounded-xl border border-neutral-200 text-sm"
           />
+
+          {/* AI Vision Evidence Upload */}
+          <div className="p-3.5 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-neutral-700 inline-flex items-center gap-1.5">
+                <Sparkles size={13} /> AI Instant Return Triage
+              </span>
+              <span className="text-[10px] text-neutral-400">Optional photo</span>
+            </div>
+            <div className="flex items-center gap-3">
+              {damagePreviewUrl && (
+                <img
+                  src={damagePreviewUrl}
+                  alt="Evidence preview"
+                  className="w-14 h-14 rounded-xl object-cover border border-neutral-200 shrink-0"
+                />
+              )}
+              <label className="flex-1 inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl border border-dashed border-neutral-300 bg-white hover:border-black text-xs font-medium text-neutral-700 cursor-pointer transition-colors">
+                <Camera size={14} />
+                <span>{damagePhotoFile ? damagePhotoFile.name : 'Upload photo of item / defect'}</span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={handlePhotoChange}
+                />
+              </label>
+            </div>
+          </div>
+
           {error && <p role="alert" className="text-xs text-red-600">{error}</p>}
           <div className="flex gap-2 justify-end">
             <button className={outlineBtn} onClick={closeDialog}>Close</button>
             <button
               className={primaryBtn}
               disabled={busy || !reason}
-              onClick={() => callRpc('request_return', { p_order_id: order.id, p_reason: reasonText })}
+              onClick={submitReturnWithAiTriage}
             >
-              {busy && <Loader2 size={13} className="animate-spin" />} Submit request
+              {busy && <Loader2 size={13} className="animate-spin" />}
+              {busy ? 'AI Verifying…' : 'Submit request'}
             </button>
           </div>
         </Dialog>

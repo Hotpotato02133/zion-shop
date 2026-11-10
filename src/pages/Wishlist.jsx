@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useUser } from '@clerk/clerk-react'
 import { 
   Heart, 
   ShoppingBag, 
@@ -16,11 +17,28 @@ import {
   Star
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import { generateWishlistNudge } from '../services/wishlistNudgeService'
 
 const Wishlist = () => {
   const { wishlist, removeFromWishlist, moveToCart, addToCart, clearWishlist } = useApp()
+  const { user } = useUser()
   const [toastMessage, setToastMessage] = useState(null)
   const [quickViewProduct, setQuickViewProduct] = useState(null)
+  const [aiNudge, setAiNudge] = useState(null)
+
+  useEffect(() => {
+    let isMounted = true
+    if (!wishlist || wishlist.length === 0) {
+      setAiNudge(null)
+      return undefined
+    }
+    generateWishlistNudge(wishlist, user?.firstName || 'Guest').then((nudge) => {
+      if (isMounted) setAiNudge(nudge)
+    })
+    return () => {
+      isMounted = false
+    }
+  }, [wishlist, user?.firstName])
 
   const showToast = (message) => {
     setToastMessage(message)
@@ -232,6 +250,56 @@ const Wishlist = () => {
             </button>
           </div>
         </div>
+
+        {/* AI Wishlist Price-Drop & Low-Stock Nudge Banner */}
+        {aiNudge && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 p-5 rounded-3xl bg-neutral-950 text-white border border-neutral-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl"
+          >
+            <div className="flex items-start sm:items-center gap-3.5">
+              <div className="w-10 h-10 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center shrink-0">
+                <Sparkles size={16} className="text-white" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">
+                    AI Reserve Concierge
+                  </span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/10 text-neutral-200">
+                    {aiNudge.urgencyType === 'price_drop'
+                      ? 'Price Reduction'
+                      : aiNudge.urgencyType === 'low_stock'
+                      ? 'Low Stock Alert'
+                      : 'Ready to Ship'}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-neutral-100 mt-1 leading-relaxed">
+                  {aiNudge.message}
+                </p>
+              </div>
+            </div>
+
+            {aiNudge.productId && (
+              <button
+                type="button"
+                onClick={() => {
+                  const target = wishlist.find(
+                    (w) => String(w.productId ?? w.id) === String(aiNudge.productId)
+                  )
+                  if (target) {
+                    handleMoveToCart(target)
+                  }
+                }}
+                className="self-start sm:self-center shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white text-black hover:bg-neutral-200 text-xs font-semibold tracking-wider uppercase transition-colors"
+              >
+                <ShoppingBag size={14} />
+                <span>Move Piece to Bag</span>
+              </button>
+            )}
+          </motion.div>
+        )}
 
         {/* Wishlist Grid */}
         <motion.div

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, Truck } from 'lucide-react'
+import { ArrowLeft, CheckCircle2, Sparkles, Truck } from 'lucide-react'
 import { useSupabase } from '../context/SupabaseContext'
 import OrderActions from '../components/orders/OrderActions'
 import StatusBadge from '../components/orders/StatusBadge'
@@ -8,12 +8,14 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import {
   PAYMENT_LABELS, RETURN_LABELS, STATUS_META, formatDate, formatDateTime, getOrderStatusHint, money
 } from '../lib/orders'
+import { fetchOrderRefundRequests } from '../services/refundTriageService'
 
 const OrderDetail = () => {
   const { orderId } = useParams()
   const [searchParams] = useSearchParams()
   const { supabase, isConfigured } = useSupabase()
   const [order, setOrder] = useState(null)
+  const [refundTriage, setRefundTriage] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -36,6 +38,9 @@ const OrderDetail = () => {
     else {
       data.order_events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       setOrder(data)
+      fetchOrderRefundRequests(orderId, supabase).then(rows => {
+        if (rows && rows.length > 0) setRefundTriage(rows[0])
+      })
     }
     setLoading(false)
     return data
@@ -153,9 +158,49 @@ const OrderDetail = () => {
         ) : null}
 
         {order.return_status && (
-          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-sm text-rose-900">
-            <strong>{RETURN_LABELS[order.return_status]}</strong>
-            {order.return_reason && <span className="block text-xs mt-1">Reason: {order.return_reason}</span>}
+          <div className="p-4 rounded-2xl bg-rose-50 border border-rose-100 text-sm text-rose-900 space-y-2">
+            <div>
+              <strong>{RETURN_LABELS[order.return_status]}</strong>
+              {order.return_reason && <span className="block text-xs mt-1">Reason: {order.return_reason}</span>}
+            </div>
+
+            {refundTriage && (
+              <div className="p-3.5 rounded-xl bg-white border border-rose-200/70 text-neutral-900 flex items-start gap-3">
+                {refundTriage.evidence_image_url && (
+                  <img
+                    src={refundTriage.evidence_image_url}
+                    alt="Return evidence"
+                    className="w-14 h-14 rounded-lg object-cover border border-neutral-200 shrink-0"
+                  />
+                )}
+                <div className="space-y-1 text-xs">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-semibold uppercase tracking-wider text-[10px] inline-flex items-center gap-1 text-black">
+                      <Sparkles size={12} /> AI Return Triage
+                    </span>
+                    <span
+                      className={`px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                        refundTriage.status === 'auto_approved'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}
+                    >
+                      {refundTriage.status === 'auto_approved'
+                        ? 'AI Verified · Expedited'
+                        : 'Routed to Concierge Review'}
+                    </span>
+                    <span className="text-[10px] text-neutral-500">
+                      Confidence: {Math.round(Number(refundTriage.ai_confidence_score || 0) * 100)}%
+                    </span>
+                  </div>
+                  {refundTriage.ai_assessment_notes && (
+                    <p className="text-neutral-600 leading-relaxed">
+                      {refundTriage.ai_assessment_notes}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

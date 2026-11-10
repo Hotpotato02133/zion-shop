@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useSearchParams, Link } from 'react-router-dom'
+import { useSearchParams, useLocation, Link } from 'react-router-dom'
+import { useUser } from '@clerk/clerk-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Star, 
@@ -18,10 +19,15 @@ import {
   SlidersHorizontal,
   ArrowRight,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Sparkles,
+  Loader2
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { useSupabase } from '../context/SupabaseContext'
+import { useSemanticSearch } from '../hooks/useSemanticSearch'
+import { VisualSearchButton } from '../components/ai/VisualSearchModal'
+import { AiReviewSummaryCard } from '../components/ai/AiReviewSummaryCard'
 
 // Zion Apparel Catalog (local fallback, mirrored from Supabase `products` table)
 const products = [
@@ -473,9 +479,14 @@ const getSizeOptions = (product) => {
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const { user } = useUser()
   const { addToCart, addToWishlist, wishlist } = useApp()
   const { supabase, isConfigured } = useSupabase()
+  const { searchByMeaning, isSearching: isSemanticSearching } = useSemanticSearch(user?.id)
   const [catalog, setCatalog] = useState(products)
+  const [aiOverrideProducts, setAiOverrideProducts] = useState(null)
+  const [aiBannerInfo, setAiBannerInfo] = useState(null)
 
   // Fetch catalog from Supabase when database is ready, otherwise fall back to curated local catalog
   useEffect(() => {
@@ -546,6 +557,10 @@ const Products = () => {
 
   const handleSearchChange = (val) => {
     setSearchTerm(val)
+    if (!val) {
+      setAiOverrideProducts(null)
+      setAiBannerInfo(null)
+    }
     const newParams = new URLSearchParams(searchParams)
     if (!val) {
       newParams.delete('search')
@@ -553,6 +568,34 @@ const Products = () => {
       newParams.set('search', val)
     }
     setSearchParams(newParams)
+  }
+
+  // Handle incoming Visual Search state from Navbar global search modal
+  useEffect(() => {
+    if (location.state?.visualResults) {
+      setAiOverrideProducts(location.state.visualResults)
+      setAiBannerInfo({
+        mode: 'visual',
+        label: location.state.visualSummary || 'Visual similarity match',
+        previewUrl: location.state.visualPreview || ''
+      })
+    }
+  }, [location.state])
+
+  const handleTriggerSemanticSearch = async () => {
+    if (!searchTerm || searchTerm.trim().length < 2) return
+    const matched = await searchByMeaning(searchTerm, catalog)
+    setAiOverrideProducts(matched)
+    setAiBannerInfo({
+      mode: 'semantic',
+      label: `AI Meaning Match for "${searchTerm.trim()}"`,
+      previewUrl: ''
+    })
+  }
+
+  const clearAiResults = () => {
+    setAiOverrideProducts(null)
+    setAiBannerInfo(null)
   }
 
   // Animation variants
@@ -593,10 +636,16 @@ const Products = () => {
     triggerToast(`Saved "${product.name}" to wishlist`)
   }
 
-  // Filter products
-  const filteredProducts = catalog.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          product.category.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter products (uses AI semantic/visual results when active, otherwise keyword + category match)
+  const baseList = Array.isArray(aiOverrideProducts) ? aiOverrideProducts : catalog
+  const filteredProducts = baseList.filter(product => {
+    const matchesSearch = Array.isArray(aiOverrideProducts)
+      ? true
+      : (
+          product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.category?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          product.description?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
     const matchesCategory = checkCategoryMatch(product, selectedCategory)
     return matchesSearch && matchesCategory
   })
@@ -691,24 +740,62 @@ const Products = () => {
           
           <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
             
-            {/* Search Input */}
-            <div className="relative flex-1 max-w-lg">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search by title, material, or category..."
-                value={searchTerm}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white text-sm transition-all"
-              />
-              {searchTerm && (
+            {/* Search Input + AI Semantic & Visual Search Controls */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 flex-1 max-w-2xl">
+              <div className="relative flex-1">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                <input
+                  type="text"
+                  placeholder="Search by keyword or ask AI (e.g., 'rainy day layering under $150')..."
+                  value={searchTerm}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && searchTerm.trim().length >= 3) {
+                      e.preventDefault()
+                      handleTriggerSemanticSearch()
+                    }
+                  }}
+                  className="w-full pl-11 pr-10 py-3.5 rounded-2xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-black focus:bg-white text-sm transition-all"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => handleSearchChange('')}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
                 <button
-                  onClick={() => handleSearchChange('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-black"
+                  type="button"
+                  disabled={!searchTerm || searchTerm.trim().length < 2 || isSemanticSearching}
+                  onClick={handleTriggerSemanticSearch}
+                  title="Search by natural language meaning using Zion AI"
+                  className="px-4 py-3.5 rounded-2xl bg-black text-white hover:bg-neutral-800 disabled:opacity-40 transition-colors text-[11px] font-semibold uppercase tracking-[0.16em] inline-flex items-center justify-center gap-2 shrink-0"
                 >
-                  <X size={16} />
+                  {isSemanticSearching ? (
+                    <Loader2 size={14} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={14} />
+                  )}
+                  <span>AI Search</span>
                 </button>
-              )}
+
+                <VisualSearchButton
+                  catalogFallback={catalog}
+                  className="px-4 py-3.5 rounded-2xl border border-gray-200 bg-gray-50 text-black hover:border-black hover:bg-black hover:text-white transition-colors text-[11px] font-semibold uppercase tracking-[0.16em] inline-flex items-center justify-center gap-2 shrink-0"
+                  onVisualResultsFound={(matchedProducts, summaryLabel, previewUrl) => {
+                    setAiOverrideProducts(matchedProducts)
+                    setAiBannerInfo({
+                      mode: 'visual',
+                      label: summaryLabel,
+                      previewUrl
+                    })
+                  }}
+                />
+              </div>
             </div>
 
             {/* Sort & Quick Filter Selector */}
@@ -734,6 +821,44 @@ const Products = () => {
             </div>
 
           </div>
+
+          {/* Active AI Search / Visual Search Banner */}
+          {aiBannerInfo && (
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-950 text-white border border-neutral-800">
+              <div className="flex items-center gap-3.5">
+                {aiBannerInfo.previewUrl ? (
+                  <img
+                    src={aiBannerInfo.previewUrl}
+                    alt="Uploaded visual reference"
+                    className="w-12 h-12 rounded-xl object-cover border border-white/20 shrink-0"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                    <Sparkles size={16} className="text-white" />
+                  </div>
+                )}
+                <div>
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400 block">
+                    {aiBannerInfo.mode === 'visual'
+                      ? 'Visual Search · Snap to Shop'
+                      : 'AI Semantic Curation'}
+                  </span>
+                  <p className="text-xs sm:text-sm font-medium text-white mt-0.5">
+                    {aiBannerInfo.label} ({sortedProducts.length}{' '}
+                    {sortedProducts.length === 1 ? 'match' : 'matches'})
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={clearAiResults}
+                className="self-start sm:self-auto px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white hover:text-black text-white text-[11px] font-semibold uppercase tracking-wider transition-colors inline-flex items-center gap-1.5"
+              >
+                <X size={14} />
+                <span>Reset to All Pieces</span>
+              </button>
+            </div>
+          )}
 
           {/* Category Tabs */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
@@ -1084,6 +1209,9 @@ const Products = () => {
                   <p className="text-sm text-neutral-600 leading-relaxed mb-6">
                     {selectedProduct.description}
                   </p>
+
+                  {/* AI Client Review Consensus & Verified Reviews */}
+                  <AiReviewSummaryCard product={selectedProduct} />
 
                   {/* Size selector */}
                   {quickViewSizeOptions && (

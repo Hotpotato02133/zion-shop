@@ -10,6 +10,7 @@ import {
   Youtube
 } from 'lucide-react'
 import Navbar from './Navbar'
+import { ZionShoppingAssistant } from './ai/ZionShoppingAssistant'
 
 const Layout = ({ children }) => {
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -162,6 +163,9 @@ const Layout = ({ children }) => {
           </div>
         </div>
       </footer>
+
+      {/* Floating AI Shopping Stylist Drawer */}
+      <ZionShoppingAssistant />
 
       {/* Floating Back to Top Button */}
       <AnimatePresence>

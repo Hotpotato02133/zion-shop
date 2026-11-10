@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import CheckoutSteps from '../components/CheckoutSteps'
+import { SmartCrossSellSection } from '../components/ai/SmartCrossSellSection'
 import { FREE_SHIPPING_OVER, PROMOS, computeTotals, saveCheckoutExtras, toPrice } from '../lib/pricing'
 import { loginUrlFor, rememberRedirect } from '../lib/redirect'
 
@@ -314,6 +315,9 @@ const Cart = () => {
                 <div className="h-full bg-neutral-950 transition-all duration-500" style={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_OVER) * 100)}%` }} />
               </div>
             </div>
+
+            {/* AI "Complete the Look" Smart Cross-Sell */}
+            <SmartCrossSellSection />
 
           </div>
 

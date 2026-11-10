@@ -21,6 +21,7 @@ import {
 import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import AccountMenu from './AccountMenu'
 import { useApp } from '../context/AppContext'
+import { VisualSearchButton } from './ai/VisualSearchModal'
 
 const ANNOUNCEMENTS = [
   'Complimentary express courier on orders over $150 · 30-day returns',
@@ -659,16 +660,34 @@ const Navbar = () => {
               className="relative w-full max-w-2xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 z-10 border border-neutral-100"
             >
               <div className="flex items-center justify-between pb-4 border-b border-neutral-100 mb-6">
-                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
-                  Search Zion Atelier
-                </span>
-                <button
-                  onClick={() => setIsSearchOpen(false)}
-                  className="p-2 text-neutral-400 hover:text-black rounded-full hover:bg-neutral-100 transition-colors"
-                  aria-label="Close search"
-                >
-                  <X size={18} />
-                </button>
+                <div className="flex items-center gap-2">
+                  <Sparkles size={14} className="text-black" />
+                  <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                    Search Zion Atelier · AI &amp; Visual Search
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <VisualSearchButton
+                    compact
+                    onVisualResultsFound={(matchedProducts, summaryLabel, previewUrl) => {
+                      setIsSearchOpen(false)
+                      navigate('/products', {
+                        state: {
+                          visualResults: matchedProducts,
+                          visualSummary: summaryLabel,
+                          visualPreview: previewUrl
+                        }
+                      })
+                    }}
+                  />
+                  <button
+                    onClick={() => setIsSearchOpen(false)}
+                    className="p-2 text-neutral-400 hover:text-black rounded-full hover:bg-neutral-100 transition-colors"
+                    aria-label="Close search"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
 
               <form onSubmit={handleSearchSubmit} className="relative mb-6">
