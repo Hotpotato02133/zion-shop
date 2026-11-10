@@ -270,7 +270,9 @@ const SidebarContent = ({ onNavigate, onCollapse }) => {
               Main Menu
             </p>
             <nav className="space-y-1">
-              {NAV_ITEMS.map(({ to, label, icon: Icon, end, badge, tone }) => {
+              {NAV_ITEMS.map((navItem) => {
+                const { to, label, end, badge, tone } = navItem
+                const NavIcon = navItem.icon
                 const isActive = isNavActive(to, end)
                 return (
                   <Link
@@ -283,7 +285,7 @@ const SidebarContent = ({ onNavigate, onCollapse }) => {
                         : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-white hover:bg-neutral-100/80 dark:hover:bg-neutral-800/60 font-normal'
                     }`}
                   >
-                    <Icon size={17} />
+                    <NavIcon size={17} />
                     <span>{label}</span>
                     {badge && <Badge value={badge(alerts)} tone={tone} />}
                   </Link>

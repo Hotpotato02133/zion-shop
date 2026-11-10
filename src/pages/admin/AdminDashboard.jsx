@@ -6,10 +6,12 @@ import {
   ChevronLeft,
   ChevronRight,
   DollarSign,
+  Loader2,
   Package,
   PackageCheck,
   Search,
   ShoppingBag,
+  Sparkles,
   TrendingDown,
   TrendingUp,
   Truck
@@ -19,6 +21,8 @@ import { useAdminAlerts } from './AdminAlerts'
 import { useAdminTheme } from '../../context/AdminThemeContext'
 import StatusBadge from '../../components/orders/StatusBadge'
 import { formatDate, isCodOrder, isCodOrderApproved, money } from '../../lib/orders'
+import { isAiConfigured } from '../../services/aiService'
+import { embedAllProductsInSupabase } from '../../services/productEmbeddingService'
 
 // Smooth cubic Bezier path calculation for interactive SVG chart
 function getCubicBezierPath(points) {
@@ -193,6 +197,9 @@ const AdminDashboard = () => {
 
   const [orders, setOrders] = useState([])
   const [products, setProducts] = useState([])
+  const [aiLogs, setAiLogs] = useState([])
+  const [refundTriages, setRefundTriages] = useState([])
+  const [syncingEmbeddings, setSyncingEmbeddings] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [timeframe, setTimeframe] = useState('30d')
@@ -203,7 +210,7 @@ const AdminDashboard = () => {
 
   const loadData = useCallback(async () => {
     try {
-      const [o, p] = await Promise.all([
+      const [o, p, logsRes, refundsRes] = await Promise.all([
         supabase
           .from('orders')
           .select(
@@ -212,8 +219,18 @@ const AdminDashboard = () => {
           .order('created_at', { ascending: false }),
         supabase
           .from('products')
-          .select('id, name, price, stock, low_stock_threshold, image_url, category, is_active')
+          .select('id, name, price, stock, low_stock_threshold, image_url, category, is_active, embedding, ai_review_summary')
+          .order('created_at', { ascending: false }),
+        supabase
+          .from('ai_api_logs')
+          .select('id, feature, created_at')
           .order('created_at', { ascending: false })
+          .limit(100),
+        supabase
+          .from('refund_requests')
+          .select('id, order_id, status, ai_confidence_score, created_at')
+          .order('created_at', { ascending: false })
+          .limit(50)
       ])
 
       if (o.error) {
@@ -225,12 +242,29 @@ const AdminDashboard = () => {
 
       setOrders(o.data || [])
       setProducts(p.data || [])
+      setAiLogs(logsRes?.data || [])
+      setRefundTriages(refundsRes?.data || [])
     } catch (err) {
       setError(err?.message || 'Failed to load telemetry')
     } finally {
       setLoading(false)
     }
   }, [supabase])
+
+  const handleDashboardSyncEmbeddings = async () => {
+    if (syncingEmbeddings) return
+    setSyncingEmbeddings('Starting…')
+    try {
+      await embedAllProductsInSupabase(supabase, ({ current, total }) => {
+        setSyncingEmbeddings(`Indexing ${current}/${total}…`)
+      })
+      await loadData()
+      setSyncingEmbeddings('Indexed!')
+      setTimeout(() => setSyncingEmbeddings(null), 2500)
+    } catch {
+      setSyncingEmbeddings(null)
+    }
+  }
 
   useEffect(() => {
     loadData()
@@ -909,6 +943,100 @@ const AdminDashboard = () => {
           )}
         </section>
       </div>
+
+      {/* AI Atelier Intelligence & Operations Telemetry */}
+      <section className="p-6 rounded-3xl bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-800 shadow-xs space-y-5 transition-colors">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 flex items-center justify-center">
+              <Sparkles size={16} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-heading text-lg font-bold tracking-tight text-neutral-950 dark:text-white">
+                  Zion AI Atelier Intelligence
+                </h2>
+                <span className="text-[10px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                  {isAiConfigured ? 'Gemini Live' : 'Local Mode'}
+                </span>
+              </div>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">
+                pgvector semantic indexing, review consensus cache, and automated return vision triage
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            disabled={Boolean(syncingEmbeddings)}
+            onClick={handleDashboardSyncEmbeddings}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors disabled:opacity-60"
+          >
+            {syncingEmbeddings ? (
+              <>
+                <Loader2 size={13} className="animate-spin" />
+                <span>{syncingEmbeddings}</span>
+              </>
+            ) : (
+              <>
+                <Sparkles size={13} />
+                <span>Sync Vector Index</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/70 dark:border-neutral-800">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block">
+              pgvector Search Index
+            </span>
+            <p className="font-heading text-2xl font-bold text-neutral-950 dark:text-white mt-1 tabular-nums">
+              {products.filter((p) => Boolean(p.embedding)).length} / {products.length}
+            </p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              768-dim product embeddings
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/70 dark:border-neutral-800">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block">
+              AI Review Consensus
+            </span>
+            <p className="font-heading text-2xl font-bold text-neutral-950 dark:text-white mt-1 tabular-nums">
+              {products.filter((p) => Boolean(p.ai_review_summary)).length} / {products.length}
+            </p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              Pre-warmed Pros &amp; Cons (0ms load)
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/70 dark:border-neutral-800">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block">
+              AI Return Vision Triage
+            </span>
+            <p className="font-heading text-2xl font-bold text-neutral-950 dark:text-white mt-1 tabular-nums">
+              {refundTriages.length}
+            </p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              {refundTriages.filter((r) => r.status === 'auto_approved').length} auto-verified ·{' '}
+              {refundTriages.filter((r) => r.status !== 'auto_approved').length} manual
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200/70 dark:border-neutral-800">
+            <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400 dark:text-neutral-500 block">
+              AI Shopper Queries
+            </span>
+            <p className="font-heading text-2xl font-bold text-neutral-950 dark:text-white mt-1 tabular-nums">
+              {aiLogs.length}
+            </p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+              Logged across Stylist &amp; Search
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

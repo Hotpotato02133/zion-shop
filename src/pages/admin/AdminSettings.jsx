@@ -39,7 +39,7 @@ export default function AdminSettings() {
 
   const [activeTab, setActiveTab] = useState('store')
   const [saveStatus, setSaveStatus] = useState({ state: 'idle', message: '' })
-  const [loading, setLoading] = useState(true)
+  const [_loading, setLoading] = useState(true)
 
   // Store Configuration Settings
   const [settings, setSettings] = useState(DEFAULT_STORE_SETTINGS)

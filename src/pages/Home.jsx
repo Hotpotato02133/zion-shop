@@ -132,7 +132,7 @@ const defaultFeaturedProducts = [
 
 const categories = ['All', 'Tops', 'Bottoms', 'Outerwear', 'Footwear', 'Accessories']
 
-const collectionShowcases = [
+const _collectionShowcases = [
   {
     title: 'Everyday Apparel',
     description: 'Tees, knits, and dresses cut from honest, breathable fabrics.',
@@ -153,7 +153,7 @@ const collectionShowcases = [
   }
 ]
 
-const testimonials = [
+const _testimonials = [
   {
     quote: "Zion embodies the pinnacle of quiet luxury. The tactile presence of their objects transforms everyday spaces.",
     author: "Elena Rostova",
