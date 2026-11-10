@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { SignIn, useAuth } from '@clerk/clerk-react'
+import { SignIn, useAuth, useSignIn } from '@clerk/clerk-react'
 import { 
   Mail, 
   Lock, 
@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { luxuryClerkAppearance } from '../lib/clerkTheme'
 import { captureRedirect, clearRedirect } from '../lib/redirect'
+import { DEMO_ACCOUNTS } from '../lib/demoAccounts'
 
 const isClerkConfigured = Boolean(
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY &&
@@ -28,6 +29,9 @@ const Login = () => {
   // Where to send the user after auth (e.g. back to /checkout)
   const redirectTo = captureRedirect(location.search)
   const { isSignedIn } = useAuth()
+  const { isLoaded: signInLoaded, signIn, setActive } = useSignIn()
+  const [demoBusy, setDemoBusy] = useState(null)
+  const [demoError, setDemoError] = useState('')
 
   useEffect(() => {
     if (isSignedIn) {
@@ -92,6 +96,23 @@ const Login = () => {
     }, 700)
   }
 
+  const handleDemoSignIn = async (acct) => {
+    if (!signInLoaded) return
+    setDemoBusy(acct.role)
+    setDemoError('')
+    try {
+      const attempt = await signIn.create({ identifier: acct.email, password: acct.password })
+      if (attempt.status !== 'complete') throw new Error('Additional verification required')
+      clearRedirect()
+      await setActive({ session: attempt.createdSessionId })
+      navigate(acct.redirect, { replace: true })
+    } catch {
+      setDemoError(`Could not sign in as ${acct.label}. Run "npm run seed:demo" to create the demo accounts.`)
+    } finally {
+      setDemoBusy(null)
+    }
+  }
+
   const handleForgotPasswordSubmit = (e) => {
     e.preventDefault()
     if (!forgotEmail) return
@@ -132,6 +153,29 @@ const Login = () => {
                 forceRedirectUrl={redirectTo}
                 appearance={luxuryClerkAppearance} 
               />
+
+              <div className="mt-6 rounded-2xl border border-dashed border-neutral-300 p-4">
+                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-700">
+                  Portfolio demo access
+                </p>
+                <p className="mt-1 text-xs text-neutral-500">
+                  Explore the store without signing up. Test mode only, no real payments.
+                </p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  {Object.values(DEMO_ACCOUNTS).map((acct) => (
+                    <button
+                      key={acct.role}
+                      type="button"
+                      onClick={() => handleDemoSignIn(acct)}
+                      disabled={!signInLoaded || demoBusy !== null}
+                      className="rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-xs font-semibold text-neutral-900 transition-colors hover:border-black disabled:opacity-60"
+                    >
+                      {demoBusy === acct.role ? 'Signing in…' : acct.label}
+                    </button>
+                  ))}
+                </div>
+                {demoError && <p role="alert" className="mt-3 text-xs text-red-600">{demoError}</p>}
+              </div>
             </div>
           ) : (
             <div>

@@ -148,3 +148,20 @@ For support and questions, please open an issue in the repository.
 ---
 
 **Zion E-Commerce** - Premium products for a premium lifestyle.
+
+## Demo accounts
+
+Two public demo accounts (credentials in `src/lib/demoAccounts.js`) are available as one-click buttons on `/login`:
+
+| Role | Email | Lands on |
+|------|-------|----------|
+| Customer | demo.customer@example.com | `/` |
+| Admin | demo.admin@example.com | `/admin` |
+
+Auth is Clerk and admin rights live in `public.admins`, so the accounts must be created once. Add `CLERK_SECRET_KEY` and `SUPABASE_SERVICE_ROLE_KEY` to `.env.local` (see `.env.example`), then run:
+
+```bash
+npm run seed:demo
+```
+
+The script is idempotent: it creates the Clerk users, upserts their `profiles`, and inserts the admin into `admins`.
