@@ -246,15 +246,15 @@ Instructions:
 
   return (
     <>
-      {/* Floating Atelier AI Trigger Button (bottom-left to avoid Back-to-Top and toasts) */}
+      {/* Floating Atelier AI Trigger Button (bottom-right rounded pill button) */}
       <motion.button
         type="button"
         onClick={() => setIsOpen(true)}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        className="fixed bottom-6 left-6 sm:bottom-8 sm:left-8 z-40 flex items-center gap-2.5 bg-black text-white px-4 py-3 sm:px-5 sm:py-3.5 shadow-[0_12px_35px_rgba(0,0,0,0.28)] border border-white/15 hover:bg-neutral-900 transition-colors group"
+        whileHover={{ scale: 1.04 }}
+        whileTap={{ scale: 0.96 }}
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 flex items-center gap-2.5 bg-black text-white px-5 py-3 sm:px-6 sm:py-3.5 rounded-full shadow-[0_12px_35px_rgba(0,0,0,0.32)] border border-white/20 hover:bg-neutral-900 hover:border-white/40 transition-all duration-200 group cursor-pointer"
         aria-label="Open Zion AI Stylist"
       >
         <Sparkles className="w-4 h-4 text-white transition-transform duration-300 group-hover:rotate-12" />

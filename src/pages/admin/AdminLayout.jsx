@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useNavigate, useLocation } from 'react-router-do
 import { useUser, UserButton } from '@clerk/clerk-react'
 import {
   AlertTriangle,
+  Ban,
   Bell,
   Calendar,
   CheckCircle2,
@@ -148,6 +149,9 @@ const NotificationBell = () => {
                           }`}
                         />
                       )}
+                      {n.type === 'order_cancelled' && (
+                        <Ban size={15} className="mt-0.5 shrink-0 text-rose-600 dark:text-rose-400" />
+                      )}
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 leading-snug">{n.title}</p>
                         {n.body && <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5 line-clamp-2">{n.body}</p>}
@@ -187,11 +191,15 @@ const AlertToasts = () => {
             className="flex-1 text-left"
             onClick={() => {
               dismissFresh(n.id)
-              navigate(destinationFor(n))
+              navigate(destinationFor(n) + (n.order_id ? `?order=${n.order_id}` : ''))
             }}
           >
             <p className="text-sm font-semibold flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span
+                className={`w-2 h-2 rounded-full animate-pulse ${
+                  n.type === 'order_cancelled' ? 'bg-rose-500' : 'bg-amber-400'
+                }`}
+              />
               {n.title}
             </p>
             {n.body && <p className="text-xs text-neutral-300 mt-1">{n.body}</p>}

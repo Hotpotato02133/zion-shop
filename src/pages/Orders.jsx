@@ -5,6 +5,7 @@ import { useSupabase } from '../context/SupabaseContext'
 import OrderActions from '../components/orders/OrderActions'
 import StatusBadge from '../components/orders/StatusBadge'
 import { ORDER_TABS, STATUS_META, formatDate, getOrderStatusHint, money } from '../lib/orders'
+import { subscribeOrderSync } from '../lib/orderSync'
 
 const Orders = () => {
   const { supabase, isConfigured } = useSupabase()
@@ -42,8 +43,26 @@ const Orders = () => {
       })
       .subscribe()
 
+    const unsubscribeSync = subscribeOrderSync(() => {
+      load()
+    })
+
+    const onFocusOrVisible = () => {
+      if (document.visibilityState === 'visible') load()
+    }
+    window.addEventListener('focus', onFocusOrVisible)
+    document.addEventListener('visibilitychange', onFocusOrVisible)
+
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') load()
+    }, 5000)
+
     return () => {
       supabase.removeChannel(channel)
+      unsubscribeSync()
+      window.removeEventListener('focus', onFocusOrVisible)
+      document.removeEventListener('visibilitychange', onFocusOrVisible)
+      clearInterval(pollInterval)
     }
   }, [supabase, isConfigured, load])
 
@@ -58,6 +77,7 @@ const Orders = () => {
   const replaceOrder = (updated) => {
     if (!updated) return
     setOrders(prev => prev.map(o => (o.id === updated.id ? { ...o, ...updated } : o)))
+    load()
   }
 
   return (

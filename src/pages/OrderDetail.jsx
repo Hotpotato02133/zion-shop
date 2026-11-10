@@ -1,13 +1,25 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, Sparkles, Truck } from 'lucide-react'
+import { ArrowLeft, Ban, CheckCircle2, Clock, ShieldCheck, Sparkles, Truck } from 'lucide-react'
 import { useSupabase } from '../context/SupabaseContext'
 import OrderActions from '../components/orders/OrderActions'
 import StatusBadge from '../components/orders/StatusBadge'
 import CheckoutSteps from '../components/CheckoutSteps'
 import {
-  PAYMENT_LABELS, RETURN_LABELS, STATUS_META, formatDate, formatDateTime, getOrderStatusHint, money
+  PAYMENT_LABELS,
+  RETURN_LABELS,
+  STATUS_META,
+  formatDate,
+  formatDateTime,
+  formatOrderEventNote,
+  getOrderStatusHint,
+  isCancelledByCustomer,
+  isCodOrder,
+  isCodOrderApproved,
+  money,
+  sortOrderEvents
 } from '../lib/orders'
+import { subscribeOrderSync } from '../lib/orderSync'
 import { fetchOrderRefundRequests } from '../services/refundTriageService'
 
 const OrderDetail = () => {
@@ -36,7 +48,7 @@ const OrderDetail = () => {
     if (fetchError) setError(fetchError.message)
     else if (!data) setError('Order not found.')
     else {
-      data.order_events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      data.order_events = sortOrderEvents(data.order_events || [])
       setOrder(data)
       fetchOrderRefundRequests(orderId, supabase).then(rows => {
         if (rows && rows.length > 0) setRefundTriage(rows[0])
@@ -48,7 +60,7 @@ const OrderDetail = () => {
 
   useEffect(() => { load() }, [load])
 
-  // Real-time synchronization for order updates & admin actions
+  // Real-time synchronization for order updates & admin actions (BroadcastChannel + polling + Supabase Realtime)
   useEffect(() => {
     if (!isConfigured || !orderId) return
     const channel = supabase
@@ -61,8 +73,28 @@ const OrderDetail = () => {
       })
       .subscribe()
 
+    const unsubscribeSync = subscribeOrderSync((payload) => {
+      if (!payload?.orderId || payload.orderId === orderId) {
+        load()
+      }
+    })
+
+    const onFocusOrVisible = () => {
+      if (document.visibilityState === 'visible') load()
+    }
+    window.addEventListener('focus', onFocusOrVisible)
+    document.addEventListener('visibilitychange', onFocusOrVisible)
+
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') load()
+    }, 4000)
+
     return () => {
       supabase.removeChannel(channel)
+      unsubscribeSync()
+      window.removeEventListener('focus', onFocusOrVisible)
+      document.removeEventListener('visibilitychange', onFocusOrVisible)
+      clearInterval(pollInterval)
     }
   }, [supabase, isConfigured, orderId, load])
 
@@ -92,6 +124,39 @@ const OrderDetail = () => {
 
   const address = order.shipping_address || {}
   const paymentConfirming = returnedFromPayment === 'success' && order.status === 'to_pay'
+  const isCod = isCodOrder(order)
+  const codApproved = isCodOrderApproved(order)
+  const cancelledByCustomer = isCancelledByCustomer(order)
+
+  const codSteps = [
+    { key: 'placed', label: 'Order Placed', done: true },
+    {
+      key: 'approval',
+      label: isCod ? 'Store COD Approval' : 'Payment Confirmed',
+      done: isCod ? (codApproved || order.status === 'to_receive' || order.status === 'completed') : order.payment_status === 'paid',
+      active: order.status === 'to_ship' && isCod && !codApproved
+    },
+    {
+      key: 'delivery',
+      label: 'On Delivery',
+      done: order.status === 'to_receive' || order.status === 'completed',
+      active: order.status === 'to_receive' || (order.status === 'to_ship' && (!isCod || codApproved))
+    },
+    {
+      key: 'completed',
+      label: 'Delivered',
+      done: order.status === 'completed',
+      active: false
+    }
+  ]
+
+  const getCodPaymentSubtitle = () => {
+    if (order.status === 'cancelled') return 'Voided · Order cancelled'
+    if (order.payment_status === 'paid' || order.status === 'completed') return 'Paid upon delivery'
+    if (order.status === 'to_receive') return `Pay ${money(order.total)} cash upon delivery`
+    if (codApproved) return 'Approved by store · Pay upon delivery'
+    return 'Awaiting store approval · Pay upon delivery'
+  }
 
   return (
     <div className="min-h-screen w-full pt-10 pb-20 bg-white text-neutral-950 font-body overflow-x-clip">
@@ -100,7 +165,7 @@ const OrderDetail = () => {
           <ArrowLeft size={14} /> All orders
         </Link>
 
-        {justPlaced && (
+        {justPlaced && order.status !== 'cancelled' && (
           <div className="space-y-5">
             <CheckoutSteps current={3} />
             <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200 flex gap-3 text-emerald-900">
@@ -110,7 +175,9 @@ const OrderDetail = () => {
                 <p className="text-xs mt-0.5">
                   {order.status === 'to_pay'
                     ? 'Complete the payment below to start processing your order.'
-                    : 'We will email updates to ' + order.customer_email + '.'}
+                    : isCod && !codApproved
+                      ? `Your Cash on Delivery order is awaiting store approval before shipping. We will also email updates to ${order.customer_email}.`
+                      : 'We will email updates to ' + order.customer_email + '.'}
                 </p>
               </div>
             </div>
@@ -147,7 +214,94 @@ const OrderDetail = () => {
 
         <OrderActions order={order} onUpdated={(updated) => updated && load()} />
 
-        {order.courier || order.tracking_number ? (
+        {/* Order Fulfillment & COD Approval Status Banner */}
+        {order.status === 'cancelled' ? (
+          <div className="p-5 rounded-2xl bg-rose-50 border border-rose-200 flex items-start gap-3.5 text-rose-950">
+            <Ban size={20} className="text-rose-600 shrink-0 mt-0.5" />
+            <div className="space-y-1 text-xs">
+              <p className="text-sm font-semibold text-rose-900">
+                {cancelledByCustomer ? 'You cancelled this order' : 'This order was cancelled'}
+              </p>
+              {order.cancel_reason && (
+                <p className="text-rose-800">
+                  Reason: <span className="font-medium">{order.cancel_reason}</span>
+                </p>
+              )}
+              <p className="text-rose-700/80">
+                The store admin has been notified and any reserved items have been returned to stock.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="p-5 rounded-2xl border border-neutral-200 bg-neutral-50/70 space-y-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {codSteps.map((step, idx) => (
+                <div
+                  key={step.key}
+                  className={`p-2.5 rounded-xl border text-xs transition-colors ${
+                    step.done
+                      ? 'bg-neutral-950 text-white border-neutral-950'
+                      : step.active
+                        ? 'bg-amber-50 text-amber-900 border-amber-300'
+                        : 'bg-white text-neutral-400 border-neutral-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-1 mb-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider opacity-75">Step {idx + 1}</span>
+                    {step.done ? (
+                      <CheckCircle2 size={13} className="shrink-0" />
+                    ) : step.active ? (
+                      <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                    ) : null}
+                  </div>
+                  <p className="font-semibold leading-snug">{step.label}</p>
+                </div>
+              ))}
+            </div>
+
+            {order.status === 'to_ship' && isCod && !codApproved && (
+              <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200/80 flex items-start gap-3 text-amber-950 text-xs">
+                <Clock size={16} className="text-amber-600 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <p className="font-semibold">Waiting for Admin Approval (Cash on Delivery)</p>
+                  <p className="text-amber-800 leading-relaxed">
+                    Your order is in the store verification queue. Once the admin approves your Cash on Delivery request, your package will be cleared to ship and move to <strong>On Delivery</strong>. This page updates automatically.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {order.status === 'to_ship' && (!isCod || codApproved) && (
+              <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-start gap-3 text-emerald-950 text-xs">
+                <ShieldCheck size={16} className="text-emerald-600 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <p className="font-semibold">
+                    {isCod ? 'COD Approved by Store — Preparing for Dispatch' : 'Order Confirmed — Preparing for Dispatch'}
+                  </p>
+                  <p className="text-emerald-800 leading-relaxed">
+                    Your order has been approved for shipping and is being packed for courier handoff.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {order.status === 'to_receive' && (
+              <div className="p-3.5 rounded-xl bg-indigo-50 border border-indigo-200/80 flex items-start gap-3 text-indigo-950 text-xs">
+                <Truck size={16} className="text-indigo-600 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <p className="font-semibold">Your Order is On Delivery</p>
+                  <p className="text-indigo-800 leading-relaxed">
+                    {order.courier ? `Dispatched via ${order.courier}` : 'Your package is on its way to your delivery address'}
+                    {order.tracking_number ? ` (Tracking: ${order.tracking_number})` : ''}.
+                    {isCod ? ` Please prepare ${money(order.total)} in cash for the courier.` : ''} Once it arrives, click <strong>Order received</strong> above.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {(order.courier || order.tracking_number) && order.status !== 'to_receive' ? (
           <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center gap-3 text-sm text-indigo-900">
             <Truck size={18} />
             <span>
@@ -248,7 +402,11 @@ const OrderDetail = () => {
               <p className="text-sm text-neutral-600">
                 {order.payment_method === 'cod' ? 'Cash on delivery' : 'PayMongo (card / e-wallet)'}
                 <br />
-                <span className="font-medium text-neutral-900">{PAYMENT_LABELS[order.payment_status]}</span>
+                <span className="font-medium text-neutral-900">
+                  {order.payment_method === 'cod'
+                    ? getCodPaymentSubtitle()
+                    : PAYMENT_LABELS[order.payment_status]}
+                </span>
                 {order.paid_at && <> · {formatDate(order.paid_at)}</>}
               </p>
             </div>
@@ -258,7 +416,7 @@ const OrderDetail = () => {
                 {order.order_events.map(event => (
                   <li key={event.id} className="pl-5 relative">
                     <span className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-neutral-950" />
-                    <p className="text-sm font-medium">{event.note || STATUS_META[event.status]?.label}</p>
+                    <p className="text-sm font-medium">{formatOrderEventNote(event, order) || STATUS_META[event.status]?.label}</p>
                     <p className="text-xs text-neutral-400">{formatDateTime(event.created_at)}</p>
                   </li>
                 ))}

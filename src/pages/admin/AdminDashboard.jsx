@@ -20,7 +20,8 @@ import { useSupabase } from '../../context/SupabaseContext'
 import { useAdminAlerts } from './AdminAlerts'
 import { useAdminTheme } from '../../context/AdminThemeContext'
 import StatusBadge from '../../components/orders/StatusBadge'
-import { formatDate, isCodOrder, isCodOrderApproved, money } from '../../lib/orders'
+import { formatDate, isCancelledByCustomer, isCodOrder, isCodOrderApproved, money } from '../../lib/orders'
+import { subscribeOrderSync } from '../../lib/orderSync'
 import { isAiConfigured } from '../../services/aiService'
 import { embedAllProductsInSupabase } from '../../services/productEmbeddingService'
 
@@ -124,8 +125,9 @@ function computeTimeframeStats(orders, timeframe, chartMetric) {
     }
   }
 
-  // Populate buckets with REAL customer transactions
+  // Populate buckets with REAL customer transactions (excluding cancelled orders)
   orders.forEach((o) => {
+    if (o.status === 'cancelled') return
     const orderDate = new Date(o.created_at)
     const isPaid = o.payment_status === 'paid' || o.payment_status === 'cod'
     const orderTotal = Number(o.total) || 0
@@ -214,7 +216,7 @@ const AdminDashboard = () => {
         supabase
           .from('orders')
           .select(
-            'id, order_number, status, payment_status, payment_method, total, subtotal, discount, tax, shipping_fee, customer_name, customer_email, created_at, paid_at, order_items(id, product_id, name, quantity, price, image_url)'
+            'id, order_number, status, payment_status, payment_method, total, subtotal, discount, tax, shipping_fee, customer_name, customer_email, cancel_reason, shipping_address, created_at, paid_at, order_items(id, product_id, name, quantity, price, image_url), order_events(id, status, note, created_at)'
           )
           .order('created_at', { ascending: false }),
         supabase
@@ -283,8 +285,18 @@ const AdminDashboard = () => {
       )
       .subscribe()
 
+    const unsubscribeSync = subscribeOrderSync(() => {
+      loadData()
+    })
+
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') loadData()
+    }, 6000)
+
     return () => {
       supabase.removeChannel(channel)
+      unsubscribeSync()
+      clearInterval(pollInterval)
     }
   }, [supabase, loadData])
 
@@ -295,7 +307,7 @@ const AdminDashboard = () => {
       byStatus[o.status] = (byStatus[o.status] || 0) + 1
     })
     const revenue = orders
-      .filter((o) => o.payment_status === 'paid' || o.payment_status === 'cod')
+      .filter((o) => o.status !== 'cancelled' && (o.payment_status === 'paid' || o.payment_status === 'cod'))
       .reduce((sum, o) => sum + (Number(o.total) || 0), 0)
 
     const codPending = orders.filter(
@@ -307,6 +319,8 @@ const AdminDashboard = () => {
       revenue,
       completed: byStatus.completed || 0,
       toShip: byStatus.to_ship || 0,
+      onDelivery: byStatus.to_receive || 0,
+      cancelled: byStatus.cancelled || 0,
       codPending,
       totalOrders: orders.length,
       totalProducts: products.length
@@ -373,11 +387,18 @@ const AdminDashboard = () => {
     )
   }, [orders, searchQuery])
 
-  // Real Top-selling products computed from actual order items
+  // Real Top-selling products computed from actual order items (excluding cancelled orders)
   const topSellers = useMemo(() => {
     const productSalesMap = {}
     orders.forEach((o) => {
-      if (o.payment_status === 'paid' || o.status === 'completed' || o.status === 'to_ship' || o.payment_status === 'cod') {
+      if (
+        o.status !== 'cancelled' &&
+        (o.payment_status === 'paid' ||
+          o.status === 'completed' ||
+          o.status === 'to_ship' ||
+          o.status === 'to_receive' ||
+          o.payment_status === 'cod')
+      ) {
         ;(o.order_items || []).forEach((item) => {
           const pid = item.product_id
           if (!pid) return
@@ -830,6 +851,13 @@ const AdminDashboard = () => {
                             </div>
                             <p className="text-[10px] text-neutral-400 dark:text-neutral-500">
                               {totalItems} item{totalItems === 1 ? '' : 's'}
+                              {o.status === 'cancelled' && (
+                                <span className="text-rose-600 dark:text-rose-400 font-medium">
+                                  {' '}
+                                  · {isCancelledByCustomer(o) ? 'Cancelled by customer' : 'Cancelled'}
+                                  {o.cancel_reason ? ` (${o.cancel_reason})` : ''}
+                                </span>
+                              )}
                             </p>
                           </td>
                           <td className="py-3.5 text-xs text-neutral-500 dark:text-neutral-400 whitespace-nowrap">

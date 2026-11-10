@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   AlertCircle,
+  Ban,
   Check,
   CheckCircle2,
   Clock,
@@ -27,11 +28,49 @@ import {
   RETURN_LABELS,
   formatDate,
   formatDateTime,
+  formatOrderEventNote,
   friendlyError,
+  isCancelledByCustomer,
   isCodOrder,
   isCodOrderApproved,
-  money
+  money,
+  sortOrderEvents
 } from '../../lib/orders'
+import { markCodApprovedLocally, notifyOrderSync, subscribeOrderSync } from '../../lib/orderSync'
+
+let codApproveRpcAvailable = true
+
+async function executeCodApproval(supabase, orderId, { courier = null, tracking = null, note = null } = {}) {
+  const noteText = note ? `COD order approved: ${note}` : 'COD order approved for shipping by admin'
+
+  if (codApproveRpcAvailable) {
+    const { data, error: rpcError } = await supabase.rpc('admin_approve_cod_order', {
+      p_order_id: orderId,
+      p_note: noteText
+    })
+    if (!rpcError) {
+      markCodApprovedLocally(orderId)
+      notifyOrderSync({ type: 'cod_approved', orderId, status: 'to_ship' })
+      return { data, error: null }
+    }
+    if (rpcError.code === 'PGRST202' || /Could not find the function/i.test(rpcError.message || '')) {
+      codApproveRpcAvailable = false
+    }
+  }
+
+  const { data: fallbackData, error: fallbackErr } = await supabase.rpc('admin_set_order_status', {
+    p_order_id: orderId,
+    p_status: 'to_ship',
+    p_courier: courier || null,
+    p_tracking: tracking || null,
+    p_note: noteText
+  })
+  if (!fallbackErr) {
+    markCodApprovedLocally(orderId)
+    notifyOrderSync({ type: 'cod_approved', orderId, status: 'to_ship' })
+  }
+  return { data: fallbackData, error: fallbackErr }
+}
 
 const btn =
   'px-4 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider disabled:opacity-60 transition-colors inline-flex items-center justify-center gap-1.5'
@@ -59,10 +98,10 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
       .maybeSingle()
     if (fetchError) setError(fetchError.message)
     else if (data) {
-      data.order_events.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      data.order_events = sortOrderEvents(data.order_events || [])
       setOrder(data)
-      setCourier(data.courier || '')
-      setTracking(data.tracking_number || '')
+      setCourier((prev) => prev || data.courier || '')
+      setTracking((prev) => prev || data.tracking_number || '')
       fetchOrderRefundRequests(orderId, supabase).then(rows => {
         if (rows && rows.length > 0) setRefundTriage(rows[0])
       })
@@ -71,18 +110,35 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
 
   useEffect(() => {
     load()
-  }, [load])
+    const unsubscribeSync = subscribeOrderSync((payload) => {
+      if (!payload?.orderId || payload.orderId === orderId) {
+        load()
+      }
+    })
+    const poll = setInterval(() => {
+      if (document.visibilityState === 'visible') load()
+    }, 4000)
+    return () => {
+      unsubscribeSync()
+      clearInterval(poll)
+    }
+  }, [load, orderId])
 
   const call = async (name, params) => {
     setBusy(true)
     setError('')
-    const { error: rpcError } = await supabase.rpc(name, params)
+    const { data, error: rpcError } = await supabase.rpc(name, params)
     setBusy(false)
     if (rpcError) {
       setError(friendlyError(rpcError))
       return
     }
     setNote('')
+    notifyOrderSync({
+      type: name,
+      orderId,
+      status: params?.p_status || data?.status
+    })
     await load()
     onChanged()
   }
@@ -91,7 +147,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
     call('admin_set_order_status', {
       p_order_id: orderId,
       p_status: status,
-      p_courier: courier || null,
+      p_courier: courier || (status === 'to_receive' ? 'Standard Express' : null),
       p_tracking: tracking || null,
       p_note: note || null
     })
@@ -99,28 +155,53 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
   const approveCod = async () => {
     setBusy(true)
     setError('')
-    const noteText = note ? `COD order approved: ${note}` : 'COD order approved for shipping by admin'
-    const { error: rpcError } = await supabase.rpc('admin_approve_cod_order', {
-      p_order_id: orderId,
-      p_note: noteText
+    const { error: approveErr } = await executeCodApproval(supabase, orderId, {
+      courier,
+      tracking,
+      note
     })
-    if (rpcError) {
-      const { error: fallbackErr } = await supabase.rpc('admin_set_order_status', {
-        p_order_id: orderId,
-        p_status: 'to_ship',
-        p_courier: courier || null,
-        p_tracking: tracking || null,
-        p_note: noteText
-      })
-      setBusy(false)
-      if (fallbackErr) {
-        setError(friendlyError(fallbackErr))
-        return
-      }
-    } else {
-      setBusy(false)
+    setBusy(false)
+    if (approveErr) {
+      setError(friendlyError(approveErr))
+      return
     }
     setNote('')
+    await load()
+    onChanged()
+  }
+
+  const approveAndShipCod = async () => {
+    setBusy(true)
+    setError('')
+    const { error: approveErr } = await executeCodApproval(supabase, orderId, {
+      courier,
+      tracking,
+      note
+    })
+    if (approveErr) {
+      setBusy(false)
+      setError(friendlyError(approveErr))
+      return
+    }
+    const chosenCourier = courier.trim() || 'LBC Express'
+    const dispatchNote = note
+      ? `Approved & dispatched (${chosenCourier}${tracking ? ' · ' + tracking : ''}) — ${note}`
+      : `COD approved & order on delivery (${chosenCourier}${tracking ? ' · ' + tracking : ''})`
+
+    const { error: shipErr } = await supabase.rpc('admin_set_order_status', {
+      p_order_id: orderId,
+      p_status: 'to_receive',
+      p_courier: chosenCourier,
+      p_tracking: tracking.trim() || null,
+      p_note: dispatchNote
+    })
+    setBusy(false)
+    if (shipErr) {
+      setError(friendlyError(shipErr))
+      return
+    }
+    setNote('')
+    notifyOrderSync({ type: 'order_shipped', orderId, status: 'to_receive' })
     await load()
     onChanged()
   }
@@ -131,6 +212,7 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
   const address = order?.shipping_address || {}
   const isCod = isCodOrder(order)
   const isApproved = isCodOrderApproved(order)
+  const cancelledByCustomer = isCancelledByCustomer(order)
 
   return (
     <div className="fixed inset-0 z-[60] flex justify-end">
@@ -167,6 +249,28 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
               </div>
             </header>
 
+            {/* Prominent Cancelled Order Banner */}
+            {order.status === 'cancelled' && (
+              <section className="p-4 rounded-2xl border bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800/60 text-rose-950 dark:text-rose-200 text-xs space-y-1.5">
+                <div className="flex items-start gap-2.5">
+                  <Ban size={18} className="text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm">
+                      {cancelledByCustomer ? 'Order Cancelled by Customer' : 'Order Cancelled by Store'}
+                    </p>
+                    {order.cancel_reason && (
+                      <p className="mt-0.5 font-medium text-rose-800 dark:text-rose-300">
+                        Reason: “{order.cancel_reason}”
+                      </p>
+                    )}
+                    <p className="mt-1 opacity-85 leading-relaxed">
+                      Reserved stock has been automatically restored. Do not dispatch this order.
+                    </p>
+                  </div>
+                </div>
+              </section>
+            )}
+
             {/* COD Verification Banner for 'to_ship' orders */}
             {order.status === 'to_ship' && isCod && (
               <section
@@ -184,25 +288,51 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm">
-                      {isApproved ? 'COD Order Approved for Shipping' : 'Cash on Delivery — Pending Store Approval'}
+                      {isApproved ? 'COD Order Approved — Ready to Ship' : 'Cash on Delivery — Waiting for Admin Approval'}
                     </p>
                     <p className="mt-0.5 opacity-90 leading-relaxed">
                       {isApproved
-                        ? 'This COD order has been approved by the store. Enter courier details below to dispatch.'
-                        : 'Customer requested Cash on Delivery. Please verify their phone and address details before approving this order for fulfillment.'}
+                        ? 'This COD order has been approved by the store. Select a courier and click "Mark Shipped (On Delivery)" below to dispatch.'
+                        : 'The customer chose Cash on Delivery and is waiting for your approval so their order can be shipped. Approve it to prepare packing, or Approve & Ship directly.'}
                     </p>
                   </div>
                 </div>
 
                 {!isApproved && (
-                  <button
-                    disabled={busy}
-                    onClick={approveCod}
-                    className="w-full py-2.5 px-4 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 text-xs font-semibold uppercase tracking-wider hover:bg-black dark:hover:bg-neutral-200 transition-colors inline-flex items-center justify-center gap-2 shadow-xs"
-                  >
-                    <CheckCircle2 size={14} /> Approve Order for Shipping
-                  </button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <button
+                      disabled={busy}
+                      onClick={approveCod}
+                      className="py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <CheckCircle2 size={14} /> Approve for Shipping
+                    </button>
+                    <button
+                      disabled={busy}
+                      onClick={approveAndShipCod}
+                      className="py-2.5 px-3.5 rounded-xl bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 text-xs font-semibold uppercase tracking-wider hover:bg-black dark:hover:bg-neutral-200 transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs"
+                    >
+                      <Truck size={14} /> Approve &amp; Ship Now
+                    </button>
+                  </div>
                 )}
+              </section>
+            )}
+
+            {/* On Delivery Status Banner for 'to_receive' orders */}
+            {order.status === 'to_receive' && (
+              <section className="p-4 rounded-2xl border bg-indigo-50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800/60 text-indigo-950 dark:text-indigo-200 text-xs space-y-1.5">
+                <div className="flex items-start gap-2.5">
+                  <Truck size={18} className="text-indigo-600 dark:text-indigo-400 shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm">Order is On Delivery (To Receive)</p>
+                    <p className="mt-0.5 opacity-90 leading-relaxed">
+                      Dispatched via <strong>{order.courier || 'Standard Express'}</strong>
+                      {order.tracking_number ? ` · Tracking: ${order.tracking_number}` : ''}.
+                      {isCod ? ` Courier will collect ${money(order.total)} COD upon arrival.` : ''}
+                    </p>
+                  </div>
+                </div>
               </section>
             )}
 
@@ -360,12 +490,14 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
                 </div>
               )}
 
-              <input
-                placeholder="Note for the customer timeline (optional)"
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                className="w-full p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
-              />
+                {order.status !== 'cancelled' && (
+                  <input
+                    placeholder="Note for the customer timeline (optional)"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
+                  />
+                )}
 
               <div className="flex flex-wrap gap-2 pt-1">
                 {order.status === 'to_pay' && (
@@ -375,20 +507,25 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
                 )}
 
                 {order.status === 'to_ship' && isCod && !isApproved && (
-                  <button disabled={busy} className={successBtn} onClick={approveCod}>
-                    <CheckCircle2 size={13} /> Approve COD Order
-                  </button>
+                  <>
+                    <button disabled={busy} className={successBtn} onClick={approveCod}>
+                      <CheckCircle2 size={13} /> Approve COD
+                    </button>
+                    <button disabled={busy} className={primary} onClick={approveAndShipCod}>
+                      <Truck size={13} /> Approve &amp; Ship (On Delivery)
+                    </button>
+                  </>
                 )}
 
-                {order.status === 'to_ship' && (
+                {order.status === 'to_ship' && (!isCod || isApproved) && (
                   <button disabled={busy} className={primary} onClick={() => setStatus('to_receive')}>
-                    <Truck size={13} /> Mark Shipped (Dispatch)
+                    <Truck size={13} /> Mark Shipped (On Delivery)
                   </button>
                 )}
 
                 {order.status === 'to_receive' && (
-                  <button disabled={busy} className={primary} onClick={() => setStatus('completed')}>
-                    <CheckCircle2 size={13} /> Mark Delivered
+                  <button disabled={busy} className={successBtn} onClick={() => setStatus('completed')}>
+                    <CheckCircle2 size={13} /> Mark Delivered &amp; Completed
                   </button>
                 )}
 
@@ -442,12 +579,16 @@ const OrderPanel = ({ orderId, onClose, onChanged }) => {
                   <li key={ev.id} className="pl-4 relative">
                     <span
                       className={`absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full ${
-                        /approved/i.test(ev.note || '')
-                          ? 'bg-emerald-600'
-                          : 'bg-neutral-950 dark:bg-white'
+                        ev.status === 'cancelled'
+                          ? 'bg-rose-600'
+                          : /approved/i.test(ev.note || '')
+                            ? 'bg-emerald-600'
+                            : 'bg-neutral-950 dark:bg-white'
                       }`}
                     />
-                    <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{ev.note || ev.status}</p>
+                    <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                      {formatOrderEventNote(ev, order) || ev.status}
+                    </p>
                     <p className="text-xs text-neutral-400 dark:text-neutral-500">{formatDateTime(ev.created_at)}</p>
                   </li>
                 ))}
@@ -473,6 +614,11 @@ const AdminOrders = () => {
   const { lastUpdated, refresh } = useAdminAlerts()
 
   const tab = searchParams.get('status') || 'all'
+  const orderParam = searchParams.get('order')
+
+  useEffect(() => {
+    if (orderParam) setOpenId(orderParam)
+  }, [orderParam])
 
   const load = useCallback(async () => {
     const { data, error: fetchError } = await supabase
@@ -484,7 +630,7 @@ const AdminOrders = () => {
     setLoading(false)
   }, [supabase])
 
-  // Real-time synchronization: listen for new buyer checkout orders and timeline events
+  // Real-time synchronization: listen for new buyer checkout orders, cancellations, and timeline events
   useEffect(() => {
     load()
     const channel = supabase
@@ -497,35 +643,58 @@ const AdminOrders = () => {
       })
       .subscribe()
 
+    const unsubscribeSync = subscribeOrderSync(() => {
+      load()
+      refresh()
+    })
+
+    const pollInterval = setInterval(() => {
+      if (document.visibilityState === 'visible') load()
+    }, 4000)
+
     return () => {
       supabase.removeChannel(channel)
+      unsubscribeSync()
+      clearInterval(pollInterval)
     }
-  }, [supabase, load, lastUpdated])
+  }, [supabase, load, lastUpdated, refresh])
 
   // Quick single-click approve COD from the table
   const handleQuickApprove = async (orderId, e) => {
     if (e) e.stopPropagation()
     setBusyId(orderId)
     setError('')
-    const { error: rpcError } = await supabase.rpc('admin_approve_cod_order', {
-      p_order_id: orderId,
-      p_note: 'COD order approved for shipping by admin'
-    })
-    if (rpcError) {
-      const { error: fallbackErr } = await supabase.rpc('admin_set_order_status', {
-        p_order_id: orderId,
-        p_status: 'to_ship',
-        p_courier: null,
-        p_tracking: null,
-        p_note: 'COD order approved for shipping by admin'
-      })
-      if (fallbackErr) {
-        setBusyId(null)
-        setError(friendlyError(fallbackErr))
-        return
-      }
-    }
+    const { error: approveErr } = await executeCodApproval(supabase, orderId)
     setBusyId(null)
+    if (approveErr) {
+      setError(friendlyError(approveErr))
+      return
+    }
+    if (shippingFilter === 'cod_pending') {
+      setShippingFilter('all')
+    }
+    await load()
+    refresh()
+  }
+
+  // Quick single-click mark delivered from the table for on-delivery orders
+  const handleQuickDeliver = async (orderId, e) => {
+    if (e) e.stopPropagation()
+    setBusyId(orderId)
+    setError('')
+    const { error: deliverErr } = await supabase.rpc('admin_set_order_status', {
+      p_order_id: orderId,
+      p_status: 'completed',
+      p_courier: null,
+      p_tracking: null,
+      p_note: 'Order delivered and completed'
+    })
+    setBusyId(null)
+    if (deliverErr) {
+      setError(friendlyError(deliverErr))
+      return
+    }
+    notifyOrderSync({ type: 'order_completed', orderId, status: 'completed' })
     await load()
     refresh()
   }
@@ -837,8 +1006,28 @@ const AdminOrders = () => {
 
                     {/* Payment & Approval Status */}
                     <td className="p-4">
-                      {isCod ? (
-                        isApproved ? (
+                      {o.status === 'cancelled' ? (
+                        <div className="space-y-1">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-50 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60">
+                            <Ban size={12} />
+                            {isCancelledByCustomer(o) ? 'Cancelled by Customer' : 'Cancelled by Store'}
+                          </span>
+                          {o.cancel_reason && (
+                            <p className="text-[11px] text-rose-600 dark:text-rose-400 truncate max-w-[210px]">
+                              Reason: {o.cancel_reason}
+                            </p>
+                          )}
+                        </div>
+                      ) : isCod ? (
+                        o.status === 'completed' || o.payment_status === 'paid' ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
+                            <CheckCircle2 size={12} /> COD · Paid
+                          </span>
+                        ) : o.status === 'to_receive' ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-800 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60">
+                            <Truck size={12} /> COD · Collect on Delivery
+                          </span>
+                        ) : isApproved ? (
                           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60">
                             <CheckCircle2 size={12} /> COD · Approved
                           </span>
@@ -868,16 +1057,28 @@ const AdminOrders = () => {
                     {/* Action Column */}
                     <td className="p-4 text-right whitespace-nowrap">
                       {o.status === 'to_ship' && isCod && !isApproved ? (
-                        <button
-                          type="button"
-                          disabled={isBusy}
-                          onClick={(e) => handleQuickApprove(o.id, e)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
-                          title="Approve this Cash on Delivery order to be shipped"
-                        >
-                          <CheckCircle2 size={13} />
-                          {isBusy ? 'Saving…' : 'Approve'}
-                        </button>
+                        <div className="inline-flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            disabled={isBusy}
+                            onClick={(e) => handleQuickApprove(o.id, e)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
+                            title="Approve this Cash on Delivery order to be shipped"
+                          >
+                            <CheckCircle2 size={13} />
+                            {isBusy ? 'Saving…' : 'Approve COD'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setOpenId(o.id)
+                            }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-medium transition-colors"
+                          >
+                            Details
+                          </button>
+                        </div>
                       ) : o.status === 'to_ship' ? (
                         <button
                           type="button"
@@ -887,8 +1088,31 @@ const AdminOrders = () => {
                           }}
                           className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-950 dark:bg-white text-white dark:text-neutral-950 hover:bg-black dark:hover:bg-neutral-200 text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
                         >
-                          <Truck size={13} /> Ship
+                          <Truck size={13} /> Ship / Dispatch
                         </button>
+                      ) : o.status === 'to_receive' ? (
+                        <div className="inline-flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            disabled={isBusy}
+                            onClick={(e) => handleQuickDeliver(o.id, e)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold uppercase tracking-wider transition-colors shadow-xs"
+                            title="Mark this on-delivery order as delivered and completed"
+                          >
+                            <CheckCircle2 size={13} />
+                            {isBusy ? 'Saving…' : 'Mark Delivered'}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setOpenId(o.id)
+                            }}
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-neutral-200 dark:border-neutral-700 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 text-xs font-medium transition-colors"
+                          >
+                            Details
+                          </button>
+                        </div>
                       ) : (
                         <button
                           type="button"

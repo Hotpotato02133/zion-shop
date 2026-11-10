@@ -616,7 +616,7 @@ const Wishlist = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-6 right-6 z-50 bg-neutral-950 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-medium border border-neutral-800"
+            className="fixed bottom-20 right-6 sm:bottom-24 sm:right-8 z-50 bg-neutral-950 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-xs sm:text-sm font-medium border border-neutral-800"
           >
             <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
               <Check size={14} className="text-white" />

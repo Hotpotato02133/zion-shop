@@ -4,6 +4,7 @@ import { Camera, Loader2, Sparkles, X } from 'lucide-react'
 import { useSupabase } from '../../context/SupabaseContext'
 import { fetchDemoPaymentsEnabled, startPayment } from '../../lib/payments'
 import { friendlyError } from '../../lib/orders'
+import { notifyOrderSync } from '../../lib/orderSync'
 import { evaluateRefundClaim } from '../../services/refundTriageService'
 
 const CANCEL_REASONS = [
@@ -76,6 +77,13 @@ const OrderActions = ({ order, onUpdated }) => {
     setDialog(null)
     setReason('')
     setDetails('')
+    notifyOrderSync({
+      type: name,
+      orderId: order.id,
+      orderNumber: order.order_number,
+      status: data?.status || (name === 'cancel_order' ? 'cancelled' : order.status),
+      reason: params?.p_reason || null
+    })
     onUpdated?.(data)
   })
 
@@ -129,6 +137,13 @@ const OrderActions = ({ order, onUpdated }) => {
     setDetails('')
     setDamagePhotoFile(null)
     setDamagePreviewUrl('')
+    notifyOrderSync({
+      type: 'request_return',
+      orderId: order.id,
+      orderNumber: order.order_number,
+      status: data?.status || order.status,
+      reason: enrichedReason
+    })
     onUpdated?.(data)
   })
 

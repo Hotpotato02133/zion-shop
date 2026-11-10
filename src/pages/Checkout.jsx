@@ -8,6 +8,7 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { computeTotals, readCheckoutExtras, clearCheckoutExtras } from '../lib/pricing'
 import { startPayment } from '../lib/payments'
 import { friendlyError, money } from '../lib/orders'
+import { notifyOrderSync } from '../lib/orderSync'
 
 const inputClass =
   'w-full p-3 rounded-xl bg-neutral-50 border border-neutral-200 text-sm focus:outline-none focus:ring-2 focus:ring-black'
@@ -119,6 +120,13 @@ const Checkout = () => {
     }
     clearCheckoutExtras()
     resetLocalCart()
+    notifyOrderSync({
+      type: 'place_order',
+      orderId: order.id,
+      orderNumber: order.order_number,
+      status: order.status,
+      paymentMethod
+    })
 
     if (paymentMethod === 'cod') {
       navigate(`/orders/${order.id}?placed=1`, { replace: true })

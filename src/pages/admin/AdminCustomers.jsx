@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSupabase } from '../../context/SupabaseContext'
 import { formatDate, money } from '../../lib/orders'
+import { subscribeOrderSync } from '../../lib/orderSync'
 
 const AdminCustomers = () => {
   const { supabase } = useSupabase()
@@ -10,27 +11,34 @@ const AdminCustomers = () => {
   const [error, setError] = useState('')
   const [query, setQuery] = useState('')
 
-  useEffect(() => {
-    let cancelled = false
+  const load = useCallback(() => {
     Promise.all([
       supabase.from('profiles').select('*').order('created_at', { ascending: false }),
       supabase.from('orders').select('user_id, total, status, payment_status')
     ]).then(([p, o]) => {
-      if (cancelled) return
       if (p.error || o.error) setError((p.error || o.error).message)
       setProfiles(p.data || [])
       setOrders(o.data || [])
       setLoading(false)
     })
-    return () => { cancelled = true }
   }, [supabase])
+
+  useEffect(() => {
+    load()
+    const unsubscribe = subscribeOrderSync(() => load())
+    return () => unsubscribe()
+  }, [load])
 
   const rows = useMemo(() => {
     const totals = {}
     orders.forEach(o => {
       const t = totals[o.user_id] || (totals[o.user_id] = { count: 0, spent: 0 })
-      t.count += 1
-      if (o.payment_status === 'paid') t.spent += Number(o.total)
+      if (o.status !== 'cancelled') {
+        t.count += 1
+        if (o.payment_status === 'paid' || (o.payment_status === 'cod' && o.status === 'completed')) {
+          t.spent += Number(o.total)
+        }
+      }
     })
     const needle = query.trim().toLowerCase()
     return profiles

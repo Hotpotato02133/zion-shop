@@ -699,7 +699,7 @@ const Products = () => {
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-800 text-sm font-medium"
+            className="fixed bottom-20 right-6 sm:bottom-24 sm:right-8 z-50 bg-black text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 border border-gray-800 text-sm font-medium"
           >
             <div className="w-5 h-5 rounded-full bg-white text-black flex items-center justify-center">
               <Check size={12} strokeWidth={3} />

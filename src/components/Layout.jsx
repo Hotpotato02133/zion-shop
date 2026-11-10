@@ -180,7 +180,7 @@ const Layout = ({ children }) => {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.2 }}
             aria-label="Scroll back to top"
-            className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 p-3 sm:p-3.5 rounded-full bg-neutral-900 hover:bg-black text-white border border-neutral-700 transition-colors flex items-center justify-center cursor-pointer"
+            className="fixed bottom-20 right-6 sm:bottom-24 sm:right-8 z-40 p-3 sm:p-3.5 rounded-full bg-neutral-900 hover:bg-black text-white border border-neutral-700 shadow-lg transition-colors flex items-center justify-center cursor-pointer"
           >
             <ArrowUp
               size={18}
